@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     siteName: "Jonathan Peris",
     images: [
       {
-        url: "https://jonathanperis.github.io/profile-image-sharing.jpg",
+        url: "https://jonathanperis.github.io/profile-image-sharing.jpeg",
         width: 460,
         height: 844,
       },

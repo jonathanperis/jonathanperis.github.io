@@ -208,7 +208,7 @@ export default function Home() {
                 <a href="/">Jonathan Peris</a>
               </h1>
               <h2 className="mt-3 text-lg font-medium tracking-tight text-slate-lightest sm:text-xl">
-                .NET Developer / .NET Architect
+                Software Engineer
               </h2>
               <p className="mt-4 max-w-xs leading-normal text-slate">
                 I build robust, scalable back-end systems and full-stack
