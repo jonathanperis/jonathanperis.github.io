@@ -266,3 +266,12 @@ __pycache__/
 
 # Cake - Uncomment if you are using it
 # tools/
+
+# Gatsby
+.cache/
+public/
+node_modules/
+yarn-error.log
+.DS_Store
+.env*
+.netlify

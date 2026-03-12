@@ -1,0 +1,162 @@
+import { css } from 'styled-components';
+import theme from './theme';
+const { colors, fontSizes, fonts } = theme;
+
+const mixins = css`
+  .flexCenter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .flexBetween {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .flexEnd {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  .inlineLink {
+    display: inline-block;
+    text-decoration: none;
+    text-decoration-skip-ink: auto;
+    position: relative;
+    transition: ${theme.transition};
+    color: ${colors.green};
+    &:hover,
+    &:focus,
+    &:active {
+      color: ${colors.green};
+      outline: 0;
+      &:after {
+        width: 100%;
+      }
+      & > * {
+        color: ${colors.green} !important;
+        transition: ${theme.transition};
+      }
+    }
+    &:after {
+      content: '';
+      display: block;
+      width: 0;
+      height: 1px;
+      position: relative;
+      bottom: 0.37em;
+      background-color: ${colors.green};
+      transition: ${theme.transition};
+      opacity: 0.5;
+    }
+  }
+
+  .button {
+    color: ${colors.green};
+    background-color: transparent;
+    border: 1px solid ${colors.green};
+    border-radius: ${theme.borderRadius};
+    font-size: ${fontSizes.xs};
+    font-family: ${fonts.SFMono};
+    line-height: 1;
+    text-decoration: none;
+    cursor: pointer;
+    transition: ${theme.transition};
+    padding: 1.25rem 1.75rem;
+
+    &:hover,
+    &:focus,
+    &:active {
+      background-color: ${colors.greenTint};
+      outline: none;
+    }
+    &:after {
+      display: none !important;
+    }
+  }
+
+  .smallButton {
+    color: ${colors.green};
+    background-color: transparent;
+    border: 1px solid ${colors.green};
+    border-radius: ${theme.borderRadius};
+    padding: 0.75rem 1rem;
+    font-size: ${fontSizes.xs};
+    font-family: ${fonts.SFMono};
+    line-height: 1;
+    text-decoration: none;
+    cursor: pointer;
+    transition: ${theme.transition};
+    &:hover,
+    &:focus,
+    &:active {
+      background-color: ${colors.greenTint};
+      outline: none;
+    }
+    &:after {
+      display: none !important;
+    }
+  }
+
+  .bigButton {
+    color: ${colors.green};
+    background-color: transparent;
+    border: 1px solid ${colors.green};
+    border-radius: ${theme.borderRadius};
+    padding: 1.25rem 1.75rem;
+    font-size: ${fontSizes.sm};
+    font-family: ${fonts.SFMono};
+    line-height: 1;
+    text-decoration: none;
+    cursor: pointer;
+    transition: ${theme.transition};
+    &:hover,
+    &:focus,
+    &:active {
+      background-color: ${colors.greenTint};
+      outline: none;
+    }
+    &:after {
+      display: none !important;
+    }
+  }
+
+  .boxShadow {
+    box-shadow: 0 10px 30px -15px ${colors.navyShadow};
+    transition: ${theme.transition};
+
+    &:hover,
+    &:focus {
+      box-shadow: 0 20px 30px -15px ${colors.navyShadow};
+    }
+  }
+
+  .fancyList {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    font-size: ${fontSizes.lg};
+    li {
+      position: relative;
+      padding-left: 30px;
+      margin-bottom: 10px;
+      &:before {
+        content: '▹';
+        position: absolute;
+        left: 0;
+        color: ${colors.green};
+      }
+    }
+  }
+
+  .resetList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+`;
+
+export default mixins;
