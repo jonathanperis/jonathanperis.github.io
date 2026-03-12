@@ -1,6 +1,6 @@
 # jonathanperis.github.io
 
-Personal portfolio website for **Jonathan Peris** — a software engineer specializing in robust, scalable back-end systems and full-stack applications using .NET and modern cloud technologies.
+Personal portfolio website for **Jonathan Peris** — a senior software engineer specializing in robust, scalable back-end systems and full-stack applications using .NET and modern cloud technologies.
 
 🌐 **Live site:** [jonathanperis.github.io](https://jonathanperis.github.io)
 
