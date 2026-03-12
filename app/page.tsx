@@ -81,6 +81,15 @@ const EXPERIENCES = [
       "Developed insurance sales applications for major insurers including Zurich, Assurant, Mapfre, and Cardiff. Built the integration with SIGEP WEB service (Post Office) responsible for issuing tickets for posts and return of objects.",
     tags: ["C#", "Web Forms", "WCF Services", "Insurance", "API Integration"],
   },
+  {
+    period: "2011 — 2013",
+    title: "Tech Support Professional",
+    company: "Sabesp",
+    url: "https://www.sabesp.com.br/",
+    description:
+      "Provided technical support for a state company in the water supply and sanitation segment. Configured Active Directory, virtual machines, LDAP, and handled contingency of company backups. Participated in the development of the company's process system.",
+    tags: ["Active Directory", "LDAP", "Virtual Machines", "IT Infrastructure"],
+  },
 ];
 
 const PROJECTS = [
