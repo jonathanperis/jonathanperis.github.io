@@ -147,12 +147,28 @@ export default function Home() {
   const mainRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    let animationFrameId: number | null = null;
+    const latestPositionRef = { x: 0, y: 0 };
+
     const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
+      latestPositionRef.x = e.clientX;
+      latestPositionRef.y = e.clientY;
+
+      if (animationFrameId === null) {
+        animationFrameId = window.requestAnimationFrame(() => {
+          setMousePosition({ x: latestPositionRef.x, y: latestPositionRef.y });
+          animationFrameId = null;
+        });
+      }
     };
 
     window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      if (animationFrameId !== null) {
+        window.cancelAnimationFrame(animationFrameId);
+      }
+    };
   }, []);
 
   useEffect(() => {
@@ -209,7 +225,11 @@ export default function Home() {
                         href={`#${item.id}`}
                         onClick={(e) => {
                           e.preventDefault();
-                          document.getElementById(item.id)?.scrollIntoView({ behavior: "smooth" });
+                          const section = document.getElementById(item.id);
+                          if (section) {
+                            section.scrollIntoView({ behavior: "smooth" });
+                            history.pushState(null, "", `#${item.id}`);
+                          }
                         }}
                       >
                         <span
@@ -363,8 +383,8 @@ export default function Home() {
               </div>
               <div>
                 <ol className="group/list">
-                  {EXPERIENCES.map((exp, i) => (
-                    <li key={i} className="mb-12">
+                  {EXPERIENCES.map((exp) => (
+                    <li key={`${exp.company}-${exp.period}`} className="mb-12">
                       <div className="group relative grid pb-1 transition-all sm:grid-cols-8 sm:gap-8 md:gap-4 lg:hover:!opacity-100 lg:group-hover/list:opacity-50">
                         <div className="absolute -inset-x-4 -inset-y-4 z-0 hidden rounded-md transition motion-reduce:transition-none lg:-inset-x-6 lg:block lg:group-hover:bg-navy-light/50 lg:group-hover:shadow-[inset_0_1px_0_0_rgba(148,163,184,0.1)] lg:group-hover:drop-shadow-lg" />
 
@@ -377,22 +397,36 @@ export default function Home() {
                         <div className="z-10 sm:col-span-6">
                           <h3 className="font-medium leading-snug text-slate-lightest">
                             <div>
-                              <a
-                                className="group/link inline-flex items-baseline text-base font-medium leading-tight text-slate-lightest hover:text-green focus-visible:text-green"
-                                href={exp.url}
-                                target="_blank"
-                                rel="noreferrer noopener"
-                                aria-label={`${exp.title} at ${exp.company} (opens in a new tab)`}
-                              >
-                                <span className="absolute -inset-x-4 -inset-y-2.5 hidden rounded md:-inset-x-6 md:-inset-y-4 lg:block" />
-                                <span>
-                                  {exp.title} ·{" "}
-                                  <span className="inline-block">
-                                    {exp.company}
-                                    <ArrowIcon />
+                              {exp.url && exp.url !== "#" ? (
+                                <a
+                                  className="group/link inline-flex items-baseline text-base font-medium leading-tight text-slate-lightest hover:text-green focus-visible:text-green"
+                                  href={exp.url}
+                                  target="_blank"
+                                  rel="noreferrer noopener"
+                                  aria-label={`${exp.title} at ${exp.company} (opens in a new tab)`}
+                                >
+                                  <span className="absolute -inset-x-4 -inset-y-2.5 hidden rounded md:-inset-x-6 md:-inset-y-4 lg:block" />
+                                  <span>
+                                    {exp.title} ·{" "}
+                                    <span className="inline-block">
+                                      {exp.company}
+                                      <ArrowIcon />
+                                    </span>
+                                  </span>
+                                </a>
+                              ) : (
+                                <span
+                                  className="group/link inline-flex items-baseline text-base font-medium leading-tight text-slate-lightest"
+                                >
+                                  <span className="absolute -inset-x-4 -inset-y-2.5 hidden rounded md:-inset-x-6 md:-inset-y-4 lg:block" />
+                                  <span>
+                                    {exp.title} ·{" "}
+                                    <span className="inline-block">
+                                      {exp.company}
+                                    </span>
                                   </span>
                                 </span>
-                              </a>
+                              )}
                             </div>
                           </h3>
                           <p className="mt-2 text-sm leading-normal">
@@ -439,8 +473,8 @@ export default function Home() {
               </div>
               <div>
                 <ul className="group/list">
-                  {PROJECTS.map((project, i) => (
-                    <li key={i} className="mb-12">
+                  {PROJECTS.map((project) => (
+                    <li key={project.title} className="mb-12">
                       <div className="group relative grid gap-4 pb-1 transition-all sm:grid-cols-8 sm:gap-8 md:gap-4 lg:hover:!opacity-100 lg:group-hover/list:opacity-50">
                         <div className="absolute -inset-x-4 -inset-y-4 z-0 hidden rounded-md transition motion-reduce:transition-none lg:-inset-x-6 lg:block lg:group-hover:bg-navy-light/50 lg:group-hover:shadow-[inset_0_1px_0_0_rgba(148,163,184,0.1)] lg:group-hover:drop-shadow-lg" />
 
