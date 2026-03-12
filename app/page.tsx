@@ -10,76 +10,76 @@ const NAV_ITEMS = [
 
 const EXPERIENCES = [
   {
-    period: "2023 — Present",
-    title: "Tech Lead · Squad Lead · Software Engineer .NET",
-    company: "Credit Suisse",
-    url: "https://www.credit-suisse.com/",
+    period: "Jul 2023 — Present",
+    title: ".NET Developer / .NET Architect",
+    company: "Derivative Path Inc.",
+    url: "https://www.derivativepath.com/",
     description:
-      "Lead squads and drive technical decisions for .NET-based systems in a global financial services environment. Architect scalable solutions, mentor developers, and ensure high-quality delivery across multiple projects.",
-    tags: [".NET", "C#", "Azure", "Microservices", "SQL Server", "Team Leadership"],
+      "Developed OTC interest rate & FX derivatives platform leveraging expertise from top Wall Street firms. Streamlined technology facilitates regulatory compliance & hedge accounting, enabling broader market participation and managing billions in notional value. Migrated all applications (8 solutions, 200+ projects) to .NET 8. Implemented new pipelines migrating from Jenkins/Octopus Deploy to Azure DevOps. Built custom pipeline tasks for DB backup/shrink and isolated environment deployments.",
+    tags: ["C#", ".NET 8", "Azure DevOps", "CQRS", "Microservices", "Hedge Accounting"],
   },
   {
-    period: "2021 — 2023",
-    title: "Software Engineer",
+    period: "Feb 2023 — Jul 2023",
+    title: "Tech Lead / .NET Architect",
+    company: "T-Systems / Volkswagen Group",
+    url: "https://www.t-systems.com/",
+    description:
+      "Led architecture and development of the migration of the VTLog project. Migrated a 20-year-old WinForms application to Blazor WASM and REST API services on the cloud. Rethought and developed the solution using modern design patterns. Implemented backend APIs using CQRS to isolate and achieve full test coverage on the entire business logic.",
+    tags: ["C#", "Blazor WASM", "REST API", "CQRS", "Architecture", "Unit Testing"],
+  },
+  {
+    period: "Jun 2021 — Feb 2023",
+    title: ".NET Developer / .NET Architect",
     company: "KnowFully Learning Group",
     url: "https://www.knowfully.com/",
     description:
-      "Developed and maintained the ExamReview platform (including infrastructure and mobile development), the CMS platform that feeds all content for thousands of students on LMS, and the Admin platform for access administration and hierarchy structuring. One of the most used undergraduate courses on the platform is the CPA, used by millions of people throughout the year.",
-    tags: [".NET Core", "C#", "Azure", "React", "Mobile Development", "CMS"],
+      "Developed and maintained the ExamReview platform (including infrastructure and mobile development), the CMS platform that feeds all content for thousands of students on LMS, and the Admin platform for access administration and hierarchy structuring. One of the most used undergraduate courses on the platform is the CPA, used by millions of people throughout the year. All platforms hosted on Azure, using Microservices with CQRS and Saga Pattern, with full unit test coverage.",
+    tags: ["C#", "Azure", "CQRS", "Microservices", "Saga Pattern", "Unit Testing"],
   },
   {
-    period: "2021 — 2022",
-    title: "Software Engineer",
+    period: "Jan 2021 — Jun 2021",
+    title: ".NET Developer / .NET Architect",
     company: "XP Investments US",
     url: "https://www.xpi.com.br/",
     description:
-      "Maintained and built new functionalities for the automation robot handling international transfers between XP accounts through Pershing's Netx360 platform. XP Investments is one of the largest independent brokers in Brazil.",
-    tags: [".NET", "C#", "Automation", "Financial Services", "API Integration"],
+      "Maintained and built new functionalities for the automation robot handling international transfers between XP accounts through Pershing's Netx360 platform. XP Investments is one of the largest independent brokers in Brazil. Implemented with Saga Pattern.",
+    tags: ["C#", "RPA Automation", "Saga Pattern", "Financial Services"],
   },
   {
-    period: "2018 — 2021",
-    title: ".NET Developer",
-    company: "T-Systems do Brasil",
+    period: "Sep 2018 — Jan 2021",
+    title: ".NET Developer / .NET Architect",
+    company: "T-Systems / Mercedes-Benz",
     url: "https://www.t-systems.com/br/pt/",
     description:
-      "Developed mileage control apps for trucks inside the factory and built institutional and intranet applications for T-Systems, the official Mercedes-Benz worldwide IT support company.",
-    tags: [".NET", "C#", "SQL Server", "Mercedes-Benz", "Enterprise Applications"],
+      "Developed institutional and intranet apps for T-Systems, the official Mercedes-Benz worldwide IT support company. Led a team as Squad Leader on best coding practices and smart solutions. Organised all visual improvement of internal apps and websites. Participated in the implementation of Scrum methodology.",
+    tags: ["C#", "Web API", "Web Applications", "Squad Leadership", "Scrum"],
   },
   {
-    period: "2017 — 2018",
+    period: "May 2017 — Sep 2018",
     title: ".NET Developer",
-    company: "5A Attiva",
+    company: "5A Attiva / Amil (UnitedHealth Group)",
     url: "#",
     description:
       "Developed hospital internal control applications and proof of concept projects for prospecting purposes for other consulting clients. 5A Attiva maintains all internal Amil clinical systems in hospitals and clinics across Brazil.",
-    tags: [".NET", "C#", "Healthcare", "SQL Server", "Clinical Systems"],
+    tags: ["C#", "ADO.NET", "SQL Server", "Healthcare", "Clinical Systems"],
   },
   {
-    period: "2015 — 2017",
-    title: ".NET Developer",
-    company: "Sonda IT",
+    period: "Oct 2015 — May 2017",
+    title: "Ionic / .NET Developer",
+    company: "Sonda IT / Leroy Merlin",
     url: "https://www.sonda.com/br/",
     description:
       "Developed the second version of the label generation system for all Leroy Merlin stores and built the expansion of Leroy Merlin's business operations management system. SONDA is a leader in systems integration and IT services in Latin America.",
-    tags: [".NET", "C#", "Retail Systems", "SQL Server", "Enterprise"],
+    tags: ["C#", "MVC", "Web API", "Angular", "Ionic Framework", "Microservices"],
   },
   {
-    period: "2013 — 2015",
+    period: "May 2013 — Sep 2015",
     title: ".NET Developer",
     company: "Conecta Serviços",
     url: "#",
     description:
-      "Developed insurance sales applications for major insurers including Zurich, Assurant, Mapfre, and Cardif. Built the integration with SIGEP WEB service (Post Office) responsible for issuing tickets for posts and return of objects.",
-    tags: [".NET", "C#", "Insurance", "Web Services", "API Integration"],
-  },
-  {
-    period: "2011 — 2013",
-    title: "Tech Support Professional",
-    company: "Sabesp",
-    url: "https://www.sabesp.com.br/",
-    description:
-      "Provided technical support for a state company in the water supply and sanitation segment. Configured Active Directory, virtual machines, LDAP, and handled contingency of company backups. Participated in the development of the company's process system.",
-    tags: ["Active Directory", "LDAP", "Virtual Machines", "IT Infrastructure"],
+      "Developed insurance sales applications for major insurers including Zurich, Assurant, Mapfre, and Cardiff. Built the integration with SIGEP WEB service (Post Office) responsible for issuing tickets for posts and return of objects.",
+    tags: ["C#", "Web Forms", "WCF Services", "Insurance", "API Integration"],
   },
 ];
 
@@ -183,11 +183,11 @@ export default function Home() {
                 <a href="/">Jonathan Peris</a>
               </h1>
               <h2 className="mt-3 text-lg font-medium tracking-tight text-slate-lightest sm:text-xl">
-                Software Engineer
+                .NET Developer / .NET Architect
               </h2>
               <p className="mt-4 max-w-xs leading-normal text-slate">
                 I build robust, scalable back-end systems and full-stack
-                applications using .NET and modern cloud technologies.
+                applications using .NET, Azure, and modern cloud technologies.
               </p>
 
               {/* Navigation */}
@@ -302,42 +302,45 @@ export default function Home() {
               </div>
               <div className="text-slate leading-relaxed">
                 <p className="mb-4">
-                  As an experienced .NET software engineer, I have a strong track record of
-                  delivering high-quality software solutions. My expertise spans the entire
-                  .NET ecosystem, from legacy platforms like Web Forms to the latest
-                  cutting-edge technologies like{" "}
-                  <span className="text-slate-lightest">.NET 9</span>,{" "}
-                  <span className="text-slate-lightest">ASP.NET Core</span>, and{" "}
-                  <span className="text-slate-lightest">MAUI</span>.
+                  As an experienced .NET developer and architect, I have a strong track
+                  record of delivering high-quality software solutions across financial
+                  services, education, and enterprise environments. My main skills include{" "}
+                  <span className="text-slate-lightest">C#</span>,{" "}
+                  <span className="text-slate-lightest">.NET</span>,{" "}
+                  <span className="text-slate-lightest">ASP.NET</span>,{" "}
+                  <span className="text-slate-lightest">Entity Framework</span>,{" "}
+                  <span className="text-slate-lightest">Azure</span>, and{" "}
+                  <span className="text-slate-lightest">Architecture</span>.
                 </p>
                 <p className="mb-4">
                   I have extensive knowledge of various software development patterns and
                   architectures, including{" "}
-                  <span className="text-slate-lightest">Clean Code</span>,{" "}
                   <span className="text-slate-lightest">CQRS</span>,{" "}
-                  <span className="text-slate-lightest">DDD</span>,{" "}
                   <span className="text-slate-lightest">Microservices</span>,{" "}
-                  <span className="text-slate-lightest">Cloud Native Applications</span>,
-                  and{" "}
-                  <span className="text-slate-lightest">Hexagonal Architecture</span>. I
-                  believe in the importance of writing clean, maintainable code and using
-                  patterns and architectures that promote scalability, modularity, and
-                  flexibility.
+                  <span className="text-slate-lightest">Saga Pattern</span>, and{" "}
+                  <span className="text-slate-lightest">Clean Architecture</span>. I also
+                  have good working knowledge of{" "}
+                  <span className="text-slate-lightest">LINQ</span>,{" "}
+                  <span className="text-slate-lightest">T-SQL</span>,{" "}
+                  <span className="text-slate-lightest">REST APIs</span>,{" "}
+                  <span className="text-slate-lightest">Docker &amp; Kubernetes</span>,{" "}
+                  <span className="text-slate-lightest">Azure DevOps</span>,{" "}
+                  <span className="text-slate-lightest">Google Cloud</span>, and{" "}
+                  <span className="text-slate-lightest">Unit Testing</span>.
                 </p>
                 <p className="mb-4">
-                  While my focus is currently on .NET development, I am also interested in
-                  exploring{" "}
-                  <span className="text-slate-lightest">Rust</span> and{" "}
-                  <span className="text-slate-lightest">Go</span> for their benefits such
-                  as memory safety, concurrency, and high performance. I believe that
-                  learning new languages and technologies is essential to staying at the
-                  forefront of the ever-evolving software development industry.
+                  Currently at{" "}
+                  <span className="text-slate-lightest">Derivative Path Inc.</span>, I
+                  work on OTC interest rate &amp; FX derivatives platforms managing billions
+                  in notional value, having migrated 8 solutions with 200+ projects to
+                  .NET 8 and modernized the entire CI/CD pipeline from Jenkins/Octopus
+                  Deploy to Azure DevOps.
                 </p>
                 <p>
                   I thrive in fast-paced environments where I can work collaboratively
-                  with cross-functional teams to deliver software that exceeds
-                  expectations. My ability to communicate technical concepts in a clear
-                  and concise manner has made me an effective problem solver and leader.
+                  with cross-functional teams. Strong interpersonal skills, excellent
+                  problem solving abilities, and a creative approach to technical
+                  challenges make me an effective team member and leader.
                 </p>
               </div>
             </section>
@@ -512,6 +515,15 @@ export default function Home() {
                   rel="noreferrer noopener"
                 >
                   Brittany Chiang
+                </a>
+                . Coded with AI using{" "}
+                <a
+                  href="https://docs.anthropic.com/en/docs/claude-code"
+                  className="font-medium text-slate-light hover:text-green focus-visible:text-green"
+                  target="_blank"
+                  rel="noreferrer noopener"
+                >
+                  Claude Code
                 </a>
                 .
               </p>
