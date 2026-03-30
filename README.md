@@ -2,39 +2,47 @@
 
 Personal portfolio website for **Jonathan Peris** — a senior software engineer specializing in robust, scalable back-end systems and full-stack applications using .NET and modern cloud technologies.
 
-🌐 **Live site:** [jonathanperis.github.io](https://jonathanperis.github.io)
+**Live site:** [jonathanperis.github.io](https://jonathanperis.github.io)
 
 ---
 
 ## About
 
-This is the source code for my personal portfolio and résumé website. It showcases my professional experience, open-source projects, and technical skills. The site is built with a focus on performance, accessibility, and clean design.
+Source code for my personal portfolio and resume website. It showcases professional experience, open-source projects, technical skills, and social links. Built with a focus on performance, accessibility, and clean design — heavily inspired by [Brittany Chiang's](https://brittanychiang.com/) portfolio.
+
+### Sections
+
+- **About** — Summary of skills and current role
+- **Experience** — Full career history from tech support to .NET architecture
+- **Projects** — Highlighted open-source repos (cpnucleo, rinha de backend implementations, blazor-mudblazor-starter, super-mango-game)
+
+### Social Links
+
+GitHub | LinkedIn | X / Twitter | Instagram | Bluesky
 
 ## Tech Stack
 
 | Technology | Purpose |
 |---|---|
-| [Next.js 16](https://nextjs.org/) | React framework with App Router |
+| [Next.js 16](https://nextjs.org/) | React framework with App Router and static export |
 | [React 19](https://react.dev/) | UI library |
 | [TypeScript](https://www.typescriptlang.org/) | Type-safe JavaScript |
-| [Tailwind CSS v4](https://tailwindcss.com/) | Utility-first styling |
+| [Tailwind CSS v4](https://tailwindcss.com/) | Utility-first styling with custom theme |
 | [GitHub Pages](https://pages.github.com/) | Static site hosting |
+| [GitHub Actions](https://github.com/features/actions) | CI/CD — auto-deploys on push to `master` |
 
 ## Getting Started
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org/) v18 or later
+- [Node.js](https://nodejs.org/) v20 or later
 - [npm](https://www.npmjs.com/) (comes with Node.js)
 
 ### Installation
 
 ```bash
-# Clone the repository
 git clone https://github.com/jonathanperis/jonathanperis.github.io.git
 cd jonathanperis.github.io
-
-# Install dependencies
 npm install
 ```
 
@@ -44,13 +52,15 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser to see the site running locally.
+Open [http://localhost:3000](http://localhost:3000) to see the site locally.
 
 ### Build
 
 ```bash
 npm run build
 ```
+
+Produces a static export in the `out/` directory.
 
 ### Lint
 
@@ -63,20 +73,21 @@ npm run lint
 ```
 jonathanperis.github.io/
 ├── app/
-│   ├── layout.tsx      # Root layout with metadata and fonts
-│   ├── page.tsx        # Main page (About, Experience, Projects)
-│   ├── globals.css     # Global styles and Tailwind directives
-│   └── favicon.ico
-├── public/             # Static assets (images, CV PDF, favicon)
-├── next.config.ts      # Next.js configuration
-├── tsconfig.json       # TypeScript configuration
+│   ├── layout.tsx       # Root layout with metadata, fonts, and Open Graph config
+│   ├── page.tsx         # Main page component (About, Experience, Projects)
+│   └── globals.css      # Global styles, custom theme colors, and Tailwind directives
+├── public/              # Static assets (CV PDF, favicon, Open Graph image)
+├── .github/workflows/
+│   └── deploy.yml       # GitHub Actions workflow for GitHub Pages deployment
+├── next.config.ts       # Next.js configuration (static export)
+├── tsconfig.json        # TypeScript configuration
 └── package.json
 ```
 
 ## Deployment
 
-The site is automatically deployed to [GitHub Pages](https://pages.github.com/) via GitHub Actions on every push to the `main` branch.
+Automatically deployed to [GitHub Pages](https://pages.github.com/) via GitHub Actions on every push to the `master` branch. The workflow builds the Next.js static export and uploads it using the `deploy-pages` action.
 
 ## License
 
-This project is licensed under the **Apache License 2.0** — see the [LICENSE](LICENSE) file for details.
+Licensed under the **Apache License 2.0** — see the [LICENSE](LICENSE) file for details.

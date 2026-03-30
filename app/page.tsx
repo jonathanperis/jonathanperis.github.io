@@ -121,6 +121,27 @@ const PROJECTS = [
     url: "https://github.com/jonathanperis/rinha2-back-end-go",
     tags: ["Go", "PostgreSQL", "Nginx", "Performance", "Docker"],
   },
+  {
+    title: "rinha2-back-end-rust",
+    description:
+      "A backend implementation for the Rinha de Backend challenge in Rust, pushing the limits of performance with PostgreSQL and Nginx.",
+    url: "https://github.com/jonathanperis/rinha2-back-end-rust",
+    tags: ["Rust", "PostgreSQL", "Nginx", "Performance", "Docker"],
+  },
+  {
+    title: "rinha2-back-end-python",
+    description:
+      "A backend implementation for the Rinha de Backend challenge in Python, exploring concurrency and throughput with PostgreSQL and Nginx.",
+    url: "https://github.com/jonathanperis/rinha2-back-end-python",
+    tags: ["Python", "PostgreSQL", "Nginx", "Performance", "Docker"],
+  },
+  {
+    title: "super-mango-game",
+    description:
+      "A Super Mango Game written in C for learning purposes, exploring game development fundamentals and low-level programming concepts.",
+    url: "https://github.com/jonathanperis/super-mango-game",
+    tags: ["C", "Game Development", "SDL", "Low-Level Programming"],
+  },
 ];
 
 function ArrowIcon() {
@@ -300,11 +321,11 @@ export default function Home() {
               <li>
                 <a
                   className="block text-slate hover:text-slate-lightest transition-colors"
-                  href="https://bsky.app/profile/jperis.bsky.social"
+                  href="https://x.com/jperis_silva"
                   target="_blank"
                   rel="noreferrer noopener"
-                  aria-label="Bluesky (opens in a new tab)"
-                  title="Bluesky"
+                  aria-label="X / Twitter (opens in a new tab)"
+                  title="X / Twitter"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -313,7 +334,47 @@ export default function Home() {
                     className="h-6 w-6"
                     aria-hidden="true"
                   >
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.2-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .37z"/>
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                  </svg>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="block text-slate hover:text-slate-lightest transition-colors"
+                  href="https://www.instagram.com/jperis.silva"
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  aria-label="Instagram (opens in a new tab)"
+                  title="Instagram"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    className="h-6 w-6"
+                    aria-hidden="true"
+                  >
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
+                  </svg>
+                </a>
+              </li>
+              <li>
+                <a
+                  className="block text-slate hover:text-slate-lightest transition-colors"
+                  href="https://bsky.app/profile/jperis.bsky.social"
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  aria-label="Bluesky (opens in a new tab)"
+                  title="Bluesky"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 568 501"
+                    fill="currentColor"
+                    className="h-6 w-6"
+                    aria-hidden="true"
+                  >
+                    <path d="M123.121 33.6637C188.241 82.5526 258.281 181.681 284 234.873C309.719 181.681 379.759 82.5526 444.879 33.6637C491.866 -1.61183 568 -28.9064 568 72.4712C568 94.5121 556.786 245.393 550.386 268.08C531.07 342.419 462.619 366.009 400.666 354.322C290.091 333.725 256.077 430.817 284 479.373C322.452 544.032 472.537 374.18 549.136 232.822C555.795 220.355 568 232.822 568 232.822V394.97C568 432.129 536.992 462.336 500.478 465.197C430.618 470.641 365.084 434.503 325.471 395.19C305.094 374.984 294.267 362.636 284 356.357C273.733 362.636 262.906 374.984 242.529 395.19C202.916 434.503 137.382 470.641 67.5218 465.197C31.0077 462.336 0 432.129 0 394.97V232.822C0 232.822 12.2046 220.355 18.8639 232.822C95.4628 374.18 245.548 544.032 284 479.373C311.923 430.817 277.909 333.725 167.334 354.322C105.381 366.009 36.9296 342.419 17.6139 268.08C11.2139 245.393 0 94.5121 0 72.4712C0 -28.9064 76.1341 -1.61183 123.121 33.6637Z" />
                   </svg>
                 </a>
               </li>
