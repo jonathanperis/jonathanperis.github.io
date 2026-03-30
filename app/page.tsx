@@ -11,48 +11,57 @@ const NAV_ITEMS = [
 const EXPERIENCES = [
   {
     period: "Jul 2023 — Present",
-    title: ".NET Developer / .NET Architect",
-    company: "Derivative Path Inc.",
+    title: "Software Engineer",
+    company: "Derivative Path",
     url: "https://www.derivativepath.com/",
     description:
-      "Developed OTC interest rate & FX derivatives platform leveraging expertise from top Wall Street firms. Streamlined technology facilitates regulatory compliance & hedge accounting, enabling broader market participation and managing billions in notional value. Migrated all applications (8 solutions, 200+ projects) to .NET 8. Implemented new pipelines migrating from Jenkins/Octopus Deploy to Azure DevOps. Built custom pipeline tasks for DB backup/shrink and isolated environment deployments.",
-    tags: ["C#", ".NET 8", "Azure DevOps", "CQRS", "Microservices", "Hedge Accounting"],
+      "Software Engineer on the CAAR team, focused on developing and refining the General Ledger, Hedge Accounting, and Fiscal Calendar modules for the DerivativeEDGE platform. This work enables clients to achieve streamlined financial reporting, accurate hedge accounting, and efficient fiscal period management.",
+    tags: ["C#", ".NET", "Azure DevOps", "CQRS", "Fintech", "Hedge Accounting"],
   },
   {
     period: "Feb 2023 — Jul 2023",
-    title: "Tech Lead / .NET Architect",
-    company: "T-Systems / Volkswagen Group",
+    title: "Principal .NET Developer",
+    company: "T-Systems do Brasil",
     url: "https://www.t-systems.com/",
     description:
-      "Led architecture and development of the migration of the VTLog project. Migrated a 20-year-old WinForms application to Blazor WASM and REST API services on the cloud. Rethought and developed the solution using modern design patterns. Implemented backend APIs using CQRS to isolate and achieve full test coverage on the entire business logic.",
-    tags: ["C#", "Blazor WASM", "REST API", "CQRS", "Architecture", "Unit Testing"],
+      "Spearheaded the critical platform and architecture migration of SGP Eletrônica, a vital software used for the intricate mapping and parameterization of Electronic Control Units (ECUs) within Mercedes-Benz trucks and buses. Focused on ensuring a seamless transition, modernizing the architecture, and enhancing the platform's capabilities to support advanced automotive diagnostics and configurations.",
+    tags: ["C#", "ASP.NET Core", ".NET Core", "Architecture", "Migration"],
   },
   {
     period: "Jun 2021 — Feb 2023",
-    title: ".NET Developer / .NET Architect",
+    title: "Software Engineer",
     company: "KnowFully Learning Group",
     url: "https://www.knowfully.com/",
     description:
-      "Developed and maintained the ExamReview platform (including infrastructure and mobile development), the CMS platform that feeds all content for thousands of students on LMS, and the Admin platform for access administration and hierarchy structuring. One of the most used undergraduate courses on the platform is the CPA, used by millions of people throughout the year. All platforms hosted on Azure, using Microservices with CQRS and Saga Pattern, with full unit test coverage.",
-    tags: ["C#", "Azure", "CQRS", "Microservices", "Saga Pattern", "Unit Testing"],
+      "Contributed to the development, maintenance, and infrastructure of key educational technology platforms. Drove full-cycle development of the ExamReview platform encompassing backend services, infrastructure management, and mobile development. Engineered and maintained the CMS platform delivering educational materials to thousands of students via the LMS. Developed the Admin platform for user access control, hierarchy structuring, and overall LMS governance.",
+    tags: ["C#", "Azure", "Azure DevOps", "Microservices", "CQRS", "Unit Testing"],
   },
   {
     period: "Jan 2021 — Jun 2021",
-    title: ".NET Developer / .NET Architect",
-    company: "XP Investments US",
+    title: "DevOps Engineer",
+    company: "XP Inc.",
     url: "https://www.xpi.com.br/",
     description:
-      "Maintained and built new functionalities for the automation robot handling international transfers between XP accounts through Pershing's Netx360 platform. XP Investments is one of the largest independent brokers in Brazil. Implemented with Saga Pattern.",
-    tags: ["C#", "RPA Automation", "Saga Pattern", "Financial Services"],
+      "Ensured the reliability of international wire transfers within XP Inc.'s international accounts group. Focused on maintaining and enhancing the operational integrity of monitoring processes for Brazil-US fund transfers, managing Azure infrastructure, overseeing .NET Core microservices leveraging SAGA patterns and message queues for transactional consistency, and guaranteeing continuous availability of this vital financial pipeline.",
+    tags: ["Azure", ".NET Core", "DevOps", "SAGA Pattern", "Message Queues", "Fintech"],
   },
   {
-    period: "Sep 2018 — Jan 2021",
-    title: ".NET Developer / .NET Architect",
-    company: "T-Systems / Mercedes-Benz",
+    period: "Dec 2019 — Jan 2021",
+    title: "Principal .NET Developer",
+    company: "T-Systems do Brasil",
     url: "https://www.t-systems.com/br/pt/",
     description:
-      "Developed institutional and intranet apps for T-Systems, the official Mercedes-Benz worldwide IT support company. Led a team as Squad Leader on best coding practices and smart solutions. Organised all visual improvement of internal apps and websites. Participated in the implementation of Scrum methodology.",
-    tags: ["C#", "Web API", "Web Applications", "Squad Leadership", "Scrum"],
+      "Led the design and development of several key internal applications leveraging .NET Core, Azure, and microservices architecture within an Agile/Scrum environment. Engineered T-Atendo, a helpdesk platform supporting Mercedes-Benz factory workers. Developed Multi Manager, a resource booking system for on-site assets. Created T-Entrego, a platform for distributing welcome kits and corporate gifts.",
+    tags: ["C#", ".NET Core", "Azure", "Microservices", "REST API", "Scrum"],
+  },
+  {
+    period: "Sep 2018 — Dec 2019",
+    title: "Senior .NET Developer",
+    company: "T-Systems do Brasil",
+    url: "https://www.t-systems.com/br/pt/",
+    description:
+      "Focused on creating specialized applications to support factory operations and internal corporate functions. Developed mileage control applications for trucks within the Mercedes-Benz factory, enhancing tracking and operational oversight. Built and maintained various institutional and intranet applications to support internal communication and processes.",
+    tags: ["C#", ".NET", "Azure DevOps", "Web Applications", "SQL Server"],
   },
   {
     period: "May 2017 — Sep 2018",
@@ -229,11 +238,11 @@ export default function Home() {
                 <a href="/">Jonathan Peris</a>
               </h1>
               <h2 className="mt-3 text-lg font-medium tracking-tight text-slate-lightest sm:text-xl">
-                Senior Software Engineer
+                Software Engineer
               </h2>
               <p className="mt-4 max-w-xs leading-normal text-slate">
-                I build robust, scalable back-end systems and full-stack
-                applications using .NET, Azure, and modern cloud technologies.
+                I architect and deliver high-impact, enterprise-grade software
+                with .NET, Azure, and modern cloud-native technologies.
               </p>
 
               {/* Navigation */}
@@ -392,45 +401,50 @@ export default function Home() {
               </div>
               <div className="text-slate leading-relaxed">
                 <p className="mb-4">
-                  As an experienced .NET developer and architect, I have a strong track
-                  record of delivering high-quality software solutions across financial
-                  services, education, and enterprise environments. My main skills include{" "}
-                  <span className="text-slate-lightest">C#</span>,{" "}
-                  <span className="text-slate-lightest">.NET</span>,{" "}
-                  <span className="text-slate-lightest">ASP.NET</span>,{" "}
-                  <span className="text-slate-lightest">Entity Framework</span>,{" "}
-                  <span className="text-slate-lightest">Azure</span>, and{" "}
-                  <span className="text-slate-lightest">Architecture</span>.
+                  I&apos;m a Software Engineer with 12+ years of experience building
+                  enterprise-grade systems with{" "}
+                  <span className="text-slate-lightest">.NET</span> and modern cloud
+                  technologies. I specialize in{" "}
+                  <span className="text-slate-lightest">Fintech</span> — currently
+                  developing General Ledger, Hedge Accounting, and Fiscal Calendar modules
+                  at{" "}
+                  <span className="text-slate-lightest">Derivative Path</span> for the
+                  DerivativeEDGE platform.
                 </p>
                 <p className="mb-4">
-                  I have extensive knowledge of various software development patterns and
-                  architectures, including{" "}
+                  My work spans the full .NET ecosystem:{" "}
+                  <span className="text-slate-lightest">.NET Core+</span>,{" "}
+                  <span className="text-slate-lightest">ASP.NET Core</span>,{" "}
+                  <span className="text-slate-lightest">Entity Framework</span>, and{" "}
+                  <span className="text-slate-lightest">MAUI</span>. I design systems
+                  using{" "}
                   <span className="text-slate-lightest">CQRS</span>,{" "}
+                  <span className="text-slate-lightest">DDD</span>,{" "}
                   <span className="text-slate-lightest">Microservices</span>,{" "}
-                  <span className="text-slate-lightest">Saga Pattern</span>, and{" "}
-                  <span className="text-slate-lightest">Clean Architecture</span>. I also
-                  have good working knowledge of{" "}
-                  <span className="text-slate-lightest">LINQ</span>,{" "}
-                  <span className="text-slate-lightest">T-SQL</span>,{" "}
-                  <span className="text-slate-lightest">REST APIs</span>,{" "}
-                  <span className="text-slate-lightest">Docker &amp; Kubernetes</span>,{" "}
-                  <span className="text-slate-lightest">Azure DevOps</span>,{" "}
-                  <span className="text-slate-lightest">Google Cloud</span>, and{" "}
-                  <span className="text-slate-lightest">Unit Testing</span>.
+                  <span className="text-slate-lightest">Hexagonal Architecture</span>, and{" "}
+                  <span className="text-slate-lightest">Cloud-Native</span> principles
+                  — always focused on building software that is scalable, maintainable,
+                  and built to last.
                 </p>
                 <p className="mb-4">
-                  Currently at{" "}
-                  <span className="text-slate-lightest">Derivative Path Inc.</span>, I
-                  work on OTC interest rate &amp; FX derivatives platforms managing billions
-                  in notional value, having migrated 8 solutions with 200+ projects to
-                  .NET 8 and modernized the entire CI/CD pipeline from Jenkins/Octopus
-                  Deploy to Azure DevOps.
+                  Over the years, I&apos;ve delivered solutions across industries — financial
+                  services at{" "}
+                  <span className="text-slate-lightest">XP Inc.</span>, automotive at{" "}
+                  <span className="text-slate-lightest">T-Systems</span> for Mercedes-Benz,
+                  educational technology at{" "}
+                  <span className="text-slate-lightest">KnowFully</span>, healthcare,
+                  retail, and insurance. I also bring strong DevOps experience with{" "}
+                  <span className="text-slate-lightest">Azure</span>,{" "}
+                  <span className="text-slate-lightest">Docker</span>, and CI/CD pipelines.
                 </p>
                 <p>
-                  I thrive in fast-paced environments where I can work collaboratively
-                  with cross-functional teams. Strong interpersonal skills, excellent
-                  problem solving abilities, and a creative approach to technical
-                  challenges make me an effective team member and leader.
+                  Beyond .NET, I actively explore{" "}
+                  <span className="text-slate-lightest">Rust</span>,{" "}
+                  <span className="text-slate-lightest">Go</span>, and{" "}
+                  <span className="text-slate-lightest">Python</span> — driven by
+                  curiosity about performance, concurrency, and what the next generation of
+                  systems will look like. You can find some of these experiments in my
+                  open-source projects below.
                 </p>
               </div>
             </section>

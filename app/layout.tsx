@@ -2,13 +2,13 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Jonathan Peris | Senior Software Engineer",
+  title: "Jonathan Peris | Software Engineer",
   description:
-    "Jonathan Peris is a senior software engineer who builds robust, scalable back-end systems and full-stack applications using .NET and modern cloud technologies.",
+    "Jonathan Peris is a software engineer specializing in .NET and Fintech solutions, architecting and delivering high-impact, enterprise-grade software with modern cloud-native technologies.",
   openGraph: {
-    title: "Jonathan Peris | Senior Software Engineer",
+    title: "Jonathan Peris | Software Engineer",
     description:
-      "Jonathan Peris is a senior software engineer who builds robust, scalable back-end systems and full-stack applications using .NET and modern cloud technologies.",
+      "Jonathan Peris is a software engineer specializing in .NET and Fintech solutions, architecting and delivering high-impact, enterprise-grade software with modern cloud-native technologies.",
     url: "https://jonathanperis.github.io",
     siteName: "Jonathan Peris",
     images: [
