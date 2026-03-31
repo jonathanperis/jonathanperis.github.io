@@ -413,7 +413,7 @@ export default function Portfolio({ projects }: { projects: GitHubRepo[] }) {
               </div>
               <p className="font-mono text-xs text-dim">
                 Built with ❤️ by{' '}
-                <a href="https://github.com/jonathanperis" target="_blank" rel="noreferrer noopener" className="text-dim hover:text-green transition-colors">me</a>
+                <a href="https://github.com/jonathanperis" target="_blank" rel="noreferrer noopener" className="font-bold text-dim hover:text-green transition-colors">me</a>
                 {' '}and my{' '}
                 <a href="https://claude.ai/" target="_blank" rel="noreferrer noopener" className="font-bold text-dim hover:text-green transition-colors">24/7 Intern</a>
               </p>
