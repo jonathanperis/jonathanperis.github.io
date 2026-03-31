@@ -8,7 +8,7 @@ export type GitHubRepo = {
   homepageUrl?: string;
 };
 
-const EXCLUDE_REPOS = ["jonathanperis.github.io"];
+const EXCLUDE_REPOS = ["jonathanperis.github.io", "jonathanperis"];
 
 const FALLBACK: GitHubRepo[] = [
   { title: "cpnucleo", description: "Modern .NET sample — clean architecture, testing, DI, and Docker containerization.", url: "https://github.com/jonathanperis/cpnucleo", lang: "C#", langColor: "#178600", stars: 8, homepageUrl: "https://cpnucleo-webclient-dotnet-d6gve6cabpefbmfz.brazilsouth-01.azurewebsites.net/" },
