@@ -37,7 +37,7 @@ jobs:
         run: npm run build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NEXT_PUBLIC_GA_ID: G-GFK73008MT
+          NEXT_PUBLIC_GA_ID: G-35CN95481D
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
