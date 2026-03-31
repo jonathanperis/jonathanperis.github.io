@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef, useCallback } from "react";
-import type { PinnedRepo } from "./lib/github";
+import type { GitHubRepo } from "./lib/github";
 import { ROLES, EXPERIENCES, SOCIALS, FEATURED_PROJECTS } from "./lib/data";
 
 
@@ -126,7 +126,7 @@ function runCmd(cmd: string): string[] {
 // Main
 // ─────────────────────────────────────────────────────────────────────────────
 
-export default function Portfolio({ projects }: { projects: PinnedRepo[] }) {
+export default function Portfolio({ projects }: { projects: GitHubRepo[] }) {
   const typedRole = useTyping(ROLES);
   const scrollProgress = useScrollProgress();
 
@@ -346,7 +346,7 @@ export default function Portfolio({ projects }: { projects: PinnedRepo[] }) {
         <section className="py-16 scroll-mt-20">
           <Reveal><SectionLabel>More Projects</SectionLabel></Reveal>
           <div className="grid gap-3 sm:grid-cols-2">
-            {projects.map((p, i) => (
+            {projects.filter((p) => !FEATURED_PROJECTS.some((fp) => fp.slug === p.title)).map((p, i) => (
               <Reveal key={p.title} delay={i * 60}>
                 <a href={p.url} target="_blank" rel="noreferrer noopener"
                   className="card card-glow p-5 block group h-full">
@@ -370,15 +370,15 @@ export default function Portfolio({ projects }: { projects: PinnedRepo[] }) {
                       <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: p.langColor || '#888' }} />
                       <span className="text-xs text-dim font-mono">{p.lang}</span>
                     </div>
-                    {p.playUrl && (
+                    {p.homepageUrl && (
                       <span
-                        onClick={(e) => { e.preventDefault(); e.stopPropagation(); window.open(p.playUrl, '_blank'); }}
+                        onClick={(e) => { e.preventDefault(); e.stopPropagation(); window.open(p.homepageUrl, '_blank'); }}
                         className="inline-flex items-center gap-1 font-mono text-[10px] font-semibold text-green border border-green/20 bg-green-tint rounded-md px-2 py-0.5 hover:bg-green/20 transition-colors cursor-pointer"
                       >
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="h-3 w-3">
-                          <path d="M3 3.732a1.5 1.5 0 012.305-1.265l6.706 4.267a1.5 1.5 0 010 2.531l-6.706 4.268A1.5 1.5 0 013 12.267V3.732z" />
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="h-3 w-3">
+                          <path fillRule="evenodd" d="M4.25 5.5a.75.75 0 00-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 00.75-.75v-4a.75.75 0 011.5 0v4A2.25 2.25 0 0112.75 17h-8.5A2.25 2.25 0 012 14.75v-8.5A2.25 2.25 0 014.25 4h5a.75.75 0 010 1.5h-5zm7.25-.182a.75.75 0 01.75-.75h3.5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0V6.56l-5.22 5.22a.75.75 0 11-1.06-1.06l5.22-5.22h-2.44a.75.75 0 01-.75-.75z" clipRule="evenodd" />
                         </svg>
-                        Play in browser
+                        Visit website
                       </span>
                     )}
                   </div>
