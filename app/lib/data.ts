@@ -44,7 +44,7 @@ export const EXPERIENCES: Experience[] = [
     company: "Derivative Path",
     location: "New York, US · Remote",
     description:
-      "Building and evolving core financial modules for a capital markets platform. Focused on enabling clients to achieve streamlined financial reporting and efficient operations through well-architected enterprise software.",
+      "Software Engineer on the CAAR team, focused on developing and refining the General Ledger, Hedge Accounting, and Fiscal Calendar modules for the DerivativeEDGE platform. Enabling clients to achieve streamlined financial reporting, accurate hedge accounting, and efficient fiscal period management.",
     tags: ["C#", ".NET 8", "SQL Server", "CQRS", "Azure DevOps", "Clean Architecture"],
   },
   {
