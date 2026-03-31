@@ -104,7 +104,7 @@ function runCmd(cmd: string): string[] {
     pwd: ['/home/jonathan/portfolio'],
     date: [new Date().toString()],
     ls: ['about.txt  experience/  projects/  resume.pdf  .easter-egg'],
-    'cat about.txt': ['', 'Software Engineer · 12+ years · .NET & Fintech', 'Currently building DerivativeEDGE @ Derivative Path', 'Exploring Rust, Go, Python on the side', ''],
+    'cat about.txt': ['', 'Software Engineer · 12+ years · .NET & Fintech', 'Currently building financial software @ Derivative Path', 'Exploring Rust, Go, Python on the side', ''],
     about: ['', '  Jonathan Peris — Software Engineer', '  12+ years · .NET · Fintech · Cloud', '  Itanhaém, Brazil → Working remote for US companies', '', '  "A Vingança nunca é plena, mata a alma e a envenena."', '  — Seu Madruga', ''],
     skills: ['', '  Languages    C#, Rust, Go, Python, TypeScript', '  Backend      .NET Core+, ASP.NET Core, EF Core, MAUI', '  Arch         CQRS, DDD, Microservices, Hexagonal, Clean', '  Cloud        Azure, Docker, Kubernetes, CI/CD', '  DB           SQL Server, PostgreSQL', '  Frontend     Blazor, React/Next.js, Angular', ''],
     contact: ['', '  GitHub     github.com/jonathanperis', '  LinkedIn   linkedin.com/in/jonathan-peris', '  Email      jperis.silva@gmail.com', '  X          x.com/jperis_silva', ''],
@@ -264,7 +264,7 @@ export default function Portfolio({ projects }: { projects: GitHubRepo[] }) {
           <Reveal delay={100}>
             <div className="text-muted leading-relaxed space-y-4">
               <p>
-                I specialize in <span className="text-text font-medium">.NET</span> and <span className="text-text font-medium">Fintech</span> — currently building General Ledger, Hedge Accounting, and Fiscal Calendar modules at <span className="text-text font-medium">Derivative Path</span> for the DerivativeEDGE platform.
+                I specialize in <span className="text-text font-medium">.NET</span> and <span className="text-text font-medium">Fintech</span> — currently building core financial modules for a capital markets platform at <span className="text-text font-medium">Derivative Path</span>.
               </p>
               <p>
                 My work spans <span className="text-text font-medium">.NET Core+</span>, <span className="text-text font-medium">ASP.NET Core</span>, <span className="text-text font-medium">Entity Framework</span>, and <span className="text-text font-medium">MAUI</span>. I design systems with <span className="text-text font-medium">CQRS</span>, <span className="text-text font-medium">DDD</span>, <span className="text-text font-medium">Microservices</span>, <span className="text-text font-medium">Hexagonal Architecture</span>, and <span className="text-text font-medium">Cloud-Native</span> principles — always building for durability.
