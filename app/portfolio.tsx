@@ -412,7 +412,8 @@ export default function Portfolio({ projects }: { projects: GitHubRepo[] }) {
                 ))}
               </div>
               <p className="font-mono text-xs text-dim">
-                Built with Next.js + Tailwind. Coded with Claude Code.
+                Built by me with ❤️ and my{' '}
+                <a href="https://claude.ai/" target="_blank" rel="noreferrer noopener" className="font-bold text-dim hover:text-green transition-colors">24/7 Intern</a>
               </p>
               {/* eslint-disable-next-line react/no-unescaped-entities */}
               <p className="font-mono text-[10px] text-dim/30 select-none">{"// ↑↑↓↓←→←→BA"}</p>
