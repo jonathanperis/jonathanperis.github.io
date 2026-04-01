@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef, useCallback } from "react";
 import type { GitHubRepo } from "./lib/github";
-import { ROLES, EXPERIENCES, SOCIALS, FEATURED_PROJECTS } from "./lib/data";
+import { ROLES, EXPERIENCES, SOCIALS, FEATURED_PROJECTS, SKILLS } from "./lib/data";
 
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -73,7 +73,7 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex items-center gap-3 mb-10">
       <span className="font-mono text-xs font-bold uppercase tracking-widest text-green">{children}</span>
-      <span className="flex-1 h-px bg-border" />
+      <span className="section-label-line" />
     </div>
   );
 }
@@ -121,6 +121,19 @@ function runCmd(cmd: string): string[] {
   if (c === 'exit' || c === 'quit') return ['__EXIT__'];
   return [`  bash: ${cmd.trim().split(' ')[0]}: command not found`];
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Skills section helpers
+// ─────────────────────────────────────────────────────────────────────────────
+
+const SKILL_CATEGORIES: Array<{ key: keyof typeof SKILLS; label: string; tagClass: string }> = [
+  { key: 'languages',    label: 'Languages',    tagClass: 'tag-cyan' },
+  { key: 'backend',      label: 'Backend',      tagClass: 'tag' },
+  { key: 'architecture', label: 'Architecture', tagClass: 'tag-purple' },
+  { key: 'cloud',        label: 'Cloud & DevOps', tagClass: 'tag-amber' },
+  { key: 'databases',    label: 'Databases',    tagClass: 'tag-rose' },
+  { key: 'frontend',     label: 'Frontend',     tagClass: 'tag-cyan' },
+];
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Main
@@ -197,7 +210,8 @@ export default function Portfolio({ projects }: { projects: GitHubRepo[] }) {
         </nav>
 
         {/* ━━ Hero ━━ */}
-        <section className="pt-24 pb-20 md:pt-32 md:pb-28">
+        <section className="relative pt-24 pb-20 md:pt-32 md:pb-28 overflow-visible">
+          <div className="hero-glow" aria-hidden="true" />
           <Reveal>
             <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-green/20 bg-green-tint px-3 py-1">
               <span className="relative flex h-2 w-2">
@@ -208,7 +222,7 @@ export default function Portfolio({ projects }: { projects: GitHubRepo[] }) {
             </div>
           </Reveal>
           <Reveal delay={100}>
-            <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-text leading-[1.1]">
+            <h1 style={{ fontFamily: 'var(--font-display)' }} className="text-5xl md:text-7xl font-extrabold tracking-tight text-text leading-[1.05]">
               Jonathan Peris
             </h1>
           </Reveal>
@@ -219,7 +233,7 @@ export default function Portfolio({ projects }: { projects: GitHubRepo[] }) {
             </p>
           </Reveal>
           <Reveal delay={300}>
-            <p className="mt-6 text-muted leading-relaxed max-w-xl">
+            <p className="mt-6 text-muted leading-relaxed max-w-xl text-base">
               12+ years building enterprise-grade software with .NET and modern cloud technologies. Specializing in Fintech, clean architecture, and systems that scale.
             </p>
           </Reveal>
@@ -236,7 +250,7 @@ export default function Portfolio({ projects }: { projects: GitHubRepo[] }) {
 
           {/* Code snippet */}
           <Reveal delay={500}>
-            <div className="mt-12 code-block">
+            <div className="mt-12 code-block code-block-accent">
               <div className="titlebar">
                 <div className="dots"><span className="dot dot-red" /><span className="dot dot-yellow" /><span className="dot dot-green" /></div>
                 <span className="font-mono text-xs text-dim">developer.ts</span>
@@ -262,33 +276,53 @@ export default function Portfolio({ projects }: { projects: GitHubRepo[] }) {
         <section id="about" className="py-16 scroll-mt-20">
           <Reveal><SectionLabel>About</SectionLabel></Reveal>
           <Reveal delay={100}>
-            <div className="text-muted leading-relaxed space-y-4">
+            <div className="text-muted leading-relaxed space-y-4 text-base">
               <p>
-                I specialize in <span className="text-text font-medium">.NET</span> and <span className="text-text font-medium">Fintech</span> — currently building core financial modules for a capital markets platform at <span className="text-text font-medium">Derivative Path</span>.
+                I specialize in <span className="text-text font-semibold">.NET</span> and <span className="text-text font-semibold">Fintech</span> — currently building core financial modules for a capital markets platform at <span className="text-text font-semibold">Derivative Path</span>.
               </p>
               <p>
-                My work spans <span className="text-text font-medium">.NET Core+</span>, <span className="text-text font-medium">ASP.NET Core</span>, <span className="text-text font-medium">Entity Framework</span>, and <span className="text-text font-medium">MAUI</span>. I design systems with <span className="text-text font-medium">CQRS</span>, <span className="text-text font-medium">DDD</span>, <span className="text-text font-medium">Microservices</span>, <span className="text-text font-medium">Hexagonal Architecture</span>, and <span className="text-text font-medium">Cloud-Native</span> principles — always building for durability.
+                My work spans <span className="text-text font-semibold">.NET Core+</span>, <span className="text-text font-semibold">ASP.NET Core</span>, <span className="text-text font-semibold">Entity Framework</span>, and <span className="text-text font-semibold">MAUI</span>. I design systems with <span className="text-text font-semibold">CQRS</span>, <span className="text-text font-semibold">DDD</span>, <span className="text-text font-semibold">Microservices</span>, <span className="text-text font-semibold">Hexagonal Architecture</span>, and <span className="text-text font-semibold">Cloud-Native</span> principles — always building for durability.
               </p>
               <p>
-                I&apos;ve delivered across <span className="text-text font-medium">financial services</span>, <span className="text-text font-medium">automotive</span> (Mercedes-Benz/T-Systems), <span className="text-text font-medium">EdTech</span>, healthcare, retail, and insurance. Strong DevOps background with <span className="text-text font-medium">Azure</span>, <span className="text-text font-medium">Docker</span>, and CI/CD.
+                I&apos;ve delivered across <span className="text-text font-semibold">financial services</span>, <span className="text-text font-semibold">automotive</span> (Mercedes-Benz/T-Systems), <span className="text-text font-semibold">EdTech</span>, healthcare, retail, and insurance. Strong DevOps background with <span className="text-text font-semibold">Azure</span>, <span className="text-text font-semibold">Docker</span>, and CI/CD.
               </p>
               <p>
-                Beyond .NET, I explore <span className="text-text font-medium">Rust</span>, <span className="text-text font-medium">Go</span>, and <span className="text-text font-medium">Python</span> — driven by curiosity about performance, concurrency, and the next generation of systems.
+                Beyond .NET, I explore <span className="text-text font-semibold">Rust</span>, <span className="text-text font-semibold">Go</span>, and <span className="text-text font-semibold">Python</span> — driven by curiosity about performance, concurrency, and the next generation of systems.
               </p>
             </div>
           </Reveal>
         </section>
 
+        {/* ━━ Stack ━━ */}
+        <section className="py-16 scroll-mt-20">
+          <Reveal><SectionLabel>// stack</SectionLabel></Reveal>
+          <div className="grid gap-3 sm:grid-cols-2">
+            {SKILL_CATEGORIES.map(({ key, label, tagClass }, i) => (
+              <Reveal key={key} delay={i * 60}>
+                <div className="card p-4 h-full">
+                  <p className="font-mono text-[10px] uppercase tracking-widest text-dim mb-3">{label}</p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {SKILLS[key].map((skill) => (
+                      <span key={skill} className={tagClass}>{skill}</span>
+                    ))}
+                  </div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </section>
+
         {/* ━━ Experience ━━ */}
         <section id="experience" className="py-16 scroll-mt-20">
           <Reveal><SectionLabel>Experience</SectionLabel></Reveal>
-          <div className="space-y-1">
+          <div className="relative pl-4 space-y-1">
             {EXPERIENCES.map((exp, i) => (
               <Reveal key={`${exp.company}-${exp.period}`} delay={i * 60}>
-                <div className="exp-entry pl-5 py-5 group">
+                <div className={`exp-entry group ${i === 0 ? 'exp-entry-current' : 'py-5'}`}>
+                  <span className={`exp-dot ${i === 0 ? 'exp-dot-active' : ''}`} />
                   <div className="flex flex-col sm:flex-row sm:items-baseline sm:gap-3 mb-1">
-                    <h3 className="text-text font-semibold">
-                      {exp.title}<span className="text-dim font-normal"> · </span><span className="text-muted font-normal">{exp.company}</span>
+                    <h3 style={{ fontFamily: 'var(--font-display)' }} className="text-text font-bold text-lg">
+                      {exp.title}<span className="text-dim font-normal text-base"> · </span><span className="text-muted font-normal text-base">{exp.company}</span>
                     </h3>
                   </div>
                   <div className="font-mono text-xs text-dim mb-3">
@@ -310,31 +344,34 @@ export default function Portfolio({ projects }: { projects: GitHubRepo[] }) {
           <div className="space-y-4">
             {FEATURED_PROJECTS.map((fp, i) => (
               <Reveal key={fp.slug} delay={i * 80}>
-                <div className="card card-glow p-6 group">
-                  <div className="flex items-center gap-2 mb-3">
-                    <span className="h-3 w-3 rounded-full" style={{ backgroundColor: fp.langColor }} />
-                    <h3 className="font-mono text-base font-bold text-text group-hover:text-green transition-colors">{fp.name}</h3>
-                    <span className="font-mono text-xs text-dim ml-1">{fp.lang}</span>
-                  </div>
-                  <p className="text-sm text-muted leading-relaxed mb-4">{fp.description}</p>
-                  <div className="flex flex-wrap gap-1.5 mb-4">
-                    {fp.tags.map((t) => (<span key={t} className="tag">{t}</span>))}
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <a href={fp.repoUrl} target="_blank" rel="noreferrer noopener"
-                      className="inline-flex items-center gap-1.5 font-mono text-xs text-muted hover:text-green transition-colors">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="h-3.5 w-3.5">
-                        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" />
-                      </svg>
-                      Source Code
-                    </a>
-                    <a href={fp.liveUrl} target="_blank" rel="noreferrer noopener"
-                      className="inline-flex items-center gap-1.5 font-mono text-xs font-semibold text-green border border-green/20 bg-green-tint rounded-md px-2.5 py-1 hover:bg-green/20 transition-colors">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="h-3.5 w-3.5">
-                        <path fillRule="evenodd" d="M4.25 5.5a.75.75 0 00-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 00.75-.75v-4a.75.75 0 011.5 0v4A2.25 2.25 0 0112.75 17h-8.5A2.25 2.25 0 012 14.75v-8.5A2.25 2.25 0 014.25 4h5a.75.75 0 010 1.5h-5zm7.25-.182a.75.75 0 01.75-.75h3.5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0V6.56l-5.22 5.22a.75.75 0 11-1.06-1.06l5.22-5.22h-2.44a.75.75 0 01-.75-.75z" clipRule="evenodd" />
-                      </svg>
-                      Visit website
-                    </a>
+                <div className="card card-glow overflow-hidden group">
+                  <div className="project-card-accent" style={{ background: fp.langColor }} />
+                  <div className="p-6">
+                    <div className="flex items-center gap-2 mb-3">
+                      <span className="h-3 w-3 rounded-full flex-shrink-0" style={{ backgroundColor: fp.langColor }} />
+                      <h3 style={{ fontFamily: 'var(--font-display)' }} className="text-lg font-bold text-text group-hover:text-green transition-colors">{fp.name}</h3>
+                      <span className="font-mono text-xs text-dim ml-1">{fp.lang}</span>
+                    </div>
+                    <p className="text-sm text-muted leading-relaxed mb-4">{fp.description}</p>
+                    <div className="flex flex-wrap gap-1.5 mb-4">
+                      {fp.tags.map((t) => (<span key={t} className="tag">{t}</span>))}
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <a href={fp.repoUrl} target="_blank" rel="noreferrer noopener"
+                        className="inline-flex items-center gap-1.5 font-mono text-xs text-muted hover:text-green transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="h-3.5 w-3.5">
+                          <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" />
+                        </svg>
+                        Source Code
+                      </a>
+                      <a href={fp.liveUrl} target="_blank" rel="noreferrer noopener"
+                        className="inline-flex items-center gap-1.5 font-mono text-xs font-semibold text-green border border-green/20 bg-green-tint rounded-md px-2.5 py-1 hover:bg-green/20 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="h-3.5 w-3.5">
+                          <path fillRule="evenodd" d="M4.25 5.5a.75.75 0 00-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 00.75-.75v-4a.75.75 0 011.5 0v4A2.25 2.25 0 0112.75 17h-8.5A2.25 2.25 0 012 14.75v-8.5A2.25 2.25 0 014.25 4h5a.75.75 0 010 1.5h-5zm7.25-.182a.75.75 0 01.75-.75h3.5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0V6.56l-5.22 5.22a.75.75 0 11-1.06-1.06l5.22-5.22h-2.44a.75.75 0 01-.75-.75z" clipRule="evenodd" />
+                        </svg>
+                        Visit website
+                      </a>
+                    </div>
                   </div>
                 </div>
               </Reveal>
@@ -351,7 +388,7 @@ export default function Portfolio({ projects }: { projects: GitHubRepo[] }) {
                 <a href={p.url} target="_blank" rel="noreferrer noopener"
                   className="card card-glow p-5 block group h-full">
                   <div className="flex items-center gap-2 mb-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="h-4 w-4 text-dim group-hover:text-green transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="h-4 w-4 text-dim group-hover:text-green transition-colors flex-shrink-0">
                       <path d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5zm10.5-1h-8a1 1 0 00-1 1v6.708A2.486 2.486 0 014.5 9h8.5zM5 12.25v3.25a.25.25 0 00.4.2l1.45-1.087a.25.25 0 01.3 0L8.6 15.7a.25.25 0 00.4-.2v-3.25a.25.25 0 00-.25-.25h-3.5a.25.25 0 00-.25.25z" />
                     </svg>
                     <span className="font-mono text-sm font-semibold text-text group-hover:text-green transition-colors">{p.title}</span>
@@ -400,9 +437,15 @@ export default function Portfolio({ projects }: { projects: GitHubRepo[] }) {
         </section>
 
         {/* ━━ Footer ━━ */}
-        <footer className="py-16 border-t border-border">
+        <footer className="pt-8 pb-16 relative">
+          <div className="footer-line mb-8" />
+          <div aria-hidden="true" className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden">
+            <span style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(3rem, 8vw, 6rem)', opacity: 0.04, lineHeight: 1 }} className="font-extrabold text-text whitespace-nowrap">
+              Jonathan Peris
+            </span>
+          </div>
           <Reveal>
-            <div className="text-center space-y-3">
+            <div className="relative text-center space-y-3">
               <div className="flex items-center justify-center gap-5">
                 {SOCIALS.map((s) => (
                   <a key={s.label} href={s.href} target="_blank" rel="noreferrer noopener" title={s.label}
