@@ -97,7 +97,7 @@ body::after {
   display: inline-block;
   width: 2px;
   height: 1.15em;
-  background: var(--color-violet-light);
+  background: var(--color-green);
   margin-left: 1px;
   animation: blink 0.75s step-end infinite;
   vertical-align: text-bottom;
