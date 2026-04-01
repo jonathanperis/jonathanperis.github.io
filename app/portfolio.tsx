@@ -213,7 +213,7 @@ export default function Portfolio({ projects }: { projects: GitHubRepo[] }) {
         <section className="relative pt-24 pb-20 md:pt-32 md:pb-28 overflow-visible max-w-4xl">
           <div className="hero-glow" aria-hidden="true" />
           <Reveal>
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full border px-3 py-1" style={{ borderColor: 'rgba(124,58,237,0.2)', backgroundColor: 'var(--color-violet-tint)' }}>
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full border px-3 py-1" style={{ borderColor: 'rgba(74,222,128,0.2)', backgroundColor: 'var(--color-violet-tint)' }}>
               <span className="relative flex h-2 w-2">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-60" style={{ backgroundColor: 'var(--color-violet)' }} />
                 <span className="relative inline-flex h-2 w-2 rounded-full" style={{ backgroundColor: 'var(--color-violet)' }} />
@@ -372,8 +372,8 @@ export default function Portfolio({ projects }: { projects: GitHubRepo[] }) {
                         </a>
                         <a href={fp.liveUrl} target="_blank" rel="noreferrer noopener"
                           className="inline-flex items-center gap-1.5 font-mono text-xs font-semibold border rounded-md px-2.5 py-1 transition-colors"
-                          style={{ color: 'var(--color-violet-light)', borderColor: 'rgba(124,58,237,0.3)', background: 'var(--color-violet-tint)' }}
-                          onMouseOver={e => e.currentTarget.style.background = 'rgba(124,58,237,0.15)'}
+                          style={{ color: 'var(--color-violet-light)', borderColor: 'rgba(74,222,128,0.3)', background: 'var(--color-violet-tint)' }}
+                          onMouseOver={e => e.currentTarget.style.background = 'rgba(74,222,128,0.15)'}
                           onMouseOut={e => e.currentTarget.style.background = 'var(--color-violet-tint)'}>
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="h-3.5 w-3.5">
                             <path fillRule="evenodd" d="M4.25 5.5a.75.75 0 00-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 00.75-.75v-4a.75.75 0 011.5 0v4A2.25 2.25 0 0112.75 17h-8.5A2.25 2.25 0 012 14.75v-8.5A2.25 2.25 0 014.25 4h5a.75.75 0 010 1.5h-5zm7.25-.182a.75.75 0 01.75-.75h3.5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0V6.56l-5.22 5.22a.75.75 0 11-1.06-1.06l5.22-5.22h-2.44a.75.75 0 01-.75-.75z" clipRule="evenodd" />
@@ -421,8 +421,8 @@ export default function Portfolio({ projects }: { projects: GitHubRepo[] }) {
                       <span
                         onClick={(e) => { e.preventDefault(); e.stopPropagation(); window.open(p.homepageUrl, '_blank'); }}
                         className="inline-flex items-center gap-1 font-mono text-[10px] font-semibold border rounded-md px-2 py-0.5 transition-colors cursor-pointer"
-                        style={{ color: 'var(--color-violet-light)', borderColor: 'rgba(124,58,237,0.3)', background: 'var(--color-violet-tint)' }}
-                        onMouseOver={e => e.currentTarget.style.background = 'rgba(124,58,237,0.15)'}
+                        style={{ color: 'var(--color-violet-light)', borderColor: 'rgba(74,222,128,0.3)', background: 'var(--color-violet-tint)' }}
+                        onMouseOver={e => e.currentTarget.style.background = 'rgba(74,222,128,0.15)'}
                         onMouseOut={e => e.currentTarget.style.background = 'var(--color-violet-tint)'}
                       >
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="h-3 w-3">
