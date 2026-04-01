@@ -157,9 +157,9 @@ export const FEATURED_PROJECTS: FeaturedProject[] = [
     slug: "cpnucleo",
     name: "Cpnucleo",
     description:
-      "A full-featured .NET sample application showcasing clean architecture, dependency injection, comprehensive testing, and Docker containerization. Built as a real-world reference for modern .NET development practices with a complete web client.",
+      "A full-featured .NET 10 reference implementation — Clean Architecture, DDD, dual REST/gRPC APIs, and 25+ architecture tests enforced at build time. Docs, architecture overview, and API reference available on GitHub Pages.",
     repoUrl: "https://github.com/jonathanperis/cpnucleo",
-    liveUrl: "https://cpnucleo-webclient-dotnet-d6gve6cabpefbmfz.brazilsouth-01.azurewebsites.net/",
+    liveUrl: "https://jonathanperis.github.io/cpnucleo/",
     lang: "C#",
     langColor: "#178600",
     tags: ["Clean Architecture", ".NET", "Docker", "DI", "Testing"],
