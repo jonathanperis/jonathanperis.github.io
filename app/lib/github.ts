@@ -11,11 +11,11 @@ export type GitHubRepo = {
 const EXCLUDE_REPOS = ["jonathanperis.github.io", "jonathanperis"];
 
 const FALLBACK: GitHubRepo[] = [
-  { title: "cpnucleo", description: "Modern .NET sample — clean architecture, testing, DI, and Docker containerization.", url: "https://github.com/jonathanperis/cpnucleo", lang: "C#", langColor: "#178600", stars: 8, homepageUrl: "https://cpnucleo-webclient-dotnet-d6gve6cabpefbmfz.brazilsouth-01.azurewebsites.net/" },
+  { title: "cpnucleo", description: "Modern .NET sample — clean architecture, testing, DI, and Docker containerization.", url: "https://github.com/jonathanperis/cpnucleo", lang: "C#", langColor: "#178600", stars: 8, homepageUrl: "https://jonathanperis.github.io/cpnucleo/" },
   { title: "super-mango-game", description: "A classic side-scrolling platformer built with C and SDL2 — playable in the browser via WebAssembly.", url: "https://github.com/jonathanperis/super-mango-game", lang: "C", langColor: "#555555", stars: 0, homepageUrl: "https://jonathanperis.github.io/super-mango-game/" },
   { title: "rinha2-back-end-dotnet", description: "High-performance Rinha de Backend challenge in C# with PostgreSQL and Nginx.", url: "https://github.com/jonathanperis/rinha2-back-end-dotnet", lang: "C#", langColor: "#178600", stars: 3, homepageUrl: "https://jonathanperis.github.io/rinha2-back-end-dotnet/" },
   { title: "rinha2-back-end-k6", description: "K6 load testing suite for the Rinha de Backend challenge.", url: "https://github.com/jonathanperis/rinha2-back-end-k6", lang: "JavaScript", langColor: "#f1e05a", stars: 0, homepageUrl: "https://jonathanperis.github.io/rinha2-back-end-k6/" },
-  { title: "blazor-mudblazor-starter", description: "Blazor + MudBlazor starter template with pre-configured components.", url: "https://github.com/jonathanperis/blazor-mudblazor-starter", lang: "C#", langColor: "#178600", stars: 1 },
+  { title: "blazor-mudblazor-starter", description: "Blazor + MudBlazor starter template with pre-configured components.", url: "https://github.com/jonathanperis/blazor-mudblazor-starter", lang: "C#", langColor: "#178600", stars: 1, homepageUrl: "https://jonathanperis.github.io/blazor-mudblazor-starter/" },
   { title: "rinha2-back-end-go", description: "Rinha de Backend in Go — high-performance with PostgreSQL and Nginx.", url: "https://github.com/jonathanperis/rinha2-back-end-go", lang: "Go", langColor: "#00ADD8", stars: 1 },
 ];
 
