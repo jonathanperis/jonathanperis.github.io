@@ -72,7 +72,7 @@ function Reveal({ children, className = '', delay = 0 }: { children: React.React
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex items-center gap-3 mb-10">
-      <span className="font-mono text-xs font-bold uppercase tracking-widest" style={{ color: 'var(--color-violet-light)' }}>{children}</span>
+      <span className="font-mono text-xs font-bold uppercase tracking-widest" style={{ color: 'var(--color-green)' }}>{children}</span>
       <span className="section-label-line" />
     </div>
   );
@@ -228,7 +228,7 @@ export default function Portfolio({ projects }: { projects: GitHubRepo[] }) {
           </Reveal>
           <Reveal delay={200}>
             <p className="mt-4 font-mono text-lg md:text-xl h-8">
-              <span style={{ color: 'var(--color-violet-light)' }}>{typedRole}</span>
+              <span style={{ color: 'var(--color-green)' }}>{typedRole}</span>
               <span className="typing-cursor" />
             </p>
           </Reveal>
@@ -393,7 +393,7 @@ export default function Portfolio({ projects }: { projects: GitHubRepo[] }) {
         <section className="py-16 scroll-mt-20">
           <Reveal><SectionLabel>More Projects</SectionLabel></Reveal>
           <div className="grid gap-3 sm:grid-cols-2">
-            {projects.filter((p) => !FEATURED_PROJECTS.some((fp) => fp.slug === p.title)).map((p, i) => (
+            {projects.filter((p) => !FEATURED_PROJECTS.some((fp) => fp.slug === p.title) && p.title !== '.github').map((p, i) => (
               <Reveal key={p.title} delay={i * 60}>
                 <a href={p.url} target="_blank" rel="noreferrer noopener"
                   className="card card-glow p-5 block group h-full">
@@ -452,18 +452,13 @@ export default function Portfolio({ projects }: { projects: GitHubRepo[] }) {
         {/* ━━ Footer ━━ */}
         <footer className="pt-8 pb-16 relative">
           <div className="footer-line mb-8" />
-          <div aria-hidden="true" className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden">
-            <span style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(3rem, 8vw, 6rem)', opacity: 0.04, lineHeight: 1 }} className="font-extrabold text-text whitespace-nowrap">
-              Jonathan Peris
-            </span>
-          </div>
           <Reveal>
-            <div className="relative text-center space-y-3">
-              <div className="flex items-center justify-center gap-5">
+            <div className="relative text-center space-y-4">
+              <div className="flex items-center justify-center gap-6">
                 {SOCIALS.map((s) => (
                   <a key={s.label} href={s.href} target="_blank" rel="noreferrer noopener" title={s.label}
                     className="text-dim transition-colors" onMouseOver={e => e.currentTarget.style.color = 'var(--color-violet-light)'} onMouseOut={e => e.currentTarget.style.color = 'var(--color-dim)'}>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox={s.vb} fill="currentColor" className="h-4 w-4"><path d={s.icon} /></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox={s.vb} fill="currentColor" className="h-5 w-5"><path d={s.icon} /></svg>
                   </a>
                 ))}
               </div>
