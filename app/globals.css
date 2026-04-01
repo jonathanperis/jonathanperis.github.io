@@ -1,25 +1,29 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg: #09090b;
-  --color-surface: #111113;
-  --color-elevated: #1a1a1e;
-  --color-border: #1f1f23;
-  --color-border-hover: #2e2e35;
-  --color-text: #ededed;
-  --color-muted: #888888;
-  --color-dim: #555555;
-  --color-green: #4ade80;
+  --color-bg: #0a0a0f;
+  --color-surface: #111118;
+  --color-elevated: #18181f;
+  --color-border: #242430;
+  --color-border-hover: #363648;
+  --color-text: #f2f2f8;
+  --color-muted: #9090a8;
+  --color-dim: #505068;
+  --color-violet: #7c3aed;
+  --color-violet-light: #a78bfa;
+  --color-violet-dim: #5b21b6;
+  --color-violet-tint: rgba(124, 58, 237, 0.08);
+  --color-violet-glow: rgba(124, 58, 237, 0.15);
+  --color-green: #4ade80;     /* keep for code syntax highlighting */
   --color-green-dim: #22c55e;
   --color-green-tint: rgba(74, 222, 128, 0.08);
-  --color-green-glow: rgba(74, 222, 128, 0.12);
   --color-purple: #c084fc;
   --color-cyan: #22d3ee;
   --color-yellow: #fbbf24;
   --color-rose: #fb7185;
   --color-amber: #f59e0b;
-  --font-sans: "Outfit", -apple-system, system-ui, sans-serif;
-  --font-display: "Syne", sans-serif;
+  --font-sans: "DM Sans", -apple-system, system-ui, sans-serif;
+  --font-display: "DM Serif Display", serif;
   --font-mono: "JetBrains Mono", "Fira Code", monospace;
 }
 
@@ -33,7 +37,7 @@ body {
 }
 
 ::selection {
-  background-color: rgba(74, 222, 128, 0.2);
+  background-color: rgba(124, 58, 237, 0.2);
   color: var(--color-text);
 }
 
@@ -73,7 +77,7 @@ body::after {
   transform: translateX(-50%);
   width: 900px;
   height: 600px;
-  background: radial-gradient(ellipse at center, rgba(74, 222, 128, 0.07) 0%, rgba(34, 211, 238, 0.03) 40%, transparent 70%);
+  background: radial-gradient(ellipse at center, rgba(124, 58, 237, 0.08) 0%, rgba(167, 139, 250, 0.04) 40%, transparent 70%);
   pointer-events: none;
   z-index: 0;
 }
@@ -81,7 +85,7 @@ body::after {
 /* ── Scroll progress ── */
 .scroll-bar {
   transform-origin: left;
-  background: linear-gradient(90deg, var(--color-green), var(--color-cyan), var(--color-green-dim));
+  background: linear-gradient(90deg, var(--color-violet), var(--color-violet-light), var(--color-violet-dim));
 }
 
 /* ── Blinking cursor ── */
@@ -93,7 +97,7 @@ body::after {
   display: inline-block;
   width: 2px;
   height: 1.15em;
-  background: var(--color-green);
+  background: var(--color-violet-light);
   margin-left: 1px;
   animation: blink 0.75s step-end infinite;
   vertical-align: text-bottom;
@@ -118,9 +122,36 @@ body::after {
   transition: border-color 0.3s, box-shadow 0.3s, background-color 0.3s;
 }
 .card:hover, .card-glow:hover {
-  border-color: rgba(74, 222, 128, 0.3);
-  box-shadow: 0 8px 40px rgba(74, 222, 128, 0.06), 0 2px 8px rgba(0,0,0,0.4);
+  border-color: rgba(124, 58, 237, 0.3);
+  box-shadow: 0 8px 40px rgba(124, 58, 237, 0.08), 0 2px 8px rgba(0,0,0,0.4);
   background: var(--color-elevated);
+}
+
+/* ── Bento Grid ── */
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 1rem;
+}
+.bento-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: border-color 0.3s, box-shadow 0.3s, background-color 0.3s;
+  position: relative;
+}
+.bento-card:hover {
+  border-color: rgba(124, 58, 237, 0.35);
+  box-shadow: 0 12px 48px rgba(124, 58, 237, 0.1), 0 2px 8px rgba(0,0,0,0.4);
+  background: var(--color-elevated);
+}
+.bento-col-7 { grid-column: span 7; }
+.bento-col-5 { grid-column: span 5; }
+.bento-col-12 { grid-column: span 12; }
+.bento-col-6 { grid-column: span 6; }
+@media (max-width: 768px) {
+  .bento-col-7, .bento-col-5, .bento-col-6 { grid-column: span 12; }
 }
 
 /* ── Code block ── */
@@ -132,8 +163,8 @@ body::after {
   box-shadow: 0 4px 24px rgba(0,0,0,0.3);
 }
 .code-block-accent {
-  border-left: 3px solid var(--color-green);
-  box-shadow: -4px 0 20px rgba(74, 222, 128, 0.08);
+  border-left: 3px solid var(--color-violet);
+  box-shadow: -4px 0 20px rgba(124, 58, 237, 0.1);
 }
 .code-block .titlebar {
   background: var(--color-elevated);
@@ -155,9 +186,9 @@ body::after {
   font-size: 11px;
   padding: 3px 10px;
   border-radius: 6px;
-  background: var(--color-green-tint);
-  color: var(--color-green);
-  border: 1px solid rgba(74, 222, 128, 0.12);
+  background: var(--color-violet-tint);
+  color: var(--color-violet-light);
+  border: 1px solid rgba(124, 58, 237, 0.2);
   transition: all 0.2s;
   white-space: nowrap;
 }
@@ -225,7 +256,7 @@ body::after {
   transition: background 0.3s;
 }
 .exp-entry:hover::before {
-  background: linear-gradient(to bottom, var(--color-green), var(--color-border));
+  background: linear-gradient(to bottom, var(--color-violet), var(--color-border));
 }
 .exp-dot {
   position: absolute;
@@ -240,12 +271,12 @@ body::after {
   z-index: 1;
 }
 .exp-dot-active {
-  background: var(--color-green);
-  box-shadow: 0 0 12px rgba(74, 222, 128, 0.5);
+  background: var(--color-violet);
+  box-shadow: 0 0 12px rgba(124, 58, 237, 0.5);
 }
 .exp-entry-current {
-  background: var(--color-green-tint);
-  border: 1px solid rgba(74, 222, 128, 0.15);
+  background: var(--color-violet-tint);
+  border: 1px solid rgba(124, 58, 237, 0.15);
   border-radius: 12px;
   padding: 1.25rem 1.25rem 1.25rem 1.5rem;
 }
@@ -258,7 +289,7 @@ body::after {
   opacity: 0.7;
   transition: opacity 0.3s;
 }
-.card:hover .project-card-accent {
+.card:hover .project-card-accent, .bento-card:hover .project-card-accent {
   opacity: 1;
 }
 
@@ -287,14 +318,14 @@ body::after {
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  background: var(--color-green);
+  background: var(--color-violet);
   animation: pulse-ring 2s ease-out infinite;
 }
 
 /* ── Footer gradient line ── */
 .footer-line {
   height: 1px;
-  background: linear-gradient(90deg, transparent 0%, var(--color-green) 30%, var(--color-cyan) 60%, transparent 100%);
+  background: linear-gradient(90deg, transparent 0%, var(--color-violet) 30%, var(--color-violet-light) 60%, transparent 100%);
   margin-bottom: 0;
   opacity: 0.4;
 }
