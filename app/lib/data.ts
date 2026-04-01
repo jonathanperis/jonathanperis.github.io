@@ -143,6 +143,17 @@ export type FeaturedProject = {
 
 export const FEATURED_PROJECTS: FeaturedProject[] = [
   {
+    slug: "speedy-bird-lynx",
+    name: "Speedy Bird",
+    description:
+      "A Flappy Bird clone built with Lynx (ReactLynx + TypeScript) — ByteDance's cross-platform native UI framework. One codebase renders natively on iOS, Android, and Web. Features accelerating difficulty, medal system, and a full CI/CD pipeline via GitHub Actions.",
+    repoUrl: "https://github.com/jonathanperis/speedy-bird-lynx",
+    liveUrl: "https://jonathanperis.github.io/speedy-bird-lynx/",
+    lang: "TypeScript",
+    langColor: "#3178c6",
+    tags: ["Lynx", "ReactLynx", "TypeScript", "Cross-Platform", "Game Dev"],
+  },
+  {
     slug: "cpnucleo",
     name: "Cpnucleo",
     description:
