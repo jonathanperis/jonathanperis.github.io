@@ -91,8 +91,8 @@ jonathanperis.github.io/
 ├── tsconfig.json               # strict, ES2017, @/* alias
 ├── postcss.config.mjs          # Tailwind CSS v4
 └── .github/workflows/
-    ├── ci.yml                  # PR build check (lint + build)
-    ├── deploy.yml              # GitHub Pages deploy on push to main
+    ├── build-check.yml                  # PR build check (lint + build)
+    ├── main-release.yml              # GitHub Pages deploy on push to main
     └── codeql.yml              # Security analysis (JS/TS)
 ```
 
@@ -111,8 +111,8 @@ jonathanperis.github.io/
 
 | Workflow | Trigger | Purpose |
 |----------|---------|---------|
-| `ci.yml` | Pull requests to main | Lint + build validation |
-| `deploy.yml` | Push to main / manual dispatch | Build → upload → deploy to GitHub Pages |
+| `build-check.yml` | Pull requests to main | Lint + build validation |
+| `main-release.yml` | Push to main / manual dispatch | Build → upload → deploy to GitHub Pages |
 | `codeql.yml` | Push, PRs, weekly (Mon 06:00 UTC) | JavaScript/TypeScript security scanning |
 
 - **Dependabot:** Weekly npm + GitHub Actions updates
@@ -130,7 +130,7 @@ jonathanperis.github.io/
 4. **Before opening a PR:** fetch and pull main again to ensure no conflicts
 5. Open a PR targeting `main` — CI runs lint + build automatically
 6. After review and green checks, rebase-merge the PR
-7. `deploy.yml` triggers automatically on push to main
+7. `main-release.yml` triggers automatically on push to main
 
 ---
 
