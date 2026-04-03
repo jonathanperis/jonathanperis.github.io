@@ -2,7 +2,7 @@
 
 > Personal developer portfolio built with Next.js — dynamically fetches GitHub projects, dark terminal aesthetic, print-optimized resume
 
-[![CI](https://github.com/jonathanperis/jonathanperis.github.io/actions/workflows/ci.yml/badge.svg)](https://github.com/jonathanperis/jonathanperis.github.io/actions/workflows/ci.yml) [![Deploy to GitHub Pages](https://github.com/jonathanperis/jonathanperis.github.io/actions/workflows/deploy.yml/badge.svg)](https://github.com/jonathanperis/jonathanperis.github.io/actions/workflows/deploy.yml) [![CodeQL](https://github.com/jonathanperis/jonathanperis.github.io/actions/workflows/codeql.yml/badge.svg)](https://github.com/jonathanperis/jonathanperis.github.io/actions/workflows/codeql.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Build Check](https://github.com/jonathanperis/jonathanperis.github.io/actions/workflows/build-check.yml/badge.svg)](https://github.com/jonathanperis/jonathanperis.github.io/actions/workflows/build-check.yml) [![Main Release](https://github.com/jonathanperis/jonathanperis.github.io/actions/workflows/main-release.yml/badge.svg)](https://github.com/jonathanperis/jonathanperis.github.io/actions/workflows/main-release.yml) [![CodeQL](https://github.com/jonathanperis/jonathanperis.github.io/actions/workflows/codeql.yml/badge.svg)](https://github.com/jonathanperis/jonathanperis.github.io/actions/workflows/codeql.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 **[Live demo →](https://jonathanperis.github.io/)** | **[Documentation →](CLAUDE.md)**
 
@@ -57,8 +57,8 @@ Open http://localhost:3000
 
 | Workflow | Trigger | Purpose |
 |----------|---------|---------|
-| `ci.yml` | Pull requests to main | Lint + build check |
-| `deploy.yml` | Push to main / manual | Build and deploy to GitHub Pages |
+| `build-check.yml` | Pull requests to main | Lint + build check |
+| `main-release.yml` | Push to main / manual | Build and deploy to GitHub Pages |
 | `codeql.yml` | Push, PRs, weekly schedule | JavaScript/TypeScript security analysis |
 
 Dependabot monitors npm and GitHub Actions dependencies weekly.
