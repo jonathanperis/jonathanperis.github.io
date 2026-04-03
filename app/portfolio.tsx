@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef, useCallback } from "react";
+import Link from "next/link";
 import type { GitHubRepo } from "./lib/github";
 import { ROLES, EXPERIENCES, SOCIALS, FEATURED_PROJECTS, SKILLS } from "./lib/data";
 
@@ -199,7 +200,7 @@ export default function Portfolio({ projects }: { projects: GitHubRepo[] }) {
         {/* ━━ Nav ━━ */}
         <nav className="sticky top-0 z-40 -mx-6 md:-mx-12 px-6 md:px-12 py-4 bg-bg/80 backdrop-blur-lg border-b border-transparent" style={{ borderColor: scrollProgress > 0.02 ? 'var(--color-border)' : 'transparent' }}>
           <div className="flex items-center justify-between max-w-6xl mx-auto">
-            <a href="/" className="font-mono text-sm font-bold text-text hover:text-violet transition-colors">jp<span style={{ color: 'var(--color-violet)' }}>.</span></a>
+            <Link href="/" className="font-mono text-sm font-bold text-text hover:text-violet transition-colors">jp<span style={{ color: 'var(--color-violet)' }}>.</span></Link>
             <div className="flex items-center gap-6">
               {["about", "experience", "projects"].map((s) => (
                 <a key={s} href={`#${s}`} className="font-mono text-xs text-dim hover:text-text transition-colors">{s}</a>
@@ -295,7 +296,7 @@ export default function Portfolio({ projects }: { projects: GitHubRepo[] }) {
 
         {/* ━━ Stack ━━ */}
         <section className="py-16 scroll-mt-20">
-          <Reveal><SectionLabel>// stack</SectionLabel></Reveal>
+          <Reveal><SectionLabel>{"// stack"}</SectionLabel></Reveal>
           <div className="grid gap-3 sm:grid-cols-2 max-w-4xl">
             {SKILL_CATEGORIES.map(({ key, label, tagClass }, i) => (
               <Reveal key={key} delay={i * 60}>
@@ -468,7 +469,6 @@ export default function Portfolio({ projects }: { projects: GitHubRepo[] }) {
                 {' '}and my{' '}
                 <a href="https://claude.ai/" target="_blank" rel="noreferrer noopener" className="font-bold text-dim transition-colors" onMouseOver={e => e.currentTarget.style.color = 'var(--color-violet-light)'} onMouseOut={e => e.currentTarget.style.color = 'var(--color-dim)'}>24/7 Intern</a>
               </p>
-              {/* eslint-disable-next-line react/no-unescaped-entities */}
               <p className="font-mono text-[10px] text-dim/30 select-none">{"// ↑↑↓↓←→←→BA"}</p>
             </div>
           </Reveal>

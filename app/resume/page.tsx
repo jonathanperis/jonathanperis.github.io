@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { PROFILE, SKILLS, EDUCATION, EXPERIENCES } from "../lib/data";
 
 export default function ResumePage() {
@@ -8,9 +9,9 @@ export default function ResumePage() {
       {/* Print / Download bar — hidden when printing */}
       <div className="print:hidden sticky top-0 z-50 bg-bg border-b border-border">
         <div className="max-w-[800px] mx-auto px-8 py-3 flex items-center justify-between">
-          <a href="/" className="font-mono text-sm text-muted hover:text-green transition-colors">
+          <Link href="/" className="font-mono text-sm text-muted hover:text-green transition-colors">
             &larr; Back to portfolio
-          </a>
+          </Link>
           <button
             onClick={() => window.print()}
             className="font-mono text-xs text-bg bg-green hover:bg-green-dim px-4 py-1.5 rounded-md transition-colors font-semibold"
