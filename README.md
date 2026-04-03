@@ -2,9 +2,9 @@
 
 > Personal developer portfolio built with Next.js — dynamically fetches GitHub projects, dark terminal aesthetic, print-optimized resume
 
-[![CI](https://github.com/jonathanperis/jonathanperis.github.io/actions/workflows/main-release.yml/badge.svg)](https://github.com/jonathanperis/jonathanperis.github.io/actions/workflows/main-release.yml) [![CodeQL](https://github.com/jonathanperis/jonathanperis.github.io/actions/workflows/codeql.yml/badge.svg)](https://github.com/jonathanperis/jonathanperis.github.io/actions/workflows/codeql.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![CI](https://github.com/jonathanperis/jonathanperis.github.io/actions/workflows/ci.yml/badge.svg)](https://github.com/jonathanperis/jonathanperis.github.io/actions/workflows/ci.yml) [![Deploy to GitHub Pages](https://github.com/jonathanperis/jonathanperis.github.io/actions/workflows/deploy.yml/badge.svg)](https://github.com/jonathanperis/jonathanperis.github.io/actions/workflows/deploy.yml) [![CodeQL](https://github.com/jonathanperis/jonathanperis.github.io/actions/workflows/codeql.yml/badge.svg)](https://github.com/jonathanperis/jonathanperis.github.io/actions/workflows/codeql.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-**[Visit →](https://jonathanperis.github.io/)**
+**[Live demo →](https://jonathanperis.github.io/)** | **[Documentation →](CLAUDE.md)**
 
 ---
 
@@ -55,9 +55,13 @@ Open http://localhost:3000
 
 ## CI/CD
 
-The `main-release.yml` workflow builds the site with Node 20, runs `npm ci` and `npm run build`, then uploads the static export to GitHub Pages with `actions/deploy-pages`.
+| Workflow | Trigger | Purpose |
+|----------|---------|---------|
+| `ci.yml` | Pull requests to main | Lint + build check |
+| `deploy.yml` | Push to main / manual | Build and deploy to GitHub Pages |
+| `codeql.yml` | Push, PRs, weekly schedule | JavaScript/TypeScript security analysis |
 
-The `codeql.yml` workflow runs on push, pull request, and a weekly schedule to analyze the JavaScript/TypeScript codebase.
+Dependabot monitors npm and GitHub Actions dependencies weekly.
 
 ## License
 
