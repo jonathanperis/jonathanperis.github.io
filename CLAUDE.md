@@ -124,11 +124,13 @@ jonathanperis.github.io/
 
 ## Development Workflow
 
-1. Create a feature branch from `main`
-2. Make changes and push
-3. Open a PR targeting `main` — CI runs lint + build automatically
-4. After review and green checks, rebase-merge the PR
-5. `deploy.yml` triggers automatically on push to main
+1. **Sync main first:** `git fetch origin main && git checkout main && git pull origin main`
+2. Create a feature branch from `main`
+3. Make changes and push
+4. **Before opening a PR:** fetch and pull main again to ensure no conflicts
+5. Open a PR targeting `main` — CI runs lint + build automatically
+6. After review and green checks, rebase-merge the PR
+7. `deploy.yml` triggers automatically on push to main
 
 ---
 
