@@ -1,0 +1,1 @@
+- [Architecture](architecture.md) — Next.js 16 static export, GitHub GraphQL API with fallback, terminal UI theme, data layer design
