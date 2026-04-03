@@ -90,7 +90,10 @@ jonathanperis.github.io/
 ├── next.config.ts              # Static export, cache headers
 ├── tsconfig.json               # strict, ES2017, @/* alias
 ├── postcss.config.mjs          # Tailwind CSS v4
-└── .github/workflows/deploy.yml # GitHub Pages deploy on push to main
+└── .github/workflows/
+    ├── ci.yml                  # PR build check (lint + build)
+    ├── deploy.yml              # GitHub Pages deploy on push to main
+    └── codeql.yml              # Security analysis (JS/TS)
 ```
 
 ---
@@ -106,6 +109,32 @@ jonathanperis.github.io/
 
 ## CI/CD
 
-- **Trigger:** Push to main or manual dispatch
-- **Pipeline:** `npm ci` → `npm run build` → Upload `./out` → Deploy to GitHub Pages
+| Workflow | Trigger | Purpose |
+|----------|---------|---------|
+| `ci.yml` | Pull requests to main | Lint + build validation |
+| `deploy.yml` | Push to main / manual dispatch | Build → upload → deploy to GitHub Pages |
+| `codeql.yml` | Push, PRs, weekly (Mon 06:00 UTC) | JavaScript/TypeScript security scanning |
+
 - **Dependabot:** Weekly npm + GitHub Actions updates
+- **Merge strategy:** Rebase only (squash and merge commits disabled)
+- **Branch protection:** Main branch is protected; all changes go through PRs
+- **Auto-merge:** Enabled for Dependabot PRs
+
+---
+
+## Development Workflow
+
+1. Create a feature branch from `main`
+2. Make changes and push
+3. Open a PR targeting `main` — CI runs lint + build automatically
+4. After review and green checks, rebase-merge the PR
+5. `deploy.yml` triggers automatically on push to main
+
+---
+
+## Repository Conventions
+
+- **GitHub operations:** Always use `gh` CLI
+- **Community health files** (CODE_OF_CONDUCT, CONTRIBUTING, SECURITY, SUPPORT) live in the [`.github` repo](https://github.com/jonathanperis/.github) — do not duplicate them here
+- **PR strategy:** Branch + PR for all changes, rebase merge only
+- **Commit style:** Conventional commits (`feat:`, `fix:`, `chore:`, `docs:`)
