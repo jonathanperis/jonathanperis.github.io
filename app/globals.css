@@ -326,6 +326,6 @@ body::after {
 .footer-line {
   height: 1px;
   background: linear-gradient(90deg, transparent 0%, var(--color-violet) 30%, var(--color-violet-light) 60%, transparent 100%);
-  margin-bottom: 0;
   opacity: 0.4;
+  margin-bottom: 2rem;
 }
