@@ -165,12 +165,12 @@ export const FEATURED_PROJECTS: FeaturedProject[] = [
     tags: ["Clean Architecture", ".NET", "Docker", "DI", "Testing"],
   },
   {
-    slug: "super-mango-game",
-    name: "Super Mango Game",
+    slug: "super-mango-editor",
+    name: "Super Mango Editor",
     description:
       "A classic side-scrolling platformer built from scratch with C and SDL2. Compiled to WebAssembly so it runs directly in the browser — no install needed. Features sprite animation, collision detection, and retro-style gameplay.",
-    repoUrl: "https://github.com/jonathanperis/super-mango-game",
-    liveUrl: "https://jonathanperis.github.io/super-mango-game/",
+    repoUrl: "https://github.com/jonathanperis/super-mango-editor",
+    liveUrl: "https://jonathanperis.github.io/super-mango-editor/",
     lang: "C",
     langColor: "#555555",
     tags: ["C", "SDL2", "WebAssembly", "Game Dev", "Emscripten"],
