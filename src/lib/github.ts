@@ -44,7 +44,7 @@ type RepoNode = {
 };
 
 export async function fetchRepos(): Promise<GitHubRepo[]> {
-  const token = process.env.GITHUB_TOKEN;
+  const token = import.meta.env.GITHUB_TOKEN;
   if (!token) {
     console.log("[github] No GITHUB_TOKEN — using fallback project data");
     return FALLBACK;
@@ -58,7 +58,6 @@ export async function fetchRepos(): Promise<GitHubRepo[]> {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ query: QUERY }),
-      next: { revalidate: false },
     });
 
     if (!res.ok) {

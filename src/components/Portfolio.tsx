@@ -1,9 +1,7 @@
-"use client";
-
 import { useEffect, useState, useRef, useCallback } from "react";
-import Link from "next/link";
-import type { GitHubRepo } from "./lib/github";
-import { ROLES, EXPERIENCES, SOCIALS, FEATURED_PROJECTS, SKILLS } from "./lib/data";
+import type { ReactNode, KeyboardEvent } from "react";
+import type { GitHubRepo } from "../lib/github";
+import { ROLES, EXPERIENCES, SOCIALS, FEATURED_PROJECTS, SKILLS } from "../lib/data";
 
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -65,12 +63,12 @@ function useScrollProgress() {
 // Small components
 // ─────────────────────────────────────────────────────────────────────────────
 
-function Reveal({ children, className = '', delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
+function Reveal({ children, className = '', delay = 0 }: { children: ReactNode; className?: string; delay?: number }) {
   const { ref, shown } = useReveal();
   return <div ref={ref} className={`reveal ${shown ? 'shown' : ''} ${className}`} style={{ transitionDelay: `${delay}ms` }}>{children}</div>;
 }
 
-function SectionLabel({ children }: { children: React.ReactNode }) {
+function SectionLabel({ children }: { children: ReactNode }) {
   return (
     <div className="flex items-center gap-3 mb-10">
       <span className="font-mono text-xs font-bold uppercase tracking-widest" style={{ color: 'var(--color-green)' }}>{children}</span>
@@ -87,7 +85,7 @@ const NEOFETCH = [
   '',
   '   ██╗██████╗     jonathan@dev',
   '   ██║██╔══██╗    ──────────────────',
-  '   ██║██████╔╝    OS:        Next.js 16 / GitHub Pages',
+  '   ██║██████╔╝    OS:        Astro 5 / GitHub Pages',
   '██ ██║██╔═══╝     Shell:     TypeScript 5.x',
   '╚███╔╝██║         Uptime:    12+ years in tech',
   ' ╚══╝ ╚═╝         Packages:  React 19, Tailwind v4',
@@ -182,7 +180,7 @@ export default function Portfolio({ projects }: { projects: GitHubRepo[] }) {
     setTermInput('');
   }, [termInput]);
 
-  const termKey = useCallback((e: React.KeyboardEvent) => {
+  const termKey = useCallback((e: KeyboardEvent) => {
     if (e.key === 'Enter') submit();
     else if (e.key === 'Escape') setTermOpen(false);
     else if (e.key === 'ArrowUp') { e.preventDefault(); if (cmdHist.length) { const n = histIdx === -1 ? cmdHist.length - 1 : Math.max(0, histIdx - 1); setHistIdx(n); setTermInput(cmdHist[n]); } }
@@ -200,7 +198,7 @@ export default function Portfolio({ projects }: { projects: GitHubRepo[] }) {
         {/* ━━ Nav ━━ */}
         <nav className="sticky top-0 z-40 -mx-6 md:-mx-12 px-6 md:px-12 py-4 bg-bg/80 backdrop-blur-lg border-b border-transparent" style={{ borderColor: scrollProgress > 0.02 ? 'var(--color-border)' : 'transparent' }}>
           <div className="flex items-center justify-between max-w-6xl mx-auto">
-            <Link href="/" className="font-mono text-sm font-bold text-text hover:text-violet transition-colors">jp<span style={{ color: 'var(--color-violet)' }}>.</span></Link>
+            <a href="/" className="font-mono text-sm font-bold text-text hover:text-violet transition-colors">jp<span style={{ color: 'var(--color-violet)' }}>.</span></a>
             <div className="flex items-center gap-6">
               {["about", "experience", "projects"].map((s) => (
                 <a key={s} href={`#${s}`} className="font-mono text-xs text-dim hover:text-text transition-colors">{s}</a>
@@ -420,7 +418,7 @@ export default function Portfolio({ projects }: { projects: GitHubRepo[] }) {
                     </div>
                     {p.homepageUrl && (
                       <span
-                        onClick={(e) => { e.preventDefault(); e.stopPropagation(); window.open(p.homepageUrl, '_blank'); }}
+                        onClick={(e) => { e.preventDefault(); e.stopPropagation(); window.open(p.homepageUrl!, '_blank'); }}
                         className="inline-flex items-center gap-1 font-mono text-[10px] font-semibold border rounded-md px-2 py-0.5 transition-colors cursor-pointer"
                         style={{ color: 'var(--color-violet-light)', borderColor: 'rgba(74,222,128,0.3)', background: 'var(--color-violet-tint)' }}
                         onMouseOver={e => e.currentTarget.style.background = 'rgba(74,222,128,0.15)'}

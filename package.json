@@ -3,24 +3,23 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "lint": "astro check"
   },
   "dependencies": {
-    "next": "^16.2.2",
-    "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "@astrojs/react": "^4",
+    "@astrojs/sitemap": "^3",
+    "astro": "^5",
+    "react": "^19",
+    "react-dom": "^19"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4",
-    "@types/node": "^25",
+    "@tailwindcss/vite": "^4",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "^16.2.2",
     "tailwindcss": "^4",
-    "typescript": "^6"
+    "typescript": "^5"
   }
 }

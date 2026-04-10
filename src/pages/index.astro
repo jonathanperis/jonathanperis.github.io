@@ -1,0 +1,11 @@
+---
+import RootLayout from '../layouts/RootLayout.astro';
+import Portfolio from '../components/Portfolio';
+import { fetchRepos } from '../lib/github';
+
+const projects = await fetchRepos();
+---
+
+<RootLayout>
+  <Portfolio projects={projects} client:load />
+</RootLayout>
