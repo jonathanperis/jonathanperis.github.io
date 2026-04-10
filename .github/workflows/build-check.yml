@@ -22,4 +22,4 @@ jobs:
       - run: npm run build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NEXT_PUBLIC_GA_ID: G-35CN95481D
+          PUBLIC_GA_ID: G-35CN95481D
