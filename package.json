@@ -9,7 +9,7 @@
     "lint": "astro check"
   },
   "dependencies": {
-    "@astrojs/react": "^4",
+    "@astrojs/react": "^5",
     "@astrojs/sitemap": "^3",
     "astro": "^5",
     "react": "^19",
