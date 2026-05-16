@@ -247,12 +247,6 @@ export default function Portfolio({ projects }: { projects: GitHubRepo[] }) {
     [closeTerminal, cmdHist, histIdx, submit],
   );
 
-  const openTerminal = () => {
-    lastFocusedRef.current = document.activeElement as HTMLElement | null;
-    setTermOpen(true);
-    trackEvent("terminal_open", { source: "hero" });
-  };
-
   return (
     <>
       <div className="scroll-bar fixed top-0 left-0 right-0 h-[2px] z-50" style={{ transform: `scaleX(${scrollProgress})` }} />
@@ -285,7 +279,6 @@ export default function Portfolio({ projects }: { projects: GitHubRepo[] }) {
               <div className="hero-actions">
                 <a href="/resume" className="primary-action" onClick={() => trackEvent("cta_click", { label: "hero_resume" })}>View resume</a>
                 <a href="https://www.linkedin.com/in/jonathan-peris/" target="_blank" rel="noreferrer noopener" className="secondary-action" onClick={() => trackEvent("cta_click", { label: "hero_linkedin" })}>Contact on LinkedIn</a>
-                <button type="button" className="ghost-action" onClick={openTerminal}>Open shell</button>
               </div>
               <div className="signal-strip" aria-label="Operating signals">
                 {OPERATING_SIGNALS.map((signal) => (
@@ -433,7 +426,7 @@ export default function Portfolio({ projects }: { projects: GitHubRepo[] }) {
           <div className="footer-socials">
             {SOCIALS.map((social) => <SocialLink key={social.label} social={social} compact />)}
           </div>
-          <p>Built as a small systems manual. Hidden shell: ↑↑↓↓←→←→BA</p>
+          <p>Built as a small systems manual.</p>
         </footer>
       </div>
 
