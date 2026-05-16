@@ -19,6 +19,33 @@ export const PROFILE = {
     "Software Engineer with 12+ years of experience specializing in .NET and Fintech solutions. Proven track record architecting and delivering high-impact, enterprise-grade software. Expertise centered on the modern .NET ecosystem including .NET Core+, ASP.NET Core, Entity Framework, and MAUI. Deeply committed to engineering excellence with CQRS, DDD, Microservices, Hexagonal Architecture, and Cloud-Native principles. Strong DevOps background with Azure, Docker, and CI/CD pipelines.",
 };
 
+export const AVAILABILITY = {
+  short: "Open to remote roles + consulting",
+  full: "Open to remote roles and select backend architecture consulting.",
+};
+
+export const OPERATING_SIGNALS = [
+  { label: "12+ yrs", value: "production software" },
+  { label: ".NET + Azure", value: "primary lane" },
+  { label: "Remote", value: "Brazil to US teams" },
+  { label: "Systems", value: "architecture + delivery" },
+];
+
+export const ENGINEERING_PRINCIPLES = [
+  {
+    title: "Reliability before theater",
+    body: "Prefer observable, recoverable systems over clever code that nobody wants to own at 2am.",
+  },
+  {
+    title: "Boundaries with a reason",
+    body: "Use CQRS, DDD, microservices, and hexagonal architecture when they reduce real operational cost.",
+  },
+  {
+    title: "Delivery is part of design",
+    body: "CI/CD, small releases, and clear feedback loops keep architecture honest after the diagram is gone.",
+  },
+];
+
 export const SKILLS = {
   languages: ["C#", "Rust", "Go", "Python", "TypeScript", "JavaScript"],
   backend: [".NET Core+", "ASP.NET Core", "Entity Framework", "MAUI", "Blazor"],
