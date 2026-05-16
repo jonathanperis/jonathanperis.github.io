@@ -2,43 +2,44 @@
 
 ## Overview
 
-The site is a **Next.js 16** static export deployed to **GitHub Pages**. It uses a Server Component / Client Component split to fetch data at build time while keeping all interactive UI client-side.
+The site is an **Astro 6** static site deployed to **GitHub Pages**. Astro handles page routing and static generation, while React powers the interactive portfolio and resume components.
 
 ## Component Architecture
 
 ```
-app/
-├── page.tsx              # Server Component — fetches pinned repos
-├── portfolio.tsx          # Client Component — full interactive UI
-├── resume/
-│   ├── page.tsx           # Client Component — print-optimized resume
-│   └── layout.tsx         # Server Component — resume metadata
-├── lib/
-│   ├── data.ts            # Shared data (single source of truth)
-│   └── github.ts          # GitHub GraphQL API client
+src/
+├── pages/
+│   ├── index.astro          # Fetches pinned repos and renders Portfolio
+│   └── resume.astro         # Resume page shell
 ├── components/
-│   ├── analytics.tsx      # Google Analytics 4
-│   └── json-ld.tsx        # Schema.org structured data
-├── layout.tsx             # Root layout, metadata, fonts, SEO
-└── globals.css            # Theme, animations, styles
+│   ├── Portfolio.tsx        # Interactive UI: hero, sections, terminal
+│   ├── Analytics.astro      # Google Analytics 4
+│   └── JsonLd.astro         # Schema.org structured data
+├── layouts/
+│   └── RootLayout.astro     # Root layout, metadata, fonts, SEO
+├── lib/
+│   ├── data.ts              # Shared data, content model, project metadata
+│   └── github.ts            # GitHub GraphQL API client
+└── styles/
+    └── globals.css          # Theme, animations, styles
 ```
 
 ## Data Flow
 
 ```
 Build Time:
-  page.tsx (Server) → github.ts → GitHub GraphQL API
-                    → fetches pinned repos
-                    → passes to portfolio.tsx as props
+  pages/index.astro → lib/github.ts → GitHub GraphQL API
+                    → fetches pinned repos or fallback data
+                    → passes projects to Portfolio as props
 
 Runtime (Static HTML):
-  portfolio.tsx (Client) → renders UI with baked-in data
-                         → typing animation, scroll effects, terminal
+  Portfolio.tsx → renders UI with baked-in data
+                → typing animation, scroll effects, terminal, A/B helper
 ```
 
 ## Key Design Decisions
 
-- **Server/Client split** — Data fetching happens at build time (Server Component), UI interactions are client-side
-- **Single source of truth** — `lib/data.ts` contains all profile data shared between portfolio and resume
-- **Static export** — `output: "export"` in next.config.ts generates pure static HTML for GitHub Pages
-- **Graceful fallback** — If `GITHUB_TOKEN` is missing, hardcoded project data is used
+- **Astro static generation** - Data fetching happens at build time and outputs static assets for GitHub Pages.
+- **React islands** - Interactive portfolio behavior stays in `Portfolio.tsx`.
+- **Single source of truth** - `src/lib/data.ts` contains profile, availability, experience, skills, and project data shared by portfolio and resume.
+- **Graceful fallback** - If `GITHUB_TOKEN` is missing, hardcoded project data is used.

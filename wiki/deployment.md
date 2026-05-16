@@ -2,53 +2,36 @@
 
 ## GitHub Actions
 
-The site deploys automatically via `.github/workflows/deploy.yml` on every push to `master`.
+The site deploys automatically via `.github/workflows/main-release.yml` on pushes to `main` and manual dispatches.
 
 ### Pipeline Steps
 
-1. **Checkout** — Clone the repository
-2. **Setup Node** — Node.js 20 with npm cache
-3. **Setup Pages** — Configure GitHub Pages
-4. **Install** — `npm ci`
-5. **Build** — `npm run build` with environment variables:
-   - `GITHUB_TOKEN` — Fetches pinned repos (auto-provided by GitHub Actions)
-   - `NEXT_PUBLIC_GA_ID` — Google Analytics measurement ID
-6. **Upload** — Uploads `out/` directory as Pages artifact
-7. **Deploy** — Deploys to GitHub Pages
+1. **Checkout** - Clone the repository
+2. **Setup mise** - Use the configured Node runtime
+3. **Install** - Install Bun dependencies
+4. **Build** - `bun run build` with environment variables:
+   - `GITHUB_TOKEN` - Fetches pinned repos, auto-provided by GitHub Actions
+   - `PUBLIC_GA_ID` - Google Analytics measurement ID
+5. **Upload** - Uploads `out/` as the Pages artifact
+6. **Deploy** - Deploys to GitHub Pages
 
 ### Environment Variables
 
 | Variable | Source | Purpose |
 |---|---|---|
 | `GITHUB_TOKEN` | `secrets.GITHUB_TOKEN` (auto) | GitHub GraphQL API for pinned repos |
-| `NEXT_PUBLIC_GA_ID` | Hardcoded in workflow | GA4 measurement ID |
+| `PUBLIC_GA_ID` | Repository or workflow configuration | GA4 measurement ID |
 
-## Static Export
+## Static Output
 
-Next.js is configured with `output: "export"` which generates pure static HTML/CSS/JS in the `out/` directory. No server required.
+Astro generates pure static HTML/CSS/JS in the `out/` directory. No server is required at runtime.
 
-## Cache Headers
+## Manual Build
 
-`next.config.ts` defines aggressive caching for static assets:
-
-```typescript
-headers: async () => [
-  {
-    source: "/:all*(svg|jpg|jpeg|png|gif|ico|webp|woff|woff2)",
-    headers: [
-      { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
-    ],
-  },
-]
-```
-
-## Manual Deploy
-
-To deploy manually:
+Use Node 22+ for local builds. The workspace mise default is Node 24, and Astro 6 rejects Node 20.
 
 ```bash
-GITHUB_TOKEN=$(gh auth token) NEXT_PUBLIC_GA_ID=G-GFK73008MT npm run build
-# Then push the out/ directory to GitHub Pages
+/opt/data/.local/bin/mise exec -- bun run build
 ```
 
 ## Domain

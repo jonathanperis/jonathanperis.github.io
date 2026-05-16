@@ -4,6 +4,7 @@ export type Experience = {
   company: string;
   location: string;
   description: string;
+  impact?: string[];
   tags: string[];
 };
 
@@ -18,6 +19,71 @@ export const PROFILE = {
   summary:
     "Software Engineer with 12+ years of experience specializing in .NET and Fintech solutions. Proven track record architecting and delivering high-impact, enterprise-grade software. Expertise centered on the modern .NET ecosystem including .NET Core+, ASP.NET Core, Entity Framework, and MAUI. Deeply committed to engineering excellence with CQRS, DDD, Microservices, Hexagonal Architecture, and Cloud-Native principles. Strong DevOps background with Azure, Docker, and CI/CD pipelines.",
 };
+
+export const AVAILABILITY = {
+  status: "Open to remote roles and select backend architecture consulting.",
+  shortStatus: "Open to remote roles + consulting",
+};
+
+export const HERO_PROOF = [
+  { label: "12+ yrs", detail: "enterprise software" },
+  { label: ".NET + Azure", detail: "backend systems" },
+  { label: "Architecture", detail: "CQRS, DDD, cloud-native" },
+  { label: "Remote", detail: "Brazil to US teams" },
+];
+
+export const ENGINEERING_PRINCIPLES = [
+  {
+    label: "Reliability first",
+    detail: "Systems should fail predictably, recover cleanly, and stay observable.",
+  },
+  {
+    label: "Architecture with pressure",
+    detail: "Use CQRS, DDD, and boundaries where they reduce real operational cost.",
+  },
+  {
+    label: "Delivery discipline",
+    detail: "CI/CD, tests, and small releases beat heroic deploys.",
+  },
+];
+
+export const CAPABILITY_GROUPS = [
+  {
+    label: "Backend",
+    command: "stack.backend",
+    items: ["C#", ".NET Core+", "ASP.NET Core", "Go", "Rust", "Python"],
+  },
+  {
+    label: "Architecture",
+    command: "stack.architecture",
+    items: ["CQRS", "DDD", "Microservices", "Hexagonal", "Clean Architecture"],
+  },
+  {
+    label: "Cloud + Delivery",
+    command: "stack.delivery",
+    items: ["Azure", "Docker", "Kubernetes", "Azure DevOps", "CI/CD"],
+  },
+  {
+    label: "Data",
+    command: "stack.data",
+    items: ["SQL Server", "PostgreSQL", "Entity Framework"],
+  },
+];
+
+export const PROJECT_CATEGORIES = [
+  {
+    label: "Architecture and backend systems",
+    slugs: ["cpnucleo", "rinha2-back-end-dotnet"],
+  },
+  {
+    label: "Performance and load testing",
+    slugs: ["rinha2-back-end-k6"],
+  },
+  {
+    label: "Games and experiments",
+    slugs: ["speedy-bird-lynx", "super-mango-editor"],
+  },
+];
 
 export const SKILLS = {
   languages: ["C#", "Rust", "Go", "Python", "TypeScript", "JavaScript"],
@@ -45,6 +111,10 @@ export const EXPERIENCES: Experience[] = [
     location: "New York, US · Remote",
     description:
       "Software Engineer on the CAAR team, focused on developing and refining the General Ledger, Hedge Accounting, and Fiscal Calendar modules for the DerivativeEDGE platform. Enabling clients to achieve streamlined financial reporting, accurate hedge accounting, and efficient fiscal period management.",
+    impact: [
+      "Develops core financial modules for General Ledger, Hedge Accounting, and Fiscal Calendar workflows.",
+      "Works in a clean architecture environment with .NET, SQL Server, CQRS, and Azure DevOps.",
+    ],
     tags: ["C#", ".NET 8", "SQL Server", "CQRS", "Azure DevOps", "Clean Architecture"],
   },
   {
@@ -54,6 +124,10 @@ export const EXPERIENCES: Experience[] = [
     location: "São Bernardo do Campo, BR · Remote",
     description:
       "Spearheaded the critical platform and architecture migration of SGP Eletrônica — vital software for mapping and parameterization of Electronic Control Units (ECUs) within Mercedes-Benz trucks and buses. Ensured seamless transition while modernizing architecture and enhancing capabilities for advanced automotive diagnostics.",
+    impact: [
+      "Led architecture migration for ECU mapping software used in Mercedes-Benz truck and bus workflows.",
+      "Modernized platform capabilities with ASP.NET Core, Blazor, Entity Framework, Azure, and SQL Server.",
+    ],
     tags: ["C#", "ASP.NET Core", "Blazor", "Entity Framework", "Azure", "SQL Server"],
   },
   {
@@ -63,6 +137,10 @@ export const EXPERIENCES: Experience[] = [
     location: "Radnor, PA, US · Remote",
     description:
       "Drove full-cycle development of the ExamReview platform — backend services, infrastructure, and mobile. Engineered the CMS delivering educational materials to thousands of students via LMS. Built the Admin platform for access control and hierarchy structuring. All platforms on Azure with Microservices, CQRS, and full test coverage.",
+    impact: [
+      "Built backend, infrastructure, and mobile pieces for ExamReview and related learning platforms.",
+      "Delivered Azure-hosted microservices with CQRS and automated test coverage.",
+    ],
     tags: ["C#", "Azure", "Microservices", "CQRS", "Xamarin", "Azure DevOps"],
   },
   {
@@ -72,6 +150,10 @@ export const EXPERIENCES: Experience[] = [
     location: "Miami, FL, US · Remote",
     description:
       "Ensured reliability of international wire transfers within XP Inc.'s international accounts group. Maintained and enhanced monitoring processes for Brazil-US fund transfers, managing Azure infrastructure and .NET Core microservices leveraging SAGA patterns and message queues for transactional consistency.",
+    impact: [
+      "Maintained monitoring and reliability processes for Brazil-US fund transfer operations.",
+      "Managed Azure infrastructure and .NET Core microservices using SAGA patterns and queues.",
+    ],
     tags: ["Azure", ".NET Core", "Docker", "SAGA Pattern", "RabbitMQ", "CI/CD"],
   },
   {
@@ -81,6 +163,10 @@ export const EXPERIENCES: Experience[] = [
     location: "São Bernardo do Campo, BR",
     description:
       "Led design and development of key internal applications in Agile/Scrum. Engineered T-Atendo (helpdesk for Mercedes-Benz factory workers), Multi Manager (resource booking for on-site assets), and T-Entrego (corporate gift distribution platform). All built with .NET Core, Azure, and microservices.",
+    impact: [
+      "Designed internal tools for factory helpdesk, resource booking, and corporate fulfillment workflows.",
+      "Delivered .NET Core and Azure microservices in Agile delivery cycles.",
+    ],
     tags: ["C#", ".NET Core", "Azure", "Microservices", "REST API", "Scrum"],
   },
   {

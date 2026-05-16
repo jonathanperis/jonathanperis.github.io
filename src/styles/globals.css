@@ -34,6 +34,12 @@ body {
   color: var(--color-muted);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+:where(a, button, input, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-violet-light);
+  outline-offset: 4px;
 }
 
 ::selection {
@@ -193,6 +199,28 @@ body::after {
   white-space: nowrap;
 }
 
+/* ── Proof chips ── */
+.proof-chip {
+  border: 1px solid rgba(74, 222, 128, 0.16);
+  border-radius: 10px;
+  background: rgba(74, 222, 128, 0.045);
+  padding: 0.75rem 0.85rem;
+}
+.proof-chip-label {
+  display: block;
+  color: var(--color-text);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+.proof-chip-detail {
+  display: block;
+  margin-top: 0.2rem;
+  color: var(--color-muted);
+  font-size: 0.75rem;
+  line-height: 1.35;
+}
+
 /* ── Skill tags by category ── */
 .tag-cyan {
   font-family: var(--font-mono);
@@ -328,4 +356,31 @@ body::after {
   background: linear-gradient(90deg, transparent 0%, var(--color-violet) 30%, var(--color-violet-light) 60%, transparent 100%);
   opacity: 0.4;
   margin-bottom: 2rem;
+}
+
+@media (max-width: 420px) {
+  .code-block pre {
+    font-size: 0.75rem;
+  }
+
+  .tag {
+    white-space: normal;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
 }
