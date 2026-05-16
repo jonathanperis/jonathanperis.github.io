@@ -80,7 +80,7 @@ Supporting signals:
 ### Curious developer path
 
 1. Notice the console/runbook aesthetic.
-2. Open the interactive shell or find the easter egg.
+2. Discover the interactive shell only through the easter egg.
 3. Explore repositories and social links.
 
 ## Functional Requirements
@@ -90,7 +90,7 @@ Supporting signals:
 - Build-time GitHub project fetching where configured, with safe fallbacks.
 - Resume route and/or resume CTA available from primary navigation.
 - Contact/social links available in hero/footer and keyboard/screen-reader accessible.
-- Hidden shell/easter egg preserved as progressive enhancement; core content must remain useful without it.
+- Hidden shell/easter egg preserved as progressive enhancement; it must not have a visible CTA or explicit activation instructions in the primary UI, and core content must remain useful without it.
 - Analytics events may track outbound/social/resume interactions, but must not block navigation.
 
 ## Non-Goals

@@ -186,7 +186,7 @@ The layout should read like a technical dossier:
 3. **Capability map:** stack grouped by language, backend, architecture, cloud, data, and frontend.
 4. **Experience trace:** chronological production history with the current role visually elevated.
 5. **Workbench:** curated featured projects before dynamic repository tail.
-6. **Repository tail and footer:** more proof, socials, and shell/easter-egg affordances.
+6. **Repository tail and footer:** more proof and socials, without exposing the shell trigger.
 
 Spacing should be generous enough to feel calm, but dense enough to preserve a systems-console rhythm. Prefer grids, ledgers, and cards over large decorative illustrations.
 
@@ -231,11 +231,11 @@ Tags are metadata, not decoration. Use them to make stack and domain fit scannab
 
 ### Terminal / shell
 
-The shell is a progressive enhancement and personality layer. It must not be the only way to access resume, contact, stack, or availability information. Keyboard behavior should be predictable: `Enter` submits, `Escape` closes, and focus is visible.
+The shell is a progressive enhancement and personality layer. It is an easter egg, not a visible feature: do not add an "open shell" button, footer instruction, or explicit activation hint in the primary UI. It must not be the only way to access resume, contact, stack, or availability information. Keyboard behavior should be predictable after discovery: `Enter` submits, `Escape` closes, and focus is visible.
 
 ### CTAs
 
-Primary CTA: resume/contact/hire path. Secondary CTA: GitHub, LinkedIn, project links, or open shell. CTAs should use clear verbs and preserve native link behavior.
+Primary CTA: resume/contact/hire path. Secondary CTA: GitHub, LinkedIn, and project links. Do not expose the shell as a CTA. CTAs should use clear verbs and preserve native link behavior.
 
 ## Do's and Don'ts
 
