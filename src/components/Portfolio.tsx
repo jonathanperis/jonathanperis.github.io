@@ -151,33 +151,6 @@ const SKILL_GROUPS: Array<{ key: keyof typeof SKILLS; label: string; path: strin
   { key: "frontend", label: "interface", path: "/stack/interface" },
 ];
 
-
-const EXPERIMENTS = {
-  control: {
-    label: "A/control",
-    lede: "I build backend systems that can be understood, operated, and changed after they meet production traffic.",
-    primary: { label: "View resume", href: "/resume", event: "hero_resume" },
-    secondary: { label: "Contact on LinkedIn", href: "https://www.linkedin.com/in/jonathan-peris/", event: "hero_linkedin" },
-    tertiary: { label: "See projects", href: "#workbench", event: "hero_projects" },
-  },
-  clarity: {
-    label: "B/clarity",
-    lede: "I design and ship reliable .NET platforms for fintech, cloud, and high-change business domains.",
-    primary: { label: "Contact me", href: "mailto:jperis.silva@gmail.com", event: "hero_email" },
-    secondary: { label: "View resume", href: "/resume", event: "hero_resume" },
-    tertiary: { label: "See projects", href: "#workbench", event: "hero_projects" },
-  },
-  workbench: {
-    label: "C/workbench",
-    lede: "Architecture, delivery, and performance workbench for production systems that need clear ownership.",
-    primary: { label: "Open workbench", href: "#workbench", event: "hero_workbench" },
-    secondary: { label: "Contact me", href: "mailto:jperis.silva@gmail.com", event: "hero_email" },
-    tertiary: { label: "Resume", href: "/resume", event: "hero_resume" },
-  },
-} as const;
-
-type ExperimentKey = keyof typeof EXPERIMENTS;
-
 function projectLane(project: (typeof FEATURED_PROJECTS)[number]) {
   const text = `${project.name} ${project.tags.join(" ")}`.toLowerCase();
   if (text.includes("rinha") || text.includes("k6") || text.includes("performance")) return "load path";
@@ -189,7 +162,6 @@ function projectLane(project: (typeof FEATURED_PROJECTS)[number]) {
 export default function Portfolio({ projects }: { projects: GitHubRepo[] }) {
   const scrollProgress = useScrollProgress();
   const featuredSlugs = useMemo(() => new Set(FEATURED_PROJECTS.map((fp) => fp.slug)), []);
-  const [experiment, setExperiment] = useState<ExperimentKey>("control");
 
   const [termOpen, setTermOpen] = useState(false);
   const [termInput, setTermInput] = useState("");
@@ -201,23 +173,6 @@ export default function Portfolio({ projects }: { projects: GitHubRepo[] }) {
   const termCloseRef = useRef<HTMLButtonElement>(null);
   const lastFocusedRef = useRef<HTMLElement | null>(null);
   const konamiRef = useRef<string[]>([]);
-
-  useEffect(() => {
-    const keys = Object.keys(EXPERIMENTS) as ExperimentKey[];
-    const params = new URLSearchParams(window.location.search);
-    const requested = params.get("ab") as ExperimentKey | null;
-    const stored = window.localStorage.getItem("jp.heroExperiment") as ExperimentKey | null;
-    const selected = requested && keys.includes(requested)
-      ? requested
-      : stored && keys.includes(stored)
-        ? stored
-        : keys[Math.floor(Math.random() * keys.length)];
-
-    window.localStorage.setItem("jp.heroExperiment", selected);
-    setExperiment(selected);
-    document.documentElement.dataset.heroExperiment = selected;
-    trackEvent("experiment_view", { experiment: "hero_conversion", variant: selected });
-  }, []);
 
   useEffect(() => {
     const K = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"];
@@ -245,12 +200,6 @@ export default function Portfolio({ projects }: { projects: GitHubRepo[] }) {
     setTermOpen(false);
     setTermHist(["  jonathan.sh ready", "  Type \"help\" for commands.", ""]);
     requestAnimationFrame(() => lastFocusedRef.current?.focus());
-  }, []);
-
-  const openTerminal = useCallback(() => {
-    lastFocusedRef.current = document.activeElement as HTMLElement | null;
-    setTermOpen(true);
-    trackEvent("terminal_open", { source: "visible_hint" });
   }, []);
 
   const submit = useCallback(() => {
@@ -298,8 +247,6 @@ export default function Portfolio({ projects }: { projects: GitHubRepo[] }) {
     [closeTerminal, cmdHist, histIdx, submit],
   );
 
-  const activeExperiment = EXPERIMENTS[experiment];
-
   return (
     <>
       <div className="scroll-bar fixed top-0 left-0 right-0 h-[2px] z-50" style={{ transform: `scaleX(${scrollProgress})` }} />
@@ -327,14 +274,11 @@ export default function Portfolio({ projects }: { projects: GitHubRepo[] }) {
               <h1 id="hero-title">Jonathan Peris</h1>
               <p className="role-line"><span>Backend architecture / .NET / Azure</span><span className="typing-cursor" aria-hidden="true" /></p>
               <p className="hero-lede">
-                {activeExperiment.lede}
+                I build backend systems that can be understood, operated, and changed after they meet production traffic.
               </p>
-              <p className="experiment-badge" aria-label={`Active hero experiment ${activeExperiment.label}`}>{activeExperiment.label}</p>
               <div className="hero-actions">
-                <a href={activeExperiment.primary.href} className="primary-action" onClick={() => trackEvent("cta_click", { label: activeExperiment.primary.event, variant: experiment })}>{activeExperiment.primary.label}</a>
-                <a href={activeExperiment.secondary.href} target={activeExperiment.secondary.href.startsWith("http") ? "_blank" : undefined} rel={activeExperiment.secondary.href.startsWith("http") ? "noreferrer noopener" : undefined} className="secondary-action" onClick={() => trackEvent("cta_click", { label: activeExperiment.secondary.event, variant: experiment })}>{activeExperiment.secondary.label}</a>
-                <a href={activeExperiment.tertiary.href} className="secondary-action" onClick={() => trackEvent("cta_click", { label: activeExperiment.tertiary.event, variant: experiment })}>{activeExperiment.tertiary.label}</a>
-                <button type="button" className="ghost-action" onClick={openTerminal}>open ~/terminal</button>
+                <a href="/resume" className="primary-action" onClick={() => trackEvent("cta_click", { label: "hero_resume" })}>View resume</a>
+                <a href="https://www.linkedin.com/in/jonathan-peris/" target="_blank" rel="noreferrer noopener" className="secondary-action" onClick={() => trackEvent("cta_click", { label: "hero_linkedin" })}>Contact on LinkedIn</a>
               </div>
               <div className="signal-strip" aria-label="Operating signals">
                 {OPERATING_SIGNALS.map((signal) => (
@@ -442,11 +386,10 @@ export default function Portfolio({ projects }: { projects: GitHubRepo[] }) {
                     </div>
                     <h3>{project.name}</h3>
                     <p>{project.description}</p>
-                    <p className="project-proof">{project.proof}</p>
                     <div className="project-tags">{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
                     <div className="project-actions">
-                      <a href={project.liveUrl} target="_blank" rel="noreferrer noopener" aria-label={`${project.liveLabel} for ${project.name}`} onClick={() => trackEvent("project_click", { project: project.slug, target: "live" })}>{project.liveLabel}</a>
-                      <a href={project.repoUrl} target="_blank" rel="noreferrer noopener" aria-label={`${project.repoLabel} for ${project.name}`} onClick={() => trackEvent("project_click", { project: project.slug, target: "source" })}>{project.repoLabel}</a>
+                      <a href={project.repoUrl} target="_blank" rel="noreferrer noopener">Source</a>
+                      <a href={project.liveUrl} target="_blank" rel="noreferrer noopener">Live</a>
                     </div>
                   </article>
                 </Reveal>
@@ -484,7 +427,6 @@ export default function Portfolio({ projects }: { projects: GitHubRepo[] }) {
             {SOCIALS.map((social) => <SocialLink key={social.label} social={social} compact />)}
           </div>
           <p>Built as a small systems manual. Hidden shell: ↑↑↓↓←→←→BA</p>
-          <button type="button" className="footer-terminal" onClick={openTerminal}>open ~/terminal</button>
         </footer>
       </div>
 
