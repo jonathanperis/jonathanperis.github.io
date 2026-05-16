@@ -426,7 +426,7 @@ export default function Portfolio({ projects }: { projects: GitHubRepo[] }) {
           <div className="footer-socials">
             {SOCIALS.map((social) => <SocialLink key={social.label} social={social} compact />)}
           </div>
-          <p>Built as a small systems manual.</p>
+          <p>Built as a small systems manual. Hidden shell: ↑↑↓↓←→←→BA</p>
         </footer>
       </div>
 
