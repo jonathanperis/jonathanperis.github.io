@@ -2,43 +2,52 @@
 
 ## Overview
 
-The site is a **Next.js 16** static export deployed to **GitHub Pages**. It uses a Server Component / Client Component split to fetch data at build time while keeping all interactive UI client-side.
+The site is an **Astro 6** static export deployed to **GitHub Pages**. Astro performs build-time data fetching in `src/pages/index.astro`, renders static HTML into `out/`, and hydrates the React portfolio UI with `client:load` for browser-only interactivity.
+
+There is no Next.js App Router or React Server Component layer in the current codebase.
 
 ## Component Architecture
 
-```
-app/
-├── page.tsx              # Server Component — fetches pinned repos
-├── portfolio.tsx          # Client Component — full interactive UI
-├── resume/
-│   ├── page.tsx           # Client Component — print-optimized resume
-│   └── layout.tsx         # Server Component — resume metadata
-├── lib/
-│   ├── data.ts            # Shared data (single source of truth)
-│   └── github.ts          # GitHub GraphQL API client
+```text
+src/
+├── pages/
+│   ├── index.astro          # Build-time repo fetch, renders <Portfolio client:load />
+│   └── resume.astro         # Static resume route with print CSS
+├── layouts/
+│   └── RootLayout.astro     # Shared document shell, metadata, fonts, analytics, JSON-LD
 ├── components/
-│   ├── analytics.tsx      # Google Analytics 4
-│   └── json-ld.tsx        # Schema.org structured data
-├── layout.tsx             # Root layout, metadata, fonts, SEO
-└── globals.css            # Theme, animations, styles
+│   ├── Portfolio.tsx        # React interactive island: home UI, Workbench, terminal easter egg
+│   ├── Analytics.astro      # Emits GA4 scripts only when PUBLIC_GA_ID exists
+│   └── JsonLd.astro         # Schema.org Person JSON-LD from shared data
+├── lib/
+│   ├── data.ts              # Shared profile/resume/social data
+│   └── github.ts            # GitHub GraphQL + REST build-time data client
+└── styles/
+    └── globals.css          # Tailwind v4 and custom design system
 ```
 
 ## Data Flow
 
-```
-Build Time:
-  page.tsx (Server) → github.ts → GitHub GraphQL API
-                    → fetches pinned repos
-                    → passes to portfolio.tsx as props
+```text
+Build time:
+  src/pages/index.astro
+    -> fetchRepos() from src/lib/github.ts
+    -> GitHub GraphQL: profile pinned repositories + owned public non-fork repositories
+    -> GitHub REST: /repos/jonathanperis/{repo}/pages for live Pages URLs
+    -> fallback repository data when no token or API failure occurs
+    -> <Portfolio projects={projects} client:load />
 
-Runtime (Static HTML):
-  portfolio.tsx (Client) → renders UI with baked-in data
-                         → typing animation, scroll effects, terminal
+Runtime (static HTML + hydrated React):
+  Portfolio.tsx
+    -> renders baked-in project data
+    -> manages scroll progress, reveal state, terminal state, command history, and CTA analytics events
 ```
 
 ## Key Design Decisions
 
-- **Server/Client split** — Data fetching happens at build time (Server Component), UI interactions are client-side
-- **Single source of truth** — `lib/data.ts` contains all profile data shared between portfolio and resume
-- **Static export** — `output: "export"` in next.config.ts generates pure static HTML for GitHub Pages
-- **Graceful fallback** — If `GITHUB_TOKEN` is missing, hardcoded project data is used
+- **Astro static export** — `astro.config.ts` sets `outDir: 'out'`; GitHub Pages serves the generated static artifact.
+- **Interactive island boundary** — `Portfolio.tsx` is hydrated with `client:load`; SEO-critical metadata and document shell remain Astro-rendered.
+- **Single source of truth** — `src/lib/data.ts` contains profile, skills, education, experience, socials, and availability data shared by the portfolio, resume, and JSON-LD.
+- **Dynamic-but-build-time projects** — `src/lib/github.ts` fetches GitHub data during `bun run build`; no GitHub API calls happen from the deployed browser page.
+- **Graceful fallback** — If `GITHUB_TOKEN` is missing or GitHub APIs fail, hardcoded fallback project data keeps local builds and PR checks deterministic.
+- **Analytics opt-in by environment** — GA4 scripts are emitted only when `PUBLIC_GA_ID` is present.
