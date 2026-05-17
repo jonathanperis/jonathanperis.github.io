@@ -10,7 +10,7 @@
 
 ## About
 
-Astro portfolio with a static export for GitHub Pages. It fetches public, non-fork repositories from the GitHub GraphQL API at build time, resolves live GitHub Pages links through the REST API, and renders them in a terminal-themed UI.
+Astro portfolio with a static export for GitHub Pages. It fetches the repositories pinned on Jonathan's GitHub profile plus public, non-fork repositories from the GitHub GraphQL API at build time, resolves live GitHub Pages links through the REST API, and renders them in a terminal-themed UI.
 
 The site includes a print-optimized resume page, SEO metadata, analytics, and a Konami code easter egg. The same shared data powers the on-page resume and the dedicated `/resume` route.
 
@@ -29,7 +29,8 @@ It is built to stay simple to deploy: build locally, export statically, and publ
 
 ## Features
 
-- Dynamic Workbench repository ledger from GitHub GraphQL API (public, non-fork repos)
+- Workbench major cards sourced from GitHub profile pinned repositories
+- Dynamic "Other GitHub repos" ledger from GitHub GraphQL API (public, non-fork repos)
 - Live GitHub Pages links resolved at build time via GitHub REST API
 - Terminal-themed dark UI with typing animations and scroll effects
 - Print-optimized resume page with download support

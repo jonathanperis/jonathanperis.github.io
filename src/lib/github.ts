@@ -8,24 +8,39 @@ export type GitHubRepo = {
   homepageUrl?: string;
   pagesUrl?: string;
   updatedAt?: string;
+  pinned?: boolean;
 };
 
 const GITHUB_OWNER = "jonathanperis";
 const EXCLUDE_REPOS = new Set(["jonathanperis.github.io", ".github", "jonathanperis"]);
 
 const FALLBACK: GitHubRepo[] = [
-  { title: "cpnucleo", description: "Modern .NET sample — clean architecture, testing, DI, and Docker containerization.", url: "https://github.com/jonathanperis/cpnucleo", lang: "C#", langColor: "#178600", stars: 8, homepageUrl: "https://jonathanperis.github.io/cpnucleo/", pagesUrl: "https://jonathanperis.github.io/cpnucleo/" },
-  { title: "super-mango-editor", description: "A classic side-scrolling platformer built with C and SDL2 — playable in the browser via WebAssembly.", url: "https://github.com/jonathanperis/super-mango-editor", lang: "C", langColor: "#555555", stars: 0, homepageUrl: "https://jonathanperis.github.io/super-mango-editor/", pagesUrl: "https://jonathanperis.github.io/super-mango-editor/" },
-  { title: "rinha4-back-end-dotnet", description: "Rinha de Backend 2025 implementation in .NET with docs and benchmark reports.", url: "https://github.com/jonathanperis/rinha4-back-end-dotnet", lang: "C#", langColor: "#178600", stars: 0, homepageUrl: "https://jonathanperis.github.io/rinha4-back-end-dotnet/", pagesUrl: "https://jonathanperis.github.io/rinha4-back-end-dotnet/" },
-  { title: "rinha2-back-end-dotnet", description: "High-performance Rinha de Backend challenge in C# with PostgreSQL and Nginx.", url: "https://github.com/jonathanperis/rinha2-back-end-dotnet", lang: "C#", langColor: "#178600", stars: 3, homepageUrl: "https://jonathanperis.github.io/rinha2-back-end-dotnet/", pagesUrl: "https://jonathanperis.github.io/rinha2-back-end-dotnet/" },
-  { title: "rinha2-back-end-k6", description: "K6 load testing suite for the Rinha de Backend challenge.", url: "https://github.com/jonathanperis/rinha2-back-end-k6", lang: "JavaScript", langColor: "#f1e05a", stars: 0, homepageUrl: "https://jonathanperis.github.io/rinha2-back-end-k6/", pagesUrl: "https://jonathanperis.github.io/rinha2-back-end-k6/" },
-  { title: "blazor-mudblazor-starter", description: "Blazor + MudBlazor starter template with pre-configured components.", url: "https://github.com/jonathanperis/blazor-mudblazor-starter", lang: "HTML", langColor: "#e34c26", stars: 1, homepageUrl: "https://jonathanperis.github.io/blazor-mudblazor-starter/", pagesUrl: "https://jonathanperis.github.io/blazor-mudblazor-starter/" },
+  { title: "cpnucleo", description: "Modern .NET sample — clean architecture, testing, DI, and Docker containerization.", url: "https://github.com/jonathanperis/cpnucleo", lang: "C#", langColor: "#178600", stars: 8, homepageUrl: "https://jonathanperis.github.io/cpnucleo/", pagesUrl: "https://jonathanperis.github.io/cpnucleo/", pinned: true },
+  { title: "super-mango-editor", description: "A classic side-scrolling platformer built with C and SDL2 — playable in the browser via WebAssembly.", url: "https://github.com/jonathanperis/super-mango-editor", lang: "C", langColor: "#555555", stars: 0, homepageUrl: "https://jonathanperis.github.io/super-mango-editor/", pagesUrl: "https://jonathanperis.github.io/super-mango-editor/", pinned: true },
+  { title: "rinha2-back-end-dotnet", description: "High-performance Rinha de Backend challenge in C# with PostgreSQL and Nginx.", url: "https://github.com/jonathanperis/rinha2-back-end-dotnet", lang: "C#", langColor: "#178600", stars: 3, homepageUrl: "https://jonathanperis.github.io/rinha2-back-end-dotnet/", pagesUrl: "https://jonathanperis.github.io/rinha2-back-end-dotnet/", pinned: true },
+  { title: "rinha2-back-end-go", description: "Rinha de Backend in Go — high-performance with PostgreSQL and Nginx.", url: "https://github.com/jonathanperis/rinha2-back-end-go", lang: "PLpgSQL", langColor: "#336790", stars: 1, homepageUrl: "https://jonathanperis.github.io/rinha2-back-end-go/", pagesUrl: "https://jonathanperis.github.io/rinha2-back-end-go/", pinned: true },
+  { title: "blazor-mudblazor-starter", description: "Blazor + MudBlazor starter template with pre-configured components.", url: "https://github.com/jonathanperis/blazor-mudblazor-starter", lang: "HTML", langColor: "#e34c26", stars: 1, homepageUrl: "https://jonathanperis.github.io/blazor-mudblazor-starter/", pagesUrl: "https://jonathanperis.github.io/blazor-mudblazor-starter/", pinned: true },
+  { title: "speedy-bird-lynx", description: "Lynx motion/game experiment in C++.", url: "https://github.com/jonathanperis/speedy-bird-lynx", lang: "C++", langColor: "#f34b7d", stars: 0, homepageUrl: "https://jonathanperis.github.io/speedy-bird-lynx/", pagesUrl: "https://jonathanperis.github.io/speedy-bird-lynx/", pinned: true },
   { title: "rinha4-back-end-c", description: "Rinha de Backend 2025 C implementation with GitHub Pages documentation.", url: "https://github.com/jonathanperis/rinha4-back-end-c", lang: "C", langColor: "#555555", stars: 0, homepageUrl: "https://jonathanperis.github.io/rinha4-back-end-c/", pagesUrl: "https://jonathanperis.github.io/rinha4-back-end-c/" },
-  { title: "rinha2-back-end-go", description: "Rinha de Backend in Go — high-performance with PostgreSQL and Nginx.", url: "https://github.com/jonathanperis/rinha2-back-end-go", lang: "PLpgSQL", langColor: "#336790", stars: 1, homepageUrl: "https://jonathanperis.github.io/rinha2-back-end-go/", pagesUrl: "https://jonathanperis.github.io/rinha2-back-end-go/" },
+  { title: "rinha2-back-end-k6", description: "K6 load testing suite for the Rinha de Backend challenge.", url: "https://github.com/jonathanperis/rinha2-back-end-k6", lang: "JavaScript", langColor: "#f1e05a", stars: 0, homepageUrl: "https://jonathanperis.github.io/rinha2-back-end-k6/", pagesUrl: "https://jonathanperis.github.io/rinha2-back-end-k6/" },
 ];
 
 const QUERY = `{
   user(login: "${GITHUB_OWNER}") {
+    pinnedItems(first: 100, types: REPOSITORY) {
+      nodes {
+        ... on Repository {
+          name
+          description
+          url
+          homepageUrl
+          stargazerCount
+          updatedAt
+          owner { login }
+          primaryLanguage { name color }
+        }
+      }
+    }
     repositories(first: 100, privacy: PUBLIC, orderBy: { field: UPDATED_AT, direction: DESC }, isFork: false) {
       nodes {
         name
@@ -84,7 +99,7 @@ async function fetchPagesUrl(repoName: string, token: string): Promise<string | 
   }
 }
 
-function normalizeRepo(n: RepoNode): GitHubRepo {
+function normalizeRepo(n: RepoNode, pinned = false): GitHubRepo {
   const homepageUrl = n.homepageUrl?.trim() || undefined;
 
   return {
@@ -97,6 +112,7 @@ function normalizeRepo(n: RepoNode): GitHubRepo {
     homepageUrl,
     pagesUrl: homepageUrl?.startsWith(`https://${GITHUB_OWNER}.github.io/`) ? homepageUrl : undefined,
     updatedAt: n.updatedAt,
+    pinned,
   };
 }
 
@@ -123,6 +139,7 @@ export async function fetchRepos(): Promise<GitHubRepo[]> {
     }
 
     const json = await res.json();
+    const pinnedNodes = json?.data?.user?.pinnedItems?.nodes;
     const nodes = json?.data?.user?.repositories?.nodes;
 
     if (!Array.isArray(nodes) || nodes.length === 0) {
@@ -130,9 +147,21 @@ export async function fetchRepos(): Promise<GitHubRepo[]> {
       return FALLBACK;
     }
 
+    const pinnedOrder = new Map<string, number>(
+      Array.isArray(pinnedNodes)
+        ? pinnedNodes
+            .filter((n: RepoNode) => n.owner.login === GITHUB_OWNER && !EXCLUDE_REPOS.has(n.name))
+            .map((n: RepoNode, index: number) => [n.name, index])
+        : [],
+    );
+
     const repos = nodes
       .filter((n: RepoNode) => n.owner.login === GITHUB_OWNER && !EXCLUDE_REPOS.has(n.name))
-      .map(normalizeRepo);
+      .map((n: RepoNode) => normalizeRepo(n, pinnedOrder.has(n.name)))
+      .sort((a, b) => {
+        if (a.pinned && b.pinned) return (pinnedOrder.get(a.title) ?? 0) - (pinnedOrder.get(b.title) ?? 0);
+        return Number(b.pinned) - Number(a.pinned);
+      });
 
     const pagesUrls = await Promise.all(repos.map((repo) => fetchPagesUrl(repo.title, token)));
 

@@ -5,7 +5,6 @@ import {
   AVAILABILITY,
   ENGINEERING_PRINCIPLES,
   EXPERIENCES,
-  FEATURED_PROJECTS,
   OPERATING_SIGNALS,
   PROFILE,
   SKILLS,
@@ -151,18 +150,18 @@ const SKILL_GROUPS: Array<{ key: keyof typeof SKILLS; label: string; path: strin
   { key: "frontend", label: "interface", path: "/stack/interface" },
 ];
 
-function projectLane(project: (typeof FEATURED_PROJECTS)[number]) {
-  const text = `${project.name} ${project.tags.join(" ")}`.toLowerCase();
+function projectLane(project: GitHubRepo) {
+  const text = `${project.title} ${project.description} ${project.lang}`.toLowerCase();
   if (text.includes("rinha") || text.includes("k6") || text.includes("performance")) return "load path";
-  if (text.includes("clean") || text.includes(".net")) return "system design";
-  if (text.includes("game") || text.includes("sdl") || text.includes("lynx")) return "runtime lab";
+  if (text.includes("clean") || text.includes(".net") || text.includes("blazor")) return "system design";
+  if (text.includes("game") || text.includes("sdl") || text.includes("lynx") || text.includes("mango")) return "runtime lab";
   return "field note";
 }
 
 export default function Portfolio({ projects }: { projects: GitHubRepo[] }) {
   const scrollProgress = useScrollProgress();
-  const featuredSlugs = useMemo(() => new Set(FEATURED_PROJECTS.map((fp) => fp.slug)), []);
-  const workbenchRepos = useMemo(() => projects.filter((project) => !featuredSlugs.has(project.title)), [featuredSlugs, projects]);
+  const pinnedRepos = useMemo(() => projects.filter((project) => project.pinned), [projects]);
+  const otherRepos = useMemo(() => projects.filter((project) => !project.pinned), [projects]);
 
   const [termOpen, setTermOpen] = useState(false);
   const [termInput, setTermInput] = useState("");
@@ -378,19 +377,24 @@ export default function Portfolio({ projects }: { projects: GitHubRepo[] }) {
               <SectionLabel id="workbench-heading" number="04">Workbench</SectionLabel>
             </Reveal>
             <div className="workbench-grid">
-              {FEATURED_PROJECTS.map((project, index) => (
-                <Reveal key={project.slug} delay={index * 70}>
+              {pinnedRepos.map((project, index) => (
+                <Reveal key={project.title} delay={index * 70}>
                   <article className="workbench-card">
                     <div className="card-head">
                       <span style={{ backgroundColor: project.langColor }} aria-hidden="true" />
                       <p>{projectLane(project)}</p>
                     </div>
-                    <h3>{project.name}</h3>
-                    <p>{project.description}</p>
-                    <div className="project-tags">{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
+                    <h3>{project.title}</h3>
+                    <p>{project.description || "Repository note pending."}</p>
+                    <div className="project-tags">
+                      {project.stars > 0 && <span>{project.stars} stars</span>}
+                      {project.lang && <span>{project.lang}</span>}
+                      <span>Pinned on GitHub</span>
+                    </div>
                     <div className="project-actions">
-                      <a href={project.repoUrl} target="_blank" rel="noreferrer noopener">Source</a>
-                      <a href={project.liveUrl} target="_blank" rel="noreferrer noopener">Live</a>
+                      <a href={project.url} target="_blank" rel="noreferrer noopener">Source</a>
+                      {project.pagesUrl && <a href={project.pagesUrl} target="_blank" rel="noreferrer noopener">Live</a>}
+                      {project.homepageUrl && project.homepageUrl !== project.pagesUrl && <a href={project.homepageUrl} target="_blank" rel="noreferrer noopener">Homepage</a>}
                     </div>
                   </article>
                 </Reveal>
@@ -400,12 +404,12 @@ export default function Portfolio({ projects }: { projects: GitHubRepo[] }) {
             <Reveal delay={320}>
               <div className="repo-ledger-heading">
                 <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-dim">public repository ledger</p>
-                <h3>All non-fork GitHub work</h3>
-                <p>Fetched at build time from GitHub, excluding this portfolio, profile metadata, collaborator repos, and forks. Pages links resolve from each repository's live GitHub Pages site.</p>
+                <h3>Other GitHub repos</h3>
+                <p>Fetched at build time from GitHub, excluding pinned Workbench repos, this portfolio, profile metadata, collaborator repos, and forks. Pages links resolve from each repository's live GitHub Pages site.</p>
               </div>
             </Reveal>
             <div className="repo-table" role="list">
-              {workbenchRepos.map((project, index) => (
+              {otherRepos.map((project, index) => (
                 <Reveal key={project.title} delay={index * 35}>
                   <article role="listitem" className="repo-row">
                     <a href={project.url} target="_blank" rel="noreferrer noopener">{project.title}</a>
@@ -420,7 +424,7 @@ export default function Portfolio({ projects }: { projects: GitHubRepo[] }) {
                 </Reveal>
               ))}
             </div>
-            <Reveal delay={workbenchRepos.length * 35 + 120}>
+            <Reveal delay={otherRepos.length * 35 + 120}>
               <a href="https://github.com/jonathanperis" target="_blank" rel="noreferrer noopener" className="github-tail">View all repositories on GitHub</a>
             </Reveal>
           </section>
