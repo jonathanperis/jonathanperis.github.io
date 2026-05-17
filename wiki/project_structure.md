@@ -1,40 +1,46 @@
 # Project Structure
 
-```
+```text
 jonathanperis.github.io/
-├── app/
-│   ├── page.tsx                 # Server Component — fetches pinned repos, renders Portfolio
-│   ├── portfolio.tsx            # Client Component — main UI (hero, about, experience, projects)
-│   ├── layout.tsx               # Root layout: metadata, fonts, SEO, analytics, JSON-LD
-│   ├── globals.css              # Theme colors, animations, card/tag/timeline styles
-│   ├── resume/
-│   │   ├── page.tsx             # Print-optimized resume (shared data from lib/data.ts)
-│   │   └── layout.tsx           # Resume page metadata
+├── src/
+│   ├── pages/
+│   │   ├── index.astro              # Home page: fetches repos, renders Portfolio with client:load
+│   │   └── resume.astro             # Print-optimized resume route
+│   ├── components/
+│   │   ├── Portfolio.tsx            # Main interactive UI, Workbench, terminal easter egg
+│   │   ├── Analytics.astro          # GA4 conditional loader (reads PUBLIC_GA_ID)
+│   │   └── JsonLd.astro             # Schema.org Person structured data
+│   ├── layouts/
+│   │   └── RootLayout.astro         # HTML shell, metadata, fonts, JSON-LD, analytics slot
 │   ├── lib/
-│   │   ├── data.ts              # Single source of truth: profile, experiences, skills, education
-│   │   └── github.ts            # GitHub GraphQL client: fetches pinned repos at build time
-│   └── components/
-│       ├── analytics.tsx        # GA4 conditional loader (reads NEXT_PUBLIC_GA_ID)
-│       └── json-ld.tsx          # Schema.org Person structured data
+│   │   ├── data.ts                  # Single source of truth: profile, availability, experience, skills, socials
+│   │   └── github.ts                # GitHub GraphQL + REST client with fallback repo data
+│   └── styles/
+│       └── globals.css              # Tailwind import, theme tokens, animations, layout styles
 ├── public/
-│   ├── sitemap.xml              # Sitemap for search engines
-│   ├── robots.txt               # Crawler directives
-│   ├── manifest.json            # PWA manifest
-│   ├── favicon.svg              # SVG favicon (JP monogram)
-│   └── apple-touch-icon.png     # iOS icon
+│   ├── cv_jonathan_peris.pdf        # Downloadable CV asset
+│   ├── manifest.json                # PWA manifest
+│   ├── robots.txt / sitemap.xml     # SEO crawler files
+│   ├── favicon.svg                  # SVG favicon
+│   └── apple-touch-icon.png         # iOS icon
+├── wiki/                            # Repository wiki Markdown source
 ├── .github/workflows/
-│   └── deploy.yml               # GitHub Actions: build → GitHub Pages
-├── next.config.ts               # Static export, cache headers
-├── tsconfig.json
-└── package.json
+│   ├── build-check.yml              # PR build check: bun install + lint + build
+│   ├── main-release.yml             # GitHub Pages deploy on push to main
+│   └── codeql.yml                   # JavaScript/TypeScript security analysis
+├── astro.config.ts                  # Astro site URL, outDir, React/sitemap/Tailwind integrations
+├── tsconfig.json                    # Astro strict TS config and @/* alias
+├── package.json                     # Bun scripts and dependencies
+└── bun.lock                         # Bun lockfile
 ```
 
 ## Key Files
 
 | File | Role |
 |---|---|
-| `lib/data.ts` | All profile data — experiences, skills, education, socials. Shared by portfolio and resume. |
-| `lib/github.ts` | Fetches pinned repos via GitHub GraphQL API. Falls back to hardcoded data if no token. |
-| `portfolio.tsx` | The entire interactive UI — hero, typing animation, about, experience timeline, project cards, terminal easter egg. |
-| `resume/page.tsx` | Print-optimized resume. "Download PDF" button triggers browser print dialog. |
-| `globals.css` | Custom theme tokens, dot grid, scroll progress, cursor blink, git timeline, glass cards, terminal overlay. |
+| `src/lib/data.ts` | All profile data — availability, operating signals, engineering principles, experiences, skills, education, socials, and legacy featured-project records. Shared by portfolio, resume, and JSON-LD. |
+| `src/lib/github.ts` | Fetches profile pinned repositories and owned public non-fork repositories, excludes metadata repos, resolves GitHub Pages URLs, and falls back to hardcoded data when no token is available. |
+| `src/components/Portfolio.tsx` | Interactive home UI — hero, profile packet, capability map, experience trace, Workbench project cards, social/contact surface, and terminal easter egg. |
+| `src/pages/resume.astro` | Print-optimized resume page. The "Download PDF" button triggers the browser print dialog. |
+| `src/layouts/RootLayout.astro` | Shared page shell with canonical links, Open Graph/Twitter tags, fonts, JSON-LD, manifest, icons, and analytics. |
+| `src/styles/globals.css` | Tailwind v4 import plus custom dark theme tokens, grid/scanline effects, cards, timeline, resume print styles, and terminal overlay styles. |
