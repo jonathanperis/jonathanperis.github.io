@@ -11,7 +11,7 @@ The site deploys automatically via `.github/workflows/deploy.yml` on every push 
 3. **Setup Pages** — Configure GitHub Pages
 4. **Install** — `npm ci`
 5. **Build** — `npm run build` with environment variables:
-   - `GITHUB_TOKEN` — Fetches pinned repos (auto-provided by GitHub Actions)
+   - `GITHUB_TOKEN` — Fetches public repositories and Pages URLs (auto-provided by GitHub Actions)
    - `NEXT_PUBLIC_GA_ID` — Google Analytics measurement ID
 6. **Upload** — Uploads `out/` directory as Pages artifact
 7. **Deploy** — Deploys to GitHub Pages
@@ -20,7 +20,7 @@ The site deploys automatically via `.github/workflows/deploy.yml` on every push 
 
 | Variable | Source | Purpose |
 |---|---|---|
-| `GITHUB_TOKEN` | `secrets.GITHUB_TOKEN` (auto) | GitHub GraphQL API for pinned repos |
+| `GITHUB_TOKEN` | `secrets.GITHUB_TOKEN` (auto) | GitHub GraphQL and REST APIs for public repo + Pages data |
 | `NEXT_PUBLIC_GA_ID` | Hardcoded in workflow | GA4 measurement ID |
 
 ## Static Export

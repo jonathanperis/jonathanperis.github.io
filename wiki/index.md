@@ -8,7 +8,7 @@ Personal developer portfolio for **Jonathan Peris** — Software Engineer with 1
 
 - Developer-themed dark UI with terminal aesthetic
 - Typing role animation, scroll animations, progress bar
-- Dynamic GitHub pinned repos fetched at build time via GraphQL API
+- Dynamic Workbench repository ledger fetched at build time via GitHub GraphQL + Pages REST APIs
 - Print-optimized resume page generated from shared data (`/resume`)
 - Interactive terminal easter egg (Konami code)
 - SEO optimized: JSON-LD, sitemap, robots.txt, Open Graph, Twitter cards
