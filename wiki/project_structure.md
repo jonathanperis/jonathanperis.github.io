@@ -39,7 +39,7 @@ jonathanperis.github.io/
 | File | Role |
 |---|---|
 | `src/lib/data.ts` | All profile data — availability, operating signals, engineering principles, experiences, skills, education, socials, and legacy featured-project records. Shared by portfolio, resume, and JSON-LD. |
-| `src/lib/github.ts` | Fetches profile pinned repositories and owned public non-fork repositories, excludes metadata repos, resolves GitHub Pages URLs, and falls back to hardcoded data when no token is available. |
+| GitHub data client (`src/lib/`) | Fetches profile pinned repositories and owned public non-fork repositories, excludes metadata repos, resolves GitHub Pages URLs, and falls back to hardcoded data when no token is available. |
 | `src/components/Portfolio.tsx` | Interactive home UI — hero, profile packet, capability map, experience trace, Workbench project cards, social/contact surface, and terminal easter egg. |
 | `src/pages/resume.astro` | Print-optimized resume page. The "Download PDF" button triggers the browser print dialog. |
 | `src/layouts/RootLayout.astro` | Shared page shell with canonical links, Open Graph/Twitter tags, fonts, JSON-LD, manifest, icons, and analytics. |
