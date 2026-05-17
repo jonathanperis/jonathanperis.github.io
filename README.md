@@ -1,6 +1,6 @@
 # jonathanperis.github.io
 
-> Personal developer portfolio built with Next.js — dynamically fetches GitHub projects, dark terminal aesthetic, print-optimized resume
+> Personal developer portfolio built with Astro — dynamically fetches GitHub projects, dark terminal aesthetic, print-optimized resume
 
 [![Build Check](https://github.com/jonathanperis/jonathanperis.github.io/actions/workflows/build-check.yml/badge.svg)](https://github.com/jonathanperis/jonathanperis.github.io/actions/workflows/build-check.yml) [![Main Release](https://github.com/jonathanperis/jonathanperis.github.io/actions/workflows/main-release.yml/badge.svg)](https://github.com/jonathanperis/jonathanperis.github.io/actions/workflows/main-release.yml) [![CodeQL](https://github.com/jonathanperis/jonathanperis.github.io/actions/workflows/codeql.yml/badge.svg)](https://github.com/jonathanperis/jonathanperis.github.io/actions/workflows/codeql.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
@@ -10,7 +10,7 @@
 
 ## About
 
-Next.js 16 App Router portfolio with a static export for GitHub Pages. It fetches pinned repositories from the GitHub GraphQL API at build time and renders them in a terminal-themed UI.
+Astro portfolio with a static export for GitHub Pages. It fetches public, non-fork repositories from the GitHub GraphQL API at build time, resolves live GitHub Pages links through the REST API, and renders them in a terminal-themed UI.
 
 The site includes a print-optimized resume page, SEO metadata, analytics, and a Konami code easter egg. The same shared data powers the on-page resume and the dedicated `/resume` route.
 
@@ -20,16 +20,17 @@ It is built to stay simple to deploy: build locally, export statically, and publ
 
 | Technology | Version | Purpose |
 |-----------|---------|---------|
-| Next.js | 16 | App Router site with static export |
-| React | 19 | UI rendering |
+| Astro | 6 | Static site build and GitHub Pages export |
+| React | 19 | Interactive portfolio UI |
 | TypeScript | Latest | Type safety |
 | Tailwind CSS | v4 | Styling system |
-| GitHub GraphQL API | v4 | Fetches pinned repos at build time |
+| GitHub GraphQL + REST APIs | v4 / REST | Fetches repositories and live Pages URLs at build time |
 | Google Analytics 4 | GA4 | Traffic and engagement analytics |
 
 ## Features
 
-- Dynamic projects from GitHub GraphQL API (pinned repos)
+- Dynamic Workbench repository ledger from GitHub GraphQL API (public, non-fork repos)
+- Live GitHub Pages links resolved at build time via GitHub REST API
 - Terminal-themed dark UI with typing animations and scroll effects
 - Print-optimized resume page with download support
 - PWA manifest and SEO optimizations
@@ -40,18 +41,18 @@ It is built to stay simple to deploy: build locally, export statically, and publ
 
 ### Prerequisites
 
-- Node.js 18+, npm
+- Node.js 22+, Bun
 
 ### Quick Start
 
 ```bash
 git clone https://github.com/jonathanperis/jonathanperis.github.io.git
 cd jonathanperis.github.io
-npm install
-npm run dev
+bun install
+bun run dev
 ```
 
-Open http://localhost:3000
+Open http://localhost:4321
 
 ## CI/CD
 
