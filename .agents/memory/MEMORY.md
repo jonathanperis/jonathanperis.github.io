@@ -1,0 +1,1 @@
+- [Architecture](architecture.md) — Astro 6 static export, React 19 hydrated portfolio island, GitHub GraphQL/REST build-time repository data, terminal UI theme, SEO/analytics, and shared data layer design
