@@ -1,6 +1,6 @@
-# jonathanperis.github.io — Claude Code Guide
+# jonathanperis.github.io — AGENTS Guide
 
-Personal developer portfolio built with Astro 6 and React 19, deployed as a static site to GitHub Pages.
+Standardized repository instructions for agent harnesses working on this Astro 6 and React 19 static portfolio, deployed to GitHub Pages.
 
 **Live:** https://jonathanperis.github.io/
 
@@ -149,5 +149,5 @@ jonathanperis.github.io/
 
 - Use the `gh` CLI for GitHub operations.
 - Use Bun, not npm, for install/build commands in this repo.
-- Keep README/wiki/Claude docs aligned with the Astro source tree (`src/...`) and workflow files.
+- Keep README/wiki/AGENTS docs aligned with the Astro source tree (`src/...`) and workflow files.
 - Commit messages should use Conventional Commits (`feat:`, `fix:`, `docs:`, `chore:`).
