@@ -1,258 +1,725 @@
----
-version: alpha
-name: Jonathan Peris Developer Portfolio
-description: "Systems-console portfolio for a senior backend engineer: precise, dark, operational, and proof-oriented."
-colors:
-  primary: "#4ADE80"
-  background: "#08120D"
-  surface: "#101C15"
-  elevated: "#17271D"
-  border: "#294333"
-  border-strong: "#3B604A"
-  text: "#EEF8F0"
-  muted: "#B2C8B9"
-  dim: "#758B7C"
-  accent: "#4ADE80"
-  accent-light: "#86EFAC"
-  accent-dim: "#22C55E"
-  cyan: "#22D3EE"
-  purple: "#C084FC"
-  amber: "#F59E0B"
-  rose: "#FB7185"
-typography:
-  display:
-    fontFamily: DM Sans
-    fontSize: 4rem
-    fontWeight: 800
-    lineHeight: 1
-    letterSpacing: "-0.06em"
-  h1:
-    fontFamily: DM Sans
-    fontSize: 3.5rem
-    fontWeight: 800
-    lineHeight: 1.05
-    letterSpacing: "-0.05em"
-  h2:
-    fontFamily: DM Sans
-    fontSize: 2rem
-    fontWeight: 750
-    lineHeight: 1.1
-    letterSpacing: "-0.04em"
-  body:
-    fontFamily: DM Sans
-    fontSize: 1rem
-    fontWeight: 400
-    lineHeight: 1.65
-    letterSpacing: "0em"
-  small-mono:
-    fontFamily: JetBrains Mono
-    fontSize: 0.75rem
-    fontWeight: 600
-    lineHeight: 1.4
-    letterSpacing: "0.08em"
-rounded:
-  sm: 6px
-  md: 12px
-  lg: 18px
-  xl: 28px
-spacing:
-  xs: 4px
-  sm: 8px
-  md: 16px
-  lg: 24px
-  xl: 40px
-  xxl: 64px
-components:
-  page:
-    backgroundColor: "{colors.background}"
-    textColor: "{colors.muted}"
-  card:
-    backgroundColor: "{colors.surface}"
-    textColor: "{colors.text}"
-    rounded: "{rounded.md}"
-    padding: 24px
-  card-hover:
-    backgroundColor: "{colors.elevated}"
-    textColor: "{colors.text}"
-    rounded: "{rounded.md}"
-  button-primary:
-    backgroundColor: "{colors.primary}"
-    textColor: "{colors.background}"
-    rounded: "{rounded.sm}"
-    padding: 12px
-  button-secondary:
-    backgroundColor: "{colors.surface}"
-    textColor: "{colors.accent-light}"
-    rounded: "{rounded.sm}"
-    padding: 12px
-  button-secondary-hover:
-    backgroundColor: "{colors.elevated}"
-    textColor: "{colors.accent}"
-    rounded: "{rounded.sm}"
-    padding: 12px
-  chip:
-    backgroundColor: "{colors.surface}"
-    textColor: "{colors.accent-light}"
-    rounded: "{rounded.sm}"
-    padding: 8px
-  chip-muted:
-    backgroundColor: "{colors.background}"
-    textColor: "{colors.dim}"
-    rounded: "{rounded.sm}"
-    padding: 8px
-  card-outline:
-    backgroundColor: "{colors.border}"
-    textColor: "{colors.text}"
-    rounded: "{rounded.md}"
-    padding: 16px
-  card-outline-hover:
-    backgroundColor: "{colors.border-strong}"
-    textColor: "{colors.text}"
-    rounded: "{rounded.md}"
-    padding: 16px
-  terminal:
-    backgroundColor: "{colors.background}"
-    textColor: "{colors.text}"
-    rounded: "{rounded.lg}"
-    padding: 16px
-  terminal-prompt:
-    backgroundColor: "{colors.background}"
-    textColor: "{colors.accent-dim}"
-    rounded: "{rounded.sm}"
-    padding: 4px
-  tag-cyan:
-    backgroundColor: "{colors.surface}"
-    textColor: "{colors.cyan}"
-    rounded: "{rounded.sm}"
-    padding: 8px
-  tag-purple:
-    backgroundColor: "{colors.surface}"
-    textColor: "{colors.purple}"
-    rounded: "{rounded.sm}"
-    padding: 8px
-  tag-amber:
-    backgroundColor: "{colors.surface}"
-    textColor: "{colors.amber}"
-    rounded: "{rounded.sm}"
-    padding: 8px
-  tag-rose:
-    backgroundColor: "{colors.surface}"
-    textColor: "{colors.rose}"
-    rounded: "{rounded.sm}"
-    padding: 8px
----
+# DESIGN.md — Jonathan Peris Portfolio Overhaul
 
-## Overview
+_Last audited: 2026-05-17T00:17:09Z_
 
-This design system supports `PRODUCT.md`: a proof-oriented portfolio for Jonathan Peris, a senior backend/platform engineer. The interface should feel like an operating console, deployment ledger, trace viewer, or systems manual — not like a generic portfolio template.
+## Design intent
 
-The visual mood is dark green-black, precise, calm, and technical. It should communicate engineering maturity: clear hierarchy, restrained motion, strong text contrast, and small operational details that reward technical visitors without slowing down recruiters.
+The redesign should feel like the same site, only sharper. Preserve the dark technical operator aesthetic, but make every console metaphor earn its place by improving clarity, proof, or conversion.
 
-The strongest design idea is **developer-ish but not gimmicky**: routes, manifests, chips, ledgers, traces, shell affordances, and repository cards are welcome; fake danger, hacker-roleplay, neon overload, and illegible cyberpunk effects are not.
+The current visual language is strong enough to keep:
 
-## Colors
+- dark green-black background,
+- subtle grid/noise overlays,
+- terminal/YAML/system-status language,
+- route-like navigation,
+- monospace metadata,
+- neon green accent system,
+- restrained cards and borders,
+- hidden shell/easter egg.
 
-- **Background (`#08120D`)** anchors the site in a dark operational workspace.
-- **Surface (`#101C15`)** and **elevated (`#17271D`)** separate cards, panels, and terminal areas without bright boxes.
-- **Text (`#EEF8F0`)** is used for important copy and headings.
-- **Muted (`#B2C8B9`)** is the default long-form reading color.
-- **Dim (`#758B7C`)** is reserved for metadata, timestamps, route labels, and secondary captions.
-- **Accent (`#4ADE80`)** is the primary interaction and status color. It implies healthy systems, deploy readiness, and availability.
-- **Accent light (`#86EFAC`)** can highlight hover states, active labels, and emphasized links.
-- **Cyan, purple, amber, and rose** are supporting syntax/status colors. Use sparingly for language dots, stack tags, or code-like semantics.
+The overhaul should not introduce a generic SaaS/agency visual system. It should turn the existing “small systems manual” direction into a premium, legible, proof-led portfolio.
 
-Use the accent color as a precision instrument, not a flood fill. Large panels should stay dark; green should mark state, focus, and the most important calls to action.
+## Design diagnosis
+
+### Strengths
+
+- Memorable hero: large `Jonathan Peris` wordmark-like heading creates a strong first impression.
+- Distinct aesthetic: backend-console mood fits Jonathan’s .NET/Azure/backend architecture positioning.
+- Clear availability: `Open to remote roles + consulting` appears immediately.
+- Strong technical signals: .NET, Azure, production systems, architecture, delivery discipline.
+- Good base interaction model: route nav, resume CTA, LinkedIn CTA, social links, hidden terminal.
+- Avoids common portfolio clichés: no stock illustrations, generic gradient hero, or empty “passionate developer” language.
+
+### Weaknesses to address
+
+- Hero copy can be more outcome-specific.
+- Current YAML card is attractive but partially redundant.
+- `View resume` is visually primary while `contact` is secondary; this may not match consulting goals.
+- Stylized labels can obscure meaning for non-engineer visitors.
+- Some sections are sparse relative to the page length.
+- Card modules risk becoming repetitive if every section has the same rhythm.
+- Workbench/repository sections need stronger proof framing.
+- Very dim labels and small monospace text may reduce readability.
+
+## Brand attributes
+
+Use these as design filters:
+
+- Senior, not flashy.
+- Technical, not cryptic.
+- Calm under production pressure.
+- Pragmatic architecture over architecture theater.
+- Dark, precise, operational, slightly playful.
+- Brazilian remote-first engineer comfortable with US teams.
+- Reliable systems manual, not startup landing page.
+
+## Visual principles
+
+### 1. Console as structure, not decoration
+
+Use terminal/YAML/repo metaphors only where they help visitors parse content.
+
+Good uses:
+
+- hero operating profile,
+- capability maps,
+- experience logs,
+- case files,
+- contact packet,
+- hidden shell.
+
+Risky uses:
+
+- decorative fake code with no new information,
+- obscure labels without plain-English support,
+- too many `status: healthy` cards saying the same thing.
+
+### 2. Proof before atmosphere in lower sections
+
+The hero can carry atmosphere. The rest of the page must carry evidence:
+
+- outcomes,
+- domains,
+- stacks,
+- shipped artifacts,
+- project purpose,
+- production constraints,
+- repository links.
+
+### 3. Hybrid labels
+
+Keep technical labels, but pair them with plain-English intent.
+
+Examples:
+
+```text
+TRACE 01 — Profile packet / how I work
+TRACE 02 — Capability map / what I help with
+TRACE 03 — Experience trace / selected roles
+TRACE 04 — Workbench / public proof
+TRACE 05 — Contact packet / open channel
+```
+
+### 4. Conversion without salesiness
+
+The site can ask for action directly without breaking the aesthetic.
+
+Use:
+
+- `Start conversation`,
+- `Contact on LinkedIn`,
+- `Email Jonathan`,
+- `View resume.pdf`,
+- `Open GitHub`.
+
+Avoid over-cute CTAs where clarity matters. `run contact.sh` can be a flourish, but the accessible label should be clear.
+
+## Information architecture
+
+Recommended page order:
+
+1. Hero / operating profile.
+2. Profile packet / how Jonathan works.
+3. Capability map / what Jonathan helps with.
+4. Experience trace / selected roles and domains.
+5. Workbench / public proof and case files.
+6. Repository tail / curated artifacts.
+7. Contact packet / final CTA.
+8. Footer / social links / hidden shell clue.
+
+## Hero design specification
+
+### Current hero pattern
+
+Left:
+
+- availability pill,
+- huge name,
+- role line,
+- one-sentence lede,
+- resume/contact buttons,
+- operating signal strip.
+
+Right:
+
+- YAML deploy ledger card.
+
+This layout should remain, but the copy hierarchy should change.
+
+### Recommended hero wireframe
+
+```text
+┌────────────────────────────────────────────────────────────────────┐
+│ jp.                                 /profile /trace /workbench CTA │
+├────────────────────────────────────────────────────────────────────┤
+│ [available: remote roles + select consulting]                      │
+│                                                                    │
+│ Jonathan Peris                           ┌─ operating-profile.yaml │
+│ Backend architecture for                 │ status: available       │
+│ production .NET systems.                 │ best_for:               │
+│                                          │  - .NET modernization   │
+│ I help teams clarify boundaries,         │  - Azure delivery       │
+│ ship safer releases, and keep            │  - reliability work     │
+│ critical systems operable after launch.  │ signals:                │
+│                                          │  - 12+ yrs production   │
+│ [Start conversation] [View resume.pdf]   │  - remote BR -> US      │
+│                                          └─────────────────────────│
+│ [12+ yrs] [.NET/Azure] [Remote] [Architecture + delivery]          │
+└────────────────────────────────────────────────────────────────────┘
+```
+
+### Hero A/B variants
+
+#### Variant A — Resume-first
+
+Primary button: `View resume`
+Secondary button: `Contact on LinkedIn`
+
+Best for recruiter traffic.
+
+#### Variant B — Contact-first
+
+Primary button: `Start conversation`
+Secondary button: `View resume.pdf`
+
+Best for consulting and high-intent referrals.
+
+#### Variant C — Split intent
+
+Primary button group:
+
+- `Hiring? View resume`
+- `Need architecture help? Contact`
+
+Best when audience is mixed and traffic is not yet segmented.
+
+## Color system
+
+Current tokens already use OKLCH and should remain broadly intact.
+
+### Existing mood
+
+- Background: near-black green.
+- Surface: dark green-grey.
+- Border: muted green-grey.
+- Text: off-white/green-white.
+- Accent: neon green.
+- Support accents: cyan, purple, amber, rose.
+
+### Adjustments
+
+1. Increase contrast for muted body copy and tiny labels.
+2. Reserve brightest green for primary actions and active status.
+3. Use support accents by content type, not randomly:
+   - green: primary CTA / availability / status,
+   - cyan: cloud/platform/delivery,
+   - purple: architecture/modeling,
+   - amber: experience/timeline,
+   - rose: warnings, constraints, incident/reliability notes.
+
+### Suggested semantic roles
+
+```css
+--intent-primary: var(--color-green);
+--intent-platform: var(--color-cyan);
+--intent-architecture: var(--color-purple);
+--intent-delivery: var(--color-amber);
+--intent-risk: var(--color-rose);
+```
 
 ## Typography
 
-Use **DM Sans** for both display and body text. The brand should feel modern, legible, and engineered rather than editorial or ornamental.
+### Keep
 
-Use **JetBrains Mono** for:
+- DM Sans for readable body/display text.
+- JetBrains Mono/Fira Code for metadata, tags, route labels, YAML, and shell affordances.
 
-- route-style labels (`/profile`, `/trace`, `/workbench`),
-- metadata and timestamps,
-- shell content,
-- manifest/YAML snippets,
-- small tags and status chips.
+### Improve
 
-Large headings should be compact and assertive, with tight negative tracking. Avoid decorative serif display type for this version; the product direction is operational clarity, not magazine polish.
+- Increase paragraph line-height where text is long.
+- Avoid making important content too dim or too small.
+- Use monospace as accent, not as the default reading mode.
 
-## Layout
+### Hierarchy target
 
-The layout should read like a technical dossier:
+- H1: extremely large, but responsive with controlled wrapping.
+- Section H2: large enough to reset attention after hero.
+- Card H3: clear, plain-language titles.
+- Metadata: small but contrast-safe.
 
-1. **Hero / command surface:** immediate name, availability, role, remote context, resume/contact CTAs, and a manifest-like proof panel.
-2. **Profile packet:** concise summary of Jonathan's value proposition and operating principles.
-3. **Capability map:** stack grouped by language, backend, architecture, cloud, data, and frontend.
-4. **Experience trace:** chronological production history with the current role visually elevated.
-5. **Workbench:** curated featured projects before dynamic repository tail.
-6. **Repository tail and footer:** more proof and socials, without exposing the shell trigger.
+## Layout rhythm
 
-Spacing should be generous enough to feel calm, but dense enough to preserve a systems-console rhythm. Prefer grids, ledgers, and cards over large decorative illustrations.
+### Current risk
 
-## Elevation & Depth
+Some vertical gaps feel atmospheric but can read as unfinished. The page has enough total content, but rhythm should be tightened so each scroll reveals meaningful proof.
 
-Depth is subtle and mostly structural:
+### Recommended rhythm
 
-- 1px borders for cards and panels.
-- Low-opacity green glows only on hero atmosphere, active states, and hover emphasis.
-- Noise/dot overlays may add texture, but must stay quiet and never reduce text readability.
-- Avoid glassmorphism that makes text sit on unstable backgrounds.
+- Hero: spacious, cinematic.
+- Profile: medium density, editorial.
+- Capability: denser grid; easy to scan.
+- Experience: timeline/log rhythm.
+- Workbench: larger case-file cards with varied spans.
+- Repository tail: compact list/table.
+- Contact packet: strong final block.
 
-Hover states can lift a card with a stronger border and shadow, but the base page should remain still and professional.
+## Component specifications
 
-## Shapes
+### Availability pill
 
-Use mostly rectangular cards with modest rounding:
+Purpose: immediate status.
 
-- `6px` for chips, buttons, and compact tags.
-- `12px` for cards and code panels.
-- `18px` to `28px` for large hero/terminal surfaces.
+Content examples:
 
-Do not use pill shapes everywhere. Reserve pills for availability/status indicators and high-level signals.
+```text
+available: remote roles + select consulting
+operator status: available
+remote-first / Brazil -> US teams
+```
 
-## Components
+Design:
+
+- Green dot plus text.
+- High enough contrast to read quickly.
+- Should not be the only place availability appears.
+
+### Operating profile card
+
+Replace or evolve `deploy-ledger.yaml`.
+
+Recommended content:
+
+```yaml
+operator: Jonathan Peris
+mode: senior backend / consulting
+best_for:
+  - production .NET systems
+  - Azure delivery discipline
+  - architecture recovery
+  - reliability after launch
+signals:
+  - 12+ years production software
+  - finance / automotive / education
+  - remote Brazil to US teams
+```
+
+Design:
+
+- Keep code-block/YAML style.
+- Use syntax-style color accents sparingly.
+- Add line-height for readability.
+- Avoid duplicating hero signals verbatim.
+
+### Signal strip
+
+Current signals are useful. Keep but refine.
+
+Recommended copy:
+
+- `12+ yrs` / `shipping production software`
+- `.NET + Azure` / `primary backend lane`
+- `Remote` / `Brazil -> US teams`
+- `Systems` / `architecture + delivery ownership`
+
+### Section label
+
+Current `TRACE NN` works. Add hybrid naming.
+
+Design:
+
+```text
+TRACE 02
+Capability map / what I help with
+```
+
+Use metadata label plus plain-language subtitle where useful.
+
+### Profile proof strip
+
+Add below profile paragraphs.
+
+Layout:
+
+```text
+[boundaries] [tests + CI/CD] [production ownership] [remote teams]
+```
+
+or compact rows:
+
+```text
+01 define boundaries that reduce operational cost
+02 ship with tests and delivery feedback loops
+03 document systems so the next engineer can operate them
+04 keep architecture pragmatic under production constraints
+```
+
+### Capability card
+
+Move from pure skill list to problem-oriented cards.
+
+Card schema:
+
+```text
+/path/backend-architecture
+title: Architecture recovery
+helps_with: unclear ownership, service boundaries, modularization
+stack: CQRS, DDD, clean architecture, .NET APIs
+```
+
+### Experience trace entry
+
+Recommended schema:
+
+```text
+00  Jul 2023 — Present
+Software Engineer @ Derivative Path
+Domain: financial platforms
+Stack: .NET 8, SQL Server, CQRS, Azure DevOps
+Impact: backend modules for accounting/fiscal workflows; maintainable delivery in production platform
+```
+
+Design:
+
+- Keep timeline/log feel.
+- Make company/role clear.
+- Add domain chips if possible.
+- Avoid long paragraphs without scan anchors.
+
+### Workbench case file
+
+Current project cards should become proof-first cards.
+
+Schema:
+
+```text
+CASE 01 / runtime lab
+Speedy Bird
+signal: cross-platform native UI experiment
+proof: Lynx + TypeScript + CI/CD + browser deploy
+actions: Source / Live
+```
+
+Use `signal`, `proof`, `stack`, and `actions` consistently.
+
+### Repository tail
+
+Design as a compact repo index.
+
+Schema:
+
+```text
+repo: blazor-mudblazor-starter
+summary: Blazor + MudBlazor starter template
+signal: reusable frontend/backend starter
+stack: C# / Blazor
+links: source / site
+```
+
+Consider showing fewer repos with better labels rather than more raw rows.
+
+### Contact packet
+
+Add a strong final CTA before footer.
+
+Wireframe:
+
+```text
+/contact_packet.yaml
+status: available for remote roles + select consulting
+best_fit:
+  - backend architecture
+  - .NET/Azure modernization
+  - delivery/reliability cleanup
+channels:
+  - LinkedIn
+  - email
+artifact: resume.pdf
+
+[Start conversation] [View resume] [Open GitHub]
+```
+
+## Interaction design
 
 ### Navigation
 
-Navigation may use route-like labels and should stay sticky. Keep the resume/contact path visible and obvious.
+- Keep sticky/nav route styling.
+- Add visible contact action or make `resume.pdf` less monopolizing depending on CTA experiment.
+- Active section indication would improve orientation on long page.
 
-### Hero manifest / deploy ledger
+### Hidden shell
 
-The hero proof panel may resemble YAML, a deploy ledger, or a terminal card. It should contain truthful product signals: experience, current lane, location/remote fit, availability, and key stack.
+Keep as an easter egg. It reinforces the brand and adds personality.
 
-### Cards
+Requirements:
 
-Cards should be information-dense but not cramped. Each card needs a clear title, metadata, and one concise proof statement. Featured project cards can use language color accents, but the surrounding panel should remain in the main palette.
+- Must not block normal keyboard navigation.
+- Must have accessible dialog labeling.
+- Should respect reduced motion if animated.
+- Analytics event `shell_open` can measure whether it is discovered.
 
-### Tags and chips
+### Project links
 
-Tags are metadata, not decoration. Use them to make stack and domain fit scannable. Avoid turning every noun into a chip.
+Project cards should clearly separate:
 
-### Terminal / shell
+- Source,
+- Live/demo,
+- Docs if available.
 
-The shell is a progressive enhancement and personality layer. It is an easter egg, not a visible feature: do not add an "open shell" button, footer instruction, or explicit activation hint in the primary UI. It must not be the only way to access resume, contact, stack, or availability information. Keyboard behavior should be predictable after discovery: `Enter` submits, `Escape` closes, and focus is visible.
+Use descriptive labels for accessibility, not only “Source” repeated without context.
 
-### CTAs
+## Responsive design
 
-Primary CTA: resume/contact/hire path. Secondary CTA: GitHub, LinkedIn, and project links. Do not expose the shell as a CTA. CTAs should use clear verbs and preserve native link behavior.
+Test breakpoints:
 
-## Do's and Don'ts
+- 390px mobile,
+- 768px tablet,
+- 1024px small laptop,
+- 1440px desktop.
 
-### Do
+### Mobile order
 
-- Make seniority, .NET/backend depth, remote readiness, and availability visible immediately.
-- Use operational metaphors: traces, manifests, ledgers, workbench, status, signals.
-- Keep claims tied to proof: current role, project links, stack groups, and work history.
-- Keep contrast high and body copy readable on dark backgrounds.
-- Use CSS-first motion and respect reduced-motion preferences when adding new animation.
-- Keep frequently edited content in `src/lib/data.ts`.
+1. Nav/logo/compact CTA.
+2. Availability pill.
+3. Name.
+4. Value proposition.
+5. Primary/secondary CTA.
+6. Signal strip.
+7. Operating profile card.
+8. Profile/capability/proof.
 
-### Don't
+### Mobile concerns
 
-- Don't make the site feel like a crypto, hacker, cyberpunk, or gaming landing page.
-- Don't hide contact or resume behind easter eggs.
-- Don't overuse neon green, blur, scanlines, or fake terminal noise.
-- Don't inflate claims beyond what `PRODUCT.md`, work history, and repositories support.
-- Don't replace human clarity with clever labels; route-style copy must still be understandable.
-- Don't introduce heavy runtime dependencies for purely decorative effects.
+- H1 must not cause awkward overflow.
+- YAML card should wrap cleanly or become a compact card.
+- Nav links may need horizontal scroll, menu, or reduced labels.
+- CTA buttons should stack with clear tap targets.
+- Cards should not rely on hover-only affordances.
+
+## Accessibility checklist
+
+- Maintain semantic headings in page order.
+- Ensure `aria-label`s on icon-only links.
+- Ensure focus-visible states on all links/buttons.
+- Keep touch targets at least 44px where practical.
+- Avoid low-contrast dim metadata for important text.
+- Do not rely solely on green to communicate state.
+- Honor `prefers-reduced-motion` for reveal and cursor effects.
+- Terminal dialog should trap or cycle focus appropriately and close with Escape.
+- Repeated “Source” and “Live” links should include context via accessible labels.
+
+## A/B test design details
+
+### Variant implementation approach
+
+Start lightweight:
+
+- Derive variant from query param, e.g. `?variant=contact-first`.
+- Store in `localStorage` for repeat consistency.
+- Include variant in every `trackEvent` payload.
+- Keep default as current or safest variant.
+
+Possible variants:
+
+```ts
+const VARIANTS = {
+  cta: "resume-first" | "contact-first" | "split-intent",
+  heroCopy: "stack" | "production-dotnet" | "legible-traffic",
+  card: "bio-ledger" | "best-for" | "case-status",
+  labels: "stylized" | "hybrid",
+  workbench: "project-grid" | "case-files" | "repo-tree",
+};
+```
+
+### Experiment cards
+
+#### Experiment A — CTA order
+
+Control:
+
+```text
+[View resume] [Contact on LinkedIn]
+```
+
+Variant:
+
+```text
+[Start conversation] [View resume.pdf]
+```
+
+Success metric:
+
+- Contact click rate.
+- Resume click rate.
+- Total CTA click rate.
+
+#### Experiment B — Hero copy
+
+Control:
+
+```text
+Backend architecture / .NET / Azure
+```
+
+Variant 1:
+
+```text
+Backend architecture for production .NET systems
+```
+
+Variant 2:
+
+```text
+Backend systems that stay legible under real traffic
+```
+
+Success metric:
+
+- First-viewport CTA clicks.
+- Bounce rate.
+- Scroll to profile/capability sections.
+
+#### Experiment C — Operating card
+
+Control:
+
+```yaml
+operator/location/status/focus/runtime
+```
+
+Variant:
+
+```yaml
+mode/best_for/signals
+```
+
+Success metric:
+
+- Hero CTA clicks.
+- Scroll depth to Workbench.
+- Time on page.
+
+#### Experiment D — Label clarity
+
+Control:
+
+```text
+Profile packet
+Capability map
+Experience trace
+Workbench
+```
+
+Variant:
+
+```text
+Profile packet / how I work
+Capability map / what I help with
+Experience trace / selected roles
+Workbench / public proof
+```
+
+Success metric:
+
+- Scroll depth by section.
+- Nav click rate.
+- Reduced bounce from non-GitHub referrers.
+
+#### Experiment E — Workbench proof framing
+
+Control:
+
+- Current project card grid.
+
+Variant:
+
+- Case-file cards with `signal`, `proof`, and explicit action labels.
+
+Success metric:
+
+- Project source/live click-through.
+- Scroll depth past Workbench.
+- Contact clicks after Workbench.
+
+#### Experiment F — Final contact packet
+
+Control:
+
+- Footer with social icons only.
+
+Variant:
+
+- Full-width terminal/YAML contact card above footer.
+
+Success metric:
+
+- Footer/contact click-through.
+- Resume clicks after scroll >75%.
+
+## Content examples
+
+### Hero copy candidates
+
+```text
+Backend architecture for production .NET systems.
+```
+
+```text
+I help teams clarify boundaries, ship safer releases, and keep critical systems operable after launch.
+```
+
+```text
+.NET / Azure systems that stay legible under real traffic.
+```
+
+### Capability cards
+
+```text
+Architecture recovery
+For teams with unclear service ownership, tangled domains, or fragile modernization paths.
+```
+
+```text
+Delivery discipline
+CI/CD, tests, release loops, and documentation that keep architecture honest after launch.
+```
+
+```text
+Production backend systems
+C#, .NET, SQL Server, PostgreSQL, Azure, Docker, and APIs designed for ownership.
+```
+
+```text
+Remote technical leadership
+Brazil-to-US collaboration, async clarity, and engineering decisions written down.
+```
+
+### Final CTA
+
+```text
+If your backend needs clearer boundaries, safer delivery, or calmer production ownership:
+[Start conversation] [View resume.pdf]
+```
+
+## QA checklist for implementation
+
+Before merging an overhaul:
+
+- Run typecheck/build with Bun in this repo.
+- Inspect desktop, tablet, and mobile in browser.
+- Verify no horizontal overflow at 390px.
+- Verify resume route and external social/project links.
+- Verify analytics events still fire and include variant labels.
+- Verify hidden shell still opens/closes and returns focus.
+- Verify reduced motion behavior.
+- Confirm Lighthouse/accessibility issues are not introduced.
+
+## Design success criteria
+
+The redesign succeeds if:
+
+- The site still feels unmistakably like a dark systems-console portfolio.
+- A recruiter can understand Jonathan’s role and download the resume quickly.
+- A consulting lead can understand what backend problems Jonathan helps solve.
+- Workbench cards communicate proof, not only project names.
+- The page ends with an intentional contact path.
+- A/B variants can be tested without duplicating the whole page.
