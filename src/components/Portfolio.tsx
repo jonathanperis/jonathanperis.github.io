@@ -162,6 +162,7 @@ function projectLane(project: (typeof FEATURED_PROJECTS)[number]) {
 export default function Portfolio({ projects }: { projects: GitHubRepo[] }) {
   const scrollProgress = useScrollProgress();
   const featuredSlugs = useMemo(() => new Set(FEATURED_PROJECTS.map((fp) => fp.slug)), []);
+  const workbenchRepos = useMemo(() => projects.filter((project) => !featuredSlugs.has(project.title)), [featuredSlugs, projects]);
 
   const [termOpen, setTermOpen] = useState(false);
   const [termInput, setTermInput] = useState("");
@@ -395,14 +396,16 @@ export default function Portfolio({ projects }: { projects: GitHubRepo[] }) {
                 </Reveal>
               ))}
             </div>
-          </section>
 
-          <section className="content-section" aria-labelledby="repos-heading">
-            <Reveal>
-              <SectionLabel id="repos-heading" number="05">Repository tail</SectionLabel>
+            <Reveal delay={320}>
+              <div className="repo-ledger-heading">
+                <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-dim">public repository ledger</p>
+                <h3>All non-fork GitHub work</h3>
+                <p>Fetched at build time from GitHub, excluding this portfolio, profile metadata, collaborator repos, and forks. Pages links resolve from each repository's live GitHub Pages site.</p>
+              </div>
             </Reveal>
             <div className="repo-table" role="list">
-              {projects.filter((p) => !featuredSlugs.has(p.title) && p.title !== ".github").slice(0, 8).map((project, index) => (
+              {workbenchRepos.map((project, index) => (
                 <Reveal key={project.title} delay={index * 35}>
                   <article role="listitem" className="repo-row">
                     <a href={project.url} target="_blank" rel="noreferrer noopener">{project.title}</a>
@@ -410,13 +413,14 @@ export default function Portfolio({ projects }: { projects: GitHubRepo[] }) {
                     <div>
                       {project.stars > 0 && <span>{project.stars} stars</span>}
                       {project.lang && <span>{project.lang}</span>}
-                      {project.homepageUrl && <a href={project.homepageUrl} target="_blank" rel="noreferrer noopener">site</a>}
+                      {project.pagesUrl && <a href={project.pagesUrl} target="_blank" rel="noreferrer noopener">GitHub Pages</a>}
+                      {project.homepageUrl && project.homepageUrl !== project.pagesUrl && <a href={project.homepageUrl} target="_blank" rel="noreferrer noopener">homepage</a>}
                     </div>
                   </article>
                 </Reveal>
               ))}
             </div>
-            <Reveal delay={320}>
+            <Reveal delay={workbenchRepos.length * 35 + 120}>
               <a href="https://github.com/jonathanperis" target="_blank" rel="noreferrer noopener" className="github-tail">View all repositories on GitHub</a>
             </Reveal>
           </section>

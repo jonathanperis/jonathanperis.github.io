@@ -739,6 +739,22 @@ body::after {
   color: var(--color-green);
 }
 
+.repo-ledger-heading {
+  max-width: 760px;
+  margin: 2.5rem 0 1rem;
+}
+.repo-ledger-heading h3 {
+  margin-top: 0.35rem;
+  color: var(--color-text);
+  font-size: clamp(1.35rem, 3vw, 2rem);
+  font-weight: 850;
+}
+.repo-ledger-heading > p:last-child {
+  margin-top: 0.55rem;
+  color: var(--color-muted);
+  line-height: 1.65;
+}
+
 .repo-table {
   display: grid;
   border-top: 1px solid var(--color-border);
