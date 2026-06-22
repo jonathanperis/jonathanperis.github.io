@@ -1,6 +1,6 @@
 # jonathanperis.github.io — AGENTS Guide
 
-Standardized repository instructions for agent harnesses working on this Astro 6 and React 19 static portfolio, deployed to GitHub Pages.
+Standardized repository instructions for agent harnesses working on this Astro 7 and React 19 static portfolio, deployed to GitHub Pages.
 
 **Live:** https://jonathanperis.github.io/
 
@@ -10,7 +10,7 @@ Standardized repository instructions for agent harnesses working on this Astro 6
 
 | Technology | Purpose |
 |-----------|---------|
-| Astro 6 | Static site build and GitHub Pages export |
+| Astro 7 | Static site build and GitHub Pages export; Rust compiler, Vite 8, queued rendering, and background dev server support |
 | React 19 | Hydrated interactive portfolio UI |
 | TypeScript 6 | Strict type checking through `astro/tsconfigs/strict` |
 | Tailwind CSS 4 | Custom low-glare terminal-style design system via `@tailwindcss/vite` |
@@ -25,6 +25,10 @@ Standardized repository instructions for agent harnesses working on this Astro 6
 ```sh
 bun install       # install dependencies
 bun run dev       # Astro dev server on :4321
+bun run dev:bg    # Astro 7 background dev server for agent-assisted work
+bun run dev:status # check background dev server status
+bun run dev:logs  # read background dev server logs
+bun run dev:stop  # stop the background dev server
 bun run lint      # astro check
 bun run build     # static export to ./out
 bun run preview   # preview the built ./out artifact
@@ -63,6 +67,7 @@ Data layer
 ## Key Patterns
 
 - **Static export** — `astro.config.ts` sets `outDir: 'out'`; GitHub Pages deploys the generated artifact.
+- **Astro 7 fit** — This repo adopts Astro 7 for the Rust compiler, Vite 8/Rolldown path, queued rendering, and AI-friendly background dev server. It intentionally does not add `src/fetch.ts`, route cache providers, or SSR adapters while hosting remains static GitHub Pages.
 - **Build-time GitHub data** — `src/pages/index.astro` calls `fetchRepos()` during `bun run build`; the deployed browser page does not call GitHub APIs.
 - **Pinned + ledger model** — `src/lib/github.ts` fetches GitHub profile pinned repos and owned public non-fork repos, excludes metadata repos, preserves pinned order, and removes pinned repos from the lower ledger.
 - **Pages URL enrichment** — REST `GET /repos/jonathanperis/{repo}/pages` provides `pagesUrl`; standard `https://jonathanperis.github.io/<repo>/` homepage URLs are fallback Pages links.

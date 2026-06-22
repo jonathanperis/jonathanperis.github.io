@@ -18,7 +18,7 @@ The site includes a print-optimized `/resume` route, SEO metadata, JSON-LD, GA4 
 
 | Technology | Version / source | Purpose |
 |-----------|------------------|---------|
-| Astro | `^6` | Static site build and GitHub Pages export |
+| Astro | `^7` | Static site build and GitHub Pages export, Rust compiler, Vite 8, and agent-friendly dev server support |
 | React | `^19` | Interactive portfolio UI (`client:load`) |
 | TypeScript | `^6` with `astro/tsconfigs/strict` | Type safety |
 | Tailwind CSS | `^4` via `@tailwindcss/vite` | Styling system |
@@ -37,6 +37,7 @@ The site includes a print-optimized `/resume` route, SEO metadata, JSON-LD, GA4 
 - Google Analytics 4 loaded only when `PUBLIC_GA_ID` is set
 - Konami-code terminal easter egg
 - Static export deployed to GitHub Pages from `out/`
+- Astro 7 background dev server scripts for agent-assisted local inspection
 
 ## Getting Started
 
@@ -56,6 +57,15 @@ bun run dev
 ```
 
 Open <http://localhost:4321>.
+
+For agent-assisted work, Astro 7 can run the dev server in the background and expose status/log subcommands:
+
+```bash
+bun run dev:bg
+bun run dev:status
+bun run dev:logs
+bun run dev:stop
+```
 
 To build with live repository data instead of fallback data:
 

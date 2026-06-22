@@ -6,7 +6,7 @@ Personal developer portfolio for **Jonathan Peris** — Software Engineer with 1
 
 ## Current Implementation Snapshot
 
-- **Framework:** Astro 6 static site with React 19 interactive islands.
+- **Framework:** Astro 7 static site with React 19 interactive islands.
 - **Package manager:** Bun for install, lint, dev, build, and preview.
 - **Source tree:** `src/pages`, `src/components`, `src/layouts`, `src/lib`, and `src/styles`.
 - **Build output:** `out/`, uploaded as a GitHub Pages artifact by `main-release.yml`.

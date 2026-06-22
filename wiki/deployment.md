@@ -26,7 +26,15 @@ The site deploys automatically through `.github/workflows/main-release.yml` on e
 
 ## Static Export
 
-Astro builds the site into the `out/` directory configured in `astro.config.ts`. The deployed artifact is pure static HTML/CSS/JS plus files from `public/`; no server runtime is required on GitHub Pages.
+Astro 7 builds the site into the `out/` directory configured in `astro.config.ts`. The deployed artifact is pure static HTML/CSS/JS plus files from `public/`; no server runtime is required on GitHub Pages.
+
+Astro 7 features adopted here:
+
+- Rust `.astro` compiler, Vite 8/Rolldown dependency path, and queued rendering through the framework upgrade.
+- Default Sätteri Markdown pipeline through Astro itself; no explicit Markdown processor is needed because the public site is built from `.astro` pages.
+- Background dev-server commands for agent-assisted local work: `bun run dev:bg`, `bun run dev:status`, `bun run dev:logs`, and `bun run dev:stop`.
+
+Astro 7 features intentionally not adopted while the production target remains static GitHub Pages: advanced routing via `src/fetch.ts`, CDN route-cache providers, and SSR adapters.
 
 ## CI Workflows
 
