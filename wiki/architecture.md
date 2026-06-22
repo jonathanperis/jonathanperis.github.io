@@ -2,7 +2,7 @@
 
 ## Overview
 
-The site is an **Astro 6** static export deployed to **GitHub Pages**. Astro performs build-time data fetching in `src/pages/index.astro`, renders static HTML into `out/`, and hydrates the React portfolio UI with `client:load` for browser-only interactivity.
+The site is an **Astro 7** static export deployed to **GitHub Pages**. Astro performs build-time data fetching in `src/pages/index.astro`, renders static HTML into `out/`, and hydrates the React portfolio UI with `client:load` for browser-only interactivity.
 
 There is no Next.js App Router or React Server Component layer in the current codebase.
 
@@ -46,6 +46,7 @@ Runtime (static HTML + hydrated React):
 ## Key Design Decisions
 
 - **Astro static export** — `astro.config.ts` sets `outDir: 'out'`; GitHub Pages serves the generated static artifact.
+- **Astro 7 fit** — The repo uses Astro 7 for the Rust `.astro` compiler, Vite 8/Rolldown path, queued rendering, and the background dev server workflow. Advanced routing (`src/fetch.ts`), route cache providers, and server adapters are not used because the production target is static GitHub Pages.
 - **Interactive island boundary** — `Portfolio.tsx` is hydrated with `client:load`; SEO-critical metadata and document shell remain Astro-rendered.
 - **Single source of truth** — `src/lib/data.ts` contains profile, skills, education, experience, socials, and availability data shared by the portfolio, resume, and JSON-LD.
 - **Dynamic-but-build-time projects** — `src/lib/github.ts` fetches GitHub data during `bun run build`; no GitHub API calls happen from the deployed browser page.
