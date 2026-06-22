@@ -109,7 +109,7 @@ function SocialLink({ social, compact = false }: { social: (typeof SOCIALS)[numb
 const NEOFETCH = [
   "",
   "   ██╗██████╗     jonathan@workstation",
-  "   ██║██╔══██╗    runtime:   Astro 6 / React 19",
+  "   ██║██╔══██╗    runtime:   Astro 7 / React 19",
   "   ██║██████╔╝    shell:     TypeScript 6.x",
   "██ ██║██╔═══╝     uptime:    12+ years in production code",
   "╚███╔╝██║         region:    Brazil, remote-first",

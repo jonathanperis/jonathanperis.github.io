@@ -1,6 +1,6 @@
 ---
 name: Portfolio Site Architecture
-description: Astro 6 static export, React 19 hydrated portfolio island, GitHub GraphQL/REST build-time repository data, terminal UI theme, SEO/analytics strategy
+description: Astro 7 static export, React 19 hydrated portfolio island, GitHub GraphQL/REST build-time repository data, terminal UI theme, SEO/analytics strategy
 type: project
 ---
 
@@ -9,6 +9,7 @@ type: project
 - **Astro pages/layouts**: `src/pages/index.astro` fetches repository data at build time and renders the React portfolio island with `client:load`; `src/pages/resume.astro` renders the print-optimized resume route.
 - **Hydrated React island**: `src/components/Portfolio.tsx` owns the interactive homepage UI, scroll/reveal effects, project workbench, contact actions, and terminal easter egg.
 - **Static export**: `astro.config.ts` sets `output: "static"` and `outDir: "out"`; `main-release.yml` uploads that artifact for GitHub Pages.
+- **Astro 7 fit**: The repo benefits from the Rust `.astro` compiler, Vite 8/Rolldown path, queued rendering, and background dev server commands while staying static. Do not add `src/fetch.ts`, route cache providers, or SSR adapters unless hosting changes away from static GitHub Pages.
 
 **Why:** Build-time data fetching keeps the deployed site as static HTML/CSS/JS while preserving live GitHub profile/repository data when CI provides `GITHUB_TOKEN`.
 
