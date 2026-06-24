@@ -691,10 +691,14 @@ body::after {
   gap: 1rem;
 }
 .workbench-grid > .reveal:nth-child(1),
-.workbench-grid > .reveal:nth-child(4) { grid-column: span 3; }
-.workbench-grid > .reveal:nth-child(2),
+.workbench-grid > .reveal:nth-child(2) { grid-column: span 3; }
 .workbench-grid > .reveal:nth-child(3),
 .workbench-grid > .reveal:nth-child(5) { grid-column: span 2; }
+.workbench-grid > .reveal:nth-child(4),
+.workbench-grid > .reveal:nth-child(6) { grid-column: span 4; }
+.workbench-grid > .reveal:only-child,
+.workbench-grid > .reveal:nth-child(3):last-child,
+.workbench-grid > .reveal:nth-child(5):last-child { grid-column: 1 / -1; }
 .workbench-card {
   min-height: 100%;
   border: 1px solid var(--color-border);
