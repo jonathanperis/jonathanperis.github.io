@@ -4,13 +4,15 @@ Standardized repository instructions for agent harnesses working on this Astro 7
 
 **Live:** https://jonathanperis.github.io/
 
+**Documentation:** [Index](wiki/index.md) · [Setup](wiki/getting_started.md) · [Deployment](wiki/deployment.md) · [Maintenance map](wiki/index.md#keeping-documentation-current)
+
 ---
 
 ## Tech Stack
 
 | Technology | Purpose |
 |-----------|---------|
-| Astro 7 | Static site build and GitHub Pages export; Rust compiler, Vite 8, queued rendering, and background dev server support |
+| Astro 7 | Static site generation, GitHub Pages export, and background dev server support |
 | React 19 | Hydrated interactive portfolio UI |
 | TypeScript 6 | Strict type checking through `astro/tsconfigs/strict` |
 | Tailwind CSS 4 | Custom low-glare terminal-style design system via `@tailwindcss/vite` |
@@ -22,8 +24,11 @@ Standardized repository instructions for agent harnesses working on this Astro 7
 
 ## Build Commands
 
+Use Node.js **22.12.0 or later** and Bun. [`package.json`](package.json) owns the script definitions; `bun.lock` records resolved dependencies.
+
 ```sh
-bun install       # install dependencies
+bun install --frozen-lockfile # install committed dependency versions
+bun audit         # dependency audit used by PR CI
 bun run dev       # Astro dev server on :4321
 bun run dev:bg    # Astro 7 background dev server for agent-assisted work
 bun run dev:status # check background dev server status
@@ -66,15 +71,16 @@ Data layer
 
 ## Key Patterns
 
-- **Static export** — `astro.config.ts` sets `outDir: 'out'`; GitHub Pages deploys the generated artifact.
-- **Astro 7 fit** — This repo adopts Astro 7 for the Rust compiler, Vite 8/Rolldown path, queued rendering, and AI-friendly background dev server. It intentionally does not add `src/fetch.ts`, route cache providers, or SSR adapters while hosting remains static GitHub Pages.
+- **Static export** — `astro.config.ts` uses Astro's default static output, `outDir: 'out'`, and `trailingSlash: 'always'`. GitHub Pages deploys `/` and `/resume/` from the generated artifact.
+- **Hosting boundary** — Keep build-time data fetching and static hosting; SSR adapters and server-side route caches are not part of this implementation.
 - **Build-time GitHub data** — `src/pages/index.astro` calls `fetchRepos()` during `bun run build`; the deployed browser page does not call GitHub APIs.
-- **Pinned + ledger model** — `src/lib/github.ts` fetches GitHub profile pinned repos and owned public non-fork repos, excludes metadata repos, preserves pinned order, and removes pinned repos from the lower ledger.
+- **Pinned + ledger model** — `src/lib/github.ts` queries the first 100 recently updated public non-fork repos, filters owners and metadata repos, and marks the intersection with pinned names. It preserves pinned order and removes pins from the lower ledger; there is no pagination. `FEATURED_PROJECTS` in `data.ts` is legacy data without a current renderer.
 - **Pages URL enrichment** — REST `GET /repos/jonathanperis/{repo}/pages` provides `pagesUrl`; standard `https://jonathanperis.github.io/<repo>/` homepage URLs are fallback Pages links.
-- **Fallback data** — Hardcoded repos keep local builds and PR checks working when `GITHUB_TOKEN` is absent.
-- **Single profile source** — `src/lib/data.ts` powers the portfolio, resume, terminal snippets, and JSON-LD.
+- **Fallback data** — `FALLBACK` covers absent tokens and failed/unusable GraphQL fetches. Individual Pages lookup failures preserve fetched repo data and standard Pages homepage fallbacks.
+- **Shared profile data** — `src/lib/data.ts` powers the portfolio, resume, and parts of the terminal/JSON-LD. Check presentation literals in `Portfolio.tsx`, `RootLayout.astro`, `resume.astro`, and `JsonLd.astro` when updating profile facts. The separate public PDF has unresolved differences; career reconciliation is deferred by the owner.
 - **Terminal easter egg** — Konami code opens an in-page terminal. `runCmd()` in `Portfolio.tsx` handles `help`, `about`, `stack`, `contact`, `neofetch`, `git log`, `ls`, `cat availability.txt`, `whoami`, `pwd`, `date`, `sudo hire me`, `echo`, `clear`, `exit`, and `quit`.
-- **SEO** — `RootLayout.astro` emits canonical, Open Graph, Twitter, icon, manifest, alternate-language, JSON-LD, and font tags; `public/robots.txt` and `public/sitemap.xml` are included.
+- **SEO** — `RootLayout.astro` derives canonical, Open Graph URL, and English alternate URL from the page canonical path and configured site. Astro generates `sitemap-index.xml` and `sitemap-0.xml`; robots advertises the generated index. `public/sitemap.xml` preserves the old entry point as a compatibility index, without handwritten route entries or timestamps.
+- **Documentation status** — `wiki/` is repository Markdown, not a deployed documentation route; GitHub Wiki is disabled. PRODUCT/DESIGN distinguish implemented UI from proposals. Update related docs using the maintenance map above.
 
 ---
 
@@ -127,11 +133,12 @@ jonathanperis.github.io/
 
 | Workflow | Trigger | Purpose |
 |----------|---------|---------|
-| `build-check.yml` | Pull requests to `main`, manual dispatch | Bun install, `astro check`, Astro build |
-| `main-release.yml` | Push to `main`, manual dispatch | Build `out/`, upload artifact, deploy GitHub Pages |
-| `codeql.yml` | Push, PRs, weekly Monday 06:00 UTC | JavaScript/TypeScript security scanning |
+| `build-check.yml` | Pull requests to `main`, manual dispatch | Frozen Bun install, `bun audit`, `astro check`, Astro build |
+| `main-release.yml` | Push to `main`, manual dispatch on `main` | Frozen install, build `out/`, upload artifact, deploy GitHub Pages |
+| `codeql.yml` | Push/PR to `main`, Monday 06:00 UTC, manual dispatch | JavaScript/TypeScript and Actions security-and-quality analysis |
 
-- **Dependabot:** Weekly npm and GitHub Actions updates
+- **Renovate:** `renovate.json` inherits the account's shared preset for weekly dependency updates and SHA-pinned Actions; see the deployment guide for policy details
+- **Workflow permissions:** Read-only contents by default in build/release; Pages and OIDC writes scoped to the deploy job. CodeQL has security-events write permission. Actions are SHA-pinned, and checkout disables persisted credentials
 - **Merge strategy:** Rebase only (squash and merge commits disabled)
 - **Branch protection:** Main branch is protected; changes go through PRs
 - **Community health files:** CODE_OF_CONDUCT, CONTRIBUTING, SECURITY, and SUPPORT live in the [`.github` repo](https://github.com/jonathanperis/.github); do not duplicate them here
@@ -141,12 +148,12 @@ jonathanperis.github.io/
 ## Development Workflow
 
 1. Sync main first: `git fetch origin main && git switch main && git pull --ff-only origin main`
-2. Create a branch from `main`
+2. Create a descriptive `feature/<slug>` branch from current `main`
 3. Make changes and run `bun run lint` and `bun run build`
-4. Push the branch and open a PR targeting `main`
+4. When requested, commit, push the branch, and open a PR targeting `main`
 5. Watch PR checks and resolve any failures
 6. Rebase-merge when checks/review are green and merge is authorized
-7. Watch `main-release.yml`, then verify the live GitHub Pages route(s)
+7. After an authorized merge, watch `main-release.yml` and verify the live GitHub Pages route(s). Browser UI testing requires explicit user authorization
 
 ---
 

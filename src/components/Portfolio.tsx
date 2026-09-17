@@ -260,7 +260,7 @@ export default function Portfolio({ projects }: { projects: GitHubRepo[] }) {
             <a href="#profile">/profile</a>
             <a href="#trace">/trace</a>
             <a href="#workbench">/workbench</a>
-            <a href="/resume" className="route-resume" onClick={() => trackEvent("cta_click", { label: "nav_resume" })}>
+            <a href="/resume/" className="route-resume" onClick={() => trackEvent("cta_click", { label: "nav_resume" })}>
               resume.pdf
             </a>
           </div>
@@ -277,7 +277,7 @@ export default function Portfolio({ projects }: { projects: GitHubRepo[] }) {
                 I build backend systems that can be understood, operated, and changed after they meet production traffic.
               </p>
               <div className="hero-actions">
-                <a href="/resume" className="primary-action" onClick={() => trackEvent("cta_click", { label: "hero_resume" })}>View resume</a>
+                <a href="/resume/" className="primary-action" onClick={() => trackEvent("cta_click", { label: "hero_resume" })}>View resume</a>
                 <a href="https://www.linkedin.com/in/jonathan-peris/" target="_blank" rel="noreferrer noopener" className="secondary-action" onClick={() => trackEvent("cta_click", { label: "hero_linkedin" })}>Contact on LinkedIn</a>
               </div>
               <div className="signal-strip" aria-label="Operating signals">

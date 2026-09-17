@@ -1,6 +1,24 @@
 # PRODUCT.md — Jonathan Peris Portfolio
 
-_Last audited: 2026-05-17T00:17:09Z_
+_Implementation status reviewed: 2026-09-17 (source/configuration review). Original overhaul proposals: 2026-05-17._
+
+[Documentation index](wiki/index.md) · [Architecture](wiki/architecture.md) · [Design direction](DESIGN.md)
+
+## Implementation status
+
+This document combines the current product baseline with proposed enhancements. The status table is the implementation reference; the later strategies, experiments, and success criteria describe future work rather than shipped functionality.
+
+| Area | Current implementation | Remaining proposal or validation |
+|---|---|---|
+| Hero and navigation | Identity-first hero, availability, operating signals, `deploy-ledger.yaml`; resume-first CTA and LinkedIn secondary CTA | Contact-first/split-intent tests, strategic operating card, contact navigation |
+| Profile and capability map | Two profile paragraphs, three engineering-principle rows, six skill-category rows | Outcome-specific proof and problem-oriented capability content |
+| Experience | Shared roles, descriptions, dates, locations, and stack tags | Owner-approved impact statements; PDF reconciliation is deferred |
+| Workbench | Build-time GitHub pins intersected with eligible recent repos, category heuristics, Source/Live/Homepage links, separate unpinned ledger | Authored case-file `signal`/`proof` content, grouping/filtering experiments |
+| Contact | Hero LinkedIn action and footer social links | Final contact packet and contextual contact measurement |
+| Analytics | `cta_click` for navbar/hero resume and hero LinkedIn; `social_click` for footer socials | Proposed custom events, variant parameters, query selection, and persistence |
+| Accessibility foundations | Semantic sections, focus-visible CSS, dialog labeling/focus cycling/restoration, CSS reduced-motion rules | Browser validation of contrast, focus, hit targets, print output, and JavaScript smooth scrolling |
+
+Operational details belong in the [wiki guides](wiki/index.md). These roadmap updates do not establish that proposed A/B tests, a redesign, or a browser accessibility audit have been completed.
 
 ## Product summary
 
@@ -19,9 +37,9 @@ The current homepage already has a strong identity:
 - Clear stack signal: backend architecture / .NET / Azure.
 - YAML/status-card metaphor: `deploy-ledger.yaml` and `healthy`.
 - Hidden terminal/easter egg that reinforces the developer persona.
-- Profile, capability, experience, featured work, repository tail, and footer/social sections.
+- Profile, capability, experience, pinned Workbench cards, unpinned repository ledger, and footer/social sections.
 
-The next product move is an overhaul that keeps this aesthetic but makes it more purposeful, proof-led, and conversion-oriented.
+The proposed next product move is an overhaul that keeps this aesthetic but makes it more purposeful, proof-led, and conversion-oriented.
 
 ## Primary audiences
 
@@ -156,6 +174,8 @@ Success metrics:
 
 ## Product audit findings
 
+These qualitative design hypotheses originate in the May overhaul proposal. The implementation status above was rechecked against source in September; conversion performance and visual accessibility still require measured validation.
+
 ### What works
 
 - Strong, coherent identity: dark terminal/manual aesthetic matches backend architecture positioning.
@@ -243,7 +263,7 @@ TRACE 05 — Contact packet / open channel
 
 ### 4. Profile: narrative plus scan layer
 
-Keep the two paragraphs, then add a compact proof strip:
+Keep the two paragraphs and existing engineering-principle rows. A future enhancement can make those rows more outcome-specific or add a compact proof strip with independently supported claims:
 
 - Defines service boundaries and ownership models.
 - Ships production software with tests and CI/CD feedback loops.
@@ -389,7 +409,9 @@ Hypothesis: B increases contact clicks from users who scroll past Workbench.
 
 ## Analytics events to keep/add
 
-Existing `trackEvent` usage should be extended consistently.
+Implemented today: `cta_click { label }` with `nav_resume`, `hero_resume`, and `hero_linkedin`, plus `social_click { label }`. The exact inventory is in [SEO & Analytics](wiki/seo_and_analytics.md#implemented-custom-events).
+
+Future `trackEvent` extensions should preserve useful existing labels and add only measurements needed by a selected experiment. Location and variant fields below are proposed, not currently emitted.
 
 Recommended events:
 
@@ -406,37 +428,37 @@ scroll_depth { bucket, variant }
 
 ## Implementation roadmap
 
-### Phase 1 — Documentation and measurement
+### Phase 1 — Documentation and measurement (documentation refreshed; measurement partial)
 
-- Update `PRODUCT.md` and `DESIGN.md` with this audit and design plan.
-- Ensure current analytics labels distinguish hero/nav/footer CTA locations.
-- Keep current visual implementation untouched except documentation.
+- Current implementation and proposal status are recorded in `PRODUCT.md`, `DESIGN.md`, and the wiki guides.
+- Existing CTA labels distinguish navbar and hero actions; footer socials emit `social_click` without a location parameter.
+- Experiment measurement beyond those handlers remains pending.
 
-### Phase 2 — Same-aesthetic hero overhaul
+### Phase 2 — Same-aesthetic hero overhaul (proposed)
 
 - Test contact-first vs resume-first CTA order.
 - Replace YAML card content with `best_for`/`signals` content.
 - Add a `/contact` or equivalent route/action in nav.
 
-### Phase 3 — Proof-led middle and lower page
+### Phase 3 — Proof-led middle and lower page (partially established; enhancements proposed)
 
-- Add profile proof strip.
+- Build on the existing engineering-principle rows with approved outcome evidence.
 - Reframe capability map as problems Jonathan helps solve.
 - Convert workbench cards to case-file cards.
 - Add final `contact_packet` CTA.
 
-### Phase 4 — A/B test infrastructure
+### Phase 4 — A/B test infrastructure (not implemented)
 
-- Add query/local variant support, e.g. `?v=contact-first`.
+- Add query/local variant support, e.g. `?variant=contact-first`.
 - Persist variant per visitor with localStorage if needed.
 - Include variant in analytics events.
 
-### Phase 5 — Polish and accessibility
+### Phase 5 — Polish and accessibility (foundations implemented; validation pending)
 
 - Improve text contrast for dim labels.
 - Validate focus states and hit targets.
 - Test 390px, 768px, 1024px, and desktop widths.
-- Respect `prefers-reduced-motion` for reveal/typing effects.
+- Preserve existing CSS `prefers-reduced-motion` rules for reveal/cursor effects; evaluate the terminal's JavaScript smooth-scroll behavior separately.
 
 ## Definition of done for the overhaul
 

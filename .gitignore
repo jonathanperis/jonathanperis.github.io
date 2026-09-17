@@ -5,6 +5,9 @@ node_modules/
 /.astro/
 /out/
 
+# local specifications
+.specs/
+
 # misc
 .DS_Store
 *.pem

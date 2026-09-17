@@ -1,8 +1,10 @@
 # Deployment
 
+[← Documentation index](index.md)
+
 ## GitHub Actions
 
-The site deploys automatically through `.github/workflows/main-release.yml` on every push to `main` and can also be run manually with `workflow_dispatch`.
+The site deploys through [`.github/workflows/main-release.yml`](../.github/workflows/main-release.yml) on pushes to `main`. Manual dispatch is also available, but the deploy job is guarded by `github.ref == 'refs/heads/main'`.
 
 ### Pipeline Steps
 
@@ -10,12 +12,16 @@ The site deploys automatically through `.github/workflows/main-release.yml` on e
 2. **Setup Node** — Node.js 22 (`actions/setup-node@v6`)
 3. **Setup Bun** — Bun latest (`oven-sh/setup-bun@v2`)
 4. **Configure Pages** — `actions/configure-pages@v6`
-5. **Install** — `bun install`
+5. **Install** — `bun install --frozen-lockfile`
 6. **Build** — `bun run build` with environment variables:
    - `GITHUB_TOKEN` — Fetches public repositories and Pages URLs (auto-provided by GitHub Actions)
    - `PUBLIC_GA_ID` — Google Analytics measurement ID (`G-35CN95481D`)
 7. **Upload** — Uploads `out/` as the Pages artifact (`actions/upload-pages-artifact@v5`)
 8. **Deploy** — Deploys to GitHub Pages (`actions/deploy-pages@v5`)
+
+The action versions above are readable major-version labels; workflow `uses` entries are pinned to commit SHAs. Checkout disables persisted credentials. Workflow-level permissions are `contents: read`; only the deploy job adds `pages: write` and `id-token: write`. The `github-pages` concurrency group uses `cancel-in-progress: false`.
+
+The release job does not run `bun audit` or `bun run lint`; those checks belong to the PR build workflow. Repository data can fall back when GitHub API access fails, so a successful build alone does not prove live project data was used.
 
 ### Environment Variables
 
@@ -26,23 +32,21 @@ The site deploys automatically through `.github/workflows/main-release.yml` on e
 
 ## Static Export
 
-Astro 7 builds the site into the `out/` directory configured in `astro.config.ts`. The deployed artifact is pure static HTML/CSS/JS plus files from `public/`; no server runtime is required on GitHub Pages.
+Astro uses its default static output mode, `outDir: 'out'`, and `trailingSlash: 'always'` in [`astro.config.ts`](../astro.config.ts). The deployed artifact is static HTML/CSS/JS plus files from `public/`; GitHub Pages needs no server runtime or SSR adapter. The built pages are `/` and `/resume/`.
 
-Astro 7 features adopted here:
-
-- Rust `.astro` compiler, Vite 8/Rolldown dependency path, and queued rendering through the framework upgrade.
-- Default Sätteri Markdown pipeline through Astro itself; no explicit Markdown processor is needed because the public site is built from `.astro` pages.
-- Background dev-server commands for agent-assisted local work: `bun run dev:bg`, `bun run dev:status`, `bun run dev:logs`, and `bun run dev:stop`.
-
-Astro 7 features intentionally not adopted while the production target remains static GitHub Pages: advanced routing via `src/fetch.ts`, CDN route-cache providers, and SSR adapters.
+The sitemap integration generates the authoritative route list during builds. See [SEO & Analytics](seo_and_analytics.md) for crawler entry points and URL conventions. The `wiki/` Markdown files are repository documentation and are not part of the site build.
 
 ## CI Workflows
 
 | Workflow | Trigger | What it does |
 |---|---|---|
-| `build-check.yml` | Pull requests to `main`, manual dispatch | `bun install`, `bun run lint`, `bun run build` |
-| `main-release.yml` | Pushes to `main`, manual dispatch | Builds and deploys the Pages artifact |
-| `codeql.yml` | Pushes, PRs, weekly Monday 06:00 UTC | Runs CodeQL JavaScript/TypeScript analysis |
+| [`build-check.yml`](../.github/workflows/build-check.yml) | Pull requests to `main`, manual dispatch | Frozen install, `bun audit`, `bun run lint`, `bun run build` |
+| [`main-release.yml`](../.github/workflows/main-release.yml) | Pushes to `main`, manual dispatch on `main` | Frozen install, build, upload, Pages deployment |
+| [`codeql.yml`](../.github/workflows/codeql.yml) | Push/PR to `main`, Monday 06:00 UTC, manual dispatch | Separate JavaScript/TypeScript and Actions analyses with `security-and-quality` queries |
+
+## Dependency Maintenance
+
+[`renovate.json`](../renovate.json) extends the account's [shared preset](https://github.com/jonathanperis/.github/blob/main/default.json). As reviewed on 2026-09-17, it configures weekly updates, Monday lockfile maintenance, grouped Astro/Tailwind updates, and SHA-pinned GitHub Actions. Major updates and Actions updates require review rather than automerge. Recheck the shared preset when documenting policy changes; it can evolve independently of this repository.
 
 ## Manual Local Build
 

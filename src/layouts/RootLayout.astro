@@ -17,6 +17,8 @@ const {
   canonical = '/',
 } = Astro.props;
 
+const canonicalUrl = new URL(canonical, Astro.site).href;
+
 const keywords = [
   'Jonathan Peris', 'Software Engineer', '.NET', 'C#', 'Fintech',
   'Azure', 'Microservices', 'CQRS', 'DDD', 'Clean Architecture',
@@ -34,12 +36,12 @@ const keywords = [
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="keywords" content={keywords} />
-    <link rel="canonical" href={`https://jonathanperis.github.io${canonical}`} />
+    <link rel="canonical" href={canonicalUrl} />
 
     <!-- Open Graph -->
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:url" content="https://jonathanperis.github.io" />
+    <meta property="og:url" content={canonicalUrl} />
     <meta property="og:site_name" content="Jonathan Peris" />
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:width" content="460" />
@@ -66,7 +68,7 @@ const keywords = [
       rel="stylesheet"
     />
 
-    <link rel="alternate" hreflang="en" href="https://jonathanperis.github.io/" />
+    <link rel="alternate" hreflang="en" href={canonicalUrl} />
 
     <JsonLd />
   </head>

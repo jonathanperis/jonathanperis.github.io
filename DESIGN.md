@@ -1,6 +1,23 @@
 # DESIGN.md — Jonathan Peris Portfolio Overhaul
 
-_Last audited: 2026-05-17T00:17:09Z_
+_Implementation status reviewed: 2026-09-17 (source/configuration review). Original overhaul proposals: 2026-05-17._
+
+[Documentation index](wiki/index.md) · [Product direction](PRODUCT.md) · [UI source](src/components/Portfolio.tsx) · [Styles](src/styles/globals.css)
+
+## Implementation status
+
+The design specifications and experiments below remain proposals unless this table marks a foundation as implemented. The September review checked source, not browser screenshots, interaction testing, contrast measurements, or conversion results.
+
+| Area | Shipped foundation | Proposed enhancement / verification gap |
+|---|---|---|
+| Visual system | OKLCH dark theme, green accents, DM Sans, JetBrains Mono, responsive cards and layout rules | Contrast and breakpoint validation; semantic intent-token examples below are proposals |
+| Hero | Availability, resume-first CTA, LinkedIn secondary action, operating signals, deploy ledger | Contact-first/split CTA, alternate copy, `best_for` operating profile |
+| Profile / capabilities | Two paragraphs, engineering-principle rows, category-based skills | Stronger outcome proof and problem-oriented capability cards |
+| Workbench | GitHub-pinned repo cards with derived category labels and source/live/homepage actions | Authored case-file proof; contextual accessible names for repeated action links |
+| Contact | Hero LinkedIn CTA and footer socials | Final contact packet |
+| Terminal | Labeled dialog, input/close-button tab cycle, Escape/close/backdrop exit, focus restoration | Browser keyboard verification; reduced-motion handling of JavaScript auto-scroll |
+| Motion / focus | CSS reduced-motion overrides and global focus-visible styling | Full hit-target, contrast, keyboard, and reduced-motion validation |
+| Measurement | Three labeled `cta_click` handlers and footer `social_click` | Custom project/shell/scroll events, variant selection, persistence, and experiment reporting |
 
 ## Design intent
 
@@ -20,6 +37,8 @@ The current visual language is strong enough to keep:
 The overhaul should not introduce a generic SaaS/agency visual system. It should turn the existing “small systems manual” direction into a premium, legible, proof-led portfolio.
 
 ## Design diagnosis
+
+The strengths and weaknesses below are design hypotheses from the original overhaul proposal. Use the implementation table above for current feature status and validate visual/conversion claims before treating them as measured findings.
 
 ### Strengths
 
@@ -232,7 +251,7 @@ Current tokens already use OKLCH and should remain broadly intact.
 ### Keep
 
 - DM Sans for readable body/display text.
-- JetBrains Mono/Fira Code for metadata, tags, route labels, YAML, and shell affordances.
+- JetBrains Mono for metadata, tags, route labels, YAML, and shell affordances; Fira Code is a CSS fallback, not a separately loaded web font.
 
 ### Improve
 
@@ -336,7 +355,7 @@ Use metadata label plus plain-language subtitle where useful.
 
 ### Profile proof strip
 
-Add below profile paragraphs.
+Engineering-principle rows already appear below the profile paragraphs. The following is a proposed refinement of that proof layer, not an absent section to recreate.
 
 Layout:
 
@@ -452,6 +471,8 @@ Keep as an easter egg. It reinforces the brand and adds personality.
 
 Requirements:
 
+Dialog labeling, tab cycling, close behavior, and focus restoration already exist in source. Preserve those behaviors and validate them in browser testing when authorized; `shell_open` tracking is still proposed.
+
 - Must not block normal keyboard navigation.
 - Must have accessible dialog labeling.
 - Should respect reduced motion if animated.
@@ -521,7 +542,7 @@ Start lightweight:
 Possible variants:
 
 ```ts
-const VARIANTS = {
+type Variants = {
   cta: "resume-first" | "contact-first" | "split-intent",
   heroCopy: "stack" | "production-dotnet" | "legible-traffic",
   card: "bio-ledger" | "best-for" | "case-status",
@@ -705,10 +726,10 @@ If your backend needs clearer boundaries, safer delivery, or calmer production o
 Before merging an overhaul:
 
 - Run typecheck/build with Bun in this repo.
-- Inspect desktop, tablet, and mobile in browser.
+- With explicit browser-testing authorization, inspect desktop, tablet, and mobile in browser.
 - Verify no horizontal overflow at 390px.
 - Verify resume route and external social/project links.
-- Verify analytics events still fire and include variant labels.
+- Verify existing analytics labels remain correct; verify variant labels only when variant support has been implemented.
 - Verify hidden shell still opens/closes and returns focus.
 - Verify reduced motion behavior.
 - Confirm Lighthouse/accessibility issues are not introduced.
