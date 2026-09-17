@@ -1,5 +1,7 @@
 # Easter Egg
 
+[← Documentation index](index.md)
+
 ## Konami Code Terminal
 
 The site includes a hidden interactive terminal triggered by the **Konami code**.
@@ -12,13 +14,16 @@ Press these keys in sequence anywhere on the page while the terminal is closed:
 ↑ ↑ ↓ ↓ ← → ← → B A
 ```
 
+The key listener matches lowercase `b` and `a`; press the letter keys without Shift or Caps Lock. The uppercase letters above are the visual hint.
+
 ### Terminal Features
 
 - In-page modal terminal with focus restoration when closed
 - Command history with arrow up/down
-- Tab focuses the close button
+- Tab or Shift+Tab cycles between the command input and close button
 - Ctrl+L or `clear` clears the terminal
 - Escape, `exit`, `quit`, or the close button closes the terminal
+- Clicking the backdrop closes the terminal
 - Auto-scrolls to the newest terminal output
 
 ### Available Commands
@@ -46,7 +51,7 @@ Press these keys in sequence anywhere on the page while the terminal is closed:
 The footer contains a subtle hint:
 
 ```text
-// ↑↑↓↓←→←→BA
+Built as a small systems manual. Hidden shell: ↑↑↓↓←→←→BA
 ```
 
 ### Implementation
@@ -55,3 +60,5 @@ The footer contains a subtle hint:
 - The listener tracks the last 10 keystrokes and compares them with the target sequence.
 - Terminal state is managed with React state (`termOpen`, `termInput`, `termHist`, `cmdHist`, `histIdx`).
 - `runCmd()` maps commands to responses and uses `EXPERIENCES`, `AVAILABILITY`, and hardcoded terminal strings.
+
+The terminal is an in-page command simulation; it does not execute operating-system commands. Opening it has no custom analytics event. CSS reduced-motion rules cover reveal/cursor effects, but terminal auto-scroll still requests smooth scrolling in JavaScript; browser accessibility validation remains separate from these source-level behaviors.
