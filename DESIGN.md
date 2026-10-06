@@ -1,23 +1,23 @@
 # DESIGN.md — Jonathan Peris Portfolio Overhaul
 
-_Implementation status reviewed: 2026-09-17 (source/configuration review). Original overhaul proposals: 2026-05-17._
+_Implementation status reviewed: 2026-10-06 (source/configuration review). Original overhaul proposals: 2026-05-17._
 
-[Documentation index](wiki/index.md) · [Product direction](PRODUCT.md) · [UI source](src/components/Portfolio.tsx) · [Styles](src/styles/globals.css)
+[Documentation index](wiki/index.md) · [Product direction](PRODUCT.md) · [UI source](src/pages/index.astro) · [Components](src/components/) · [Styles](src/styles/globals.css)
 
 ## Implementation status
 
-The design specifications and experiments below remain proposals unless this table marks a foundation as implemented. The September review checked source, not browser screenshots, interaction testing, contrast measurements, or conversion results.
+The design specifications and experiments below remain proposals unless this table marks a foundation as implemented. The October review checked source, not browser screenshots, interaction testing, contrast measurements, or conversion results.
 
 | Area | Shipped foundation | Proposed enhancement / verification gap |
 |---|---|---|
-| Visual system | OKLCH dark theme, green accents, DM Sans, JetBrains Mono, responsive cards and layout rules | Contrast and breakpoint validation; semantic intent-token examples below are proposals |
+| Visual system | OKLCH dark theme, green accents, self-hosted DM Sans and JetBrains Mono, responsive cards and layout rules | Contrast and breakpoint validation; semantic intent-token examples below are proposals |
 | Hero | Availability, resume-first CTA, LinkedIn secondary action, operating signals, deploy ledger | Contact-first/split CTA, alternate copy, `best_for` operating profile |
 | Profile / capabilities | Two paragraphs, engineering-principle rows, category-based skills | Stronger outcome proof and problem-oriented capability cards |
-| Workbench | GitHub-pinned repo cards with derived category labels and source/live/homepage actions | Authored case-file proof; contextual accessible names for repeated action links |
+| Workbench | GitHub-pinned repo cards (up to six) with derived category labels and source/live/homepage actions | Authored case-file proof; contextual accessible names for repeated action links |
 | Contact | Hero LinkedIn CTA and footer socials | Final contact packet |
-| Terminal | Labeled dialog, input/close-button tab cycle, Escape/close/backdrop exit, focus restoration | Browser keyboard verification; reduced-motion handling of JavaScript auto-scroll |
-| Motion / focus | CSS reduced-motion overrides and global focus-visible styling | Full hit-target, contrast, keyboard, and reduced-motion validation |
-| Measurement | Three labeled `cta_click` handlers and footer `social_click` | Custom project/shell/scroll events, variant selection, persistence, and experiment reporting |
+| Terminal | Labeled native modal `<dialog>` (browser focus containment and restoration), Escape/close/backdrop exit, history and Ctrl+L | Browser keyboard and screen-reader verification |
+| Motion / focus | CSS reduced-motion overrides, reveal content visible without JavaScript, scroll-driven progress bar, and global focus-visible styling | Full hit-target, contrast, keyboard, and reduced-motion validation |
+| Measurement | Four `cta_click` labels (nav/hero resume, hero LinkedIn, resume print) and footer `social_click`, declared with `data-track-event` attributes | Custom project/shell/scroll events, variant selection, persistence, and experiment reporting |
 
 ## Design intent
 
@@ -251,7 +251,7 @@ Current tokens already use OKLCH and should remain broadly intact.
 ### Keep
 
 - DM Sans for readable body/display text.
-- JetBrains Mono for metadata, tags, route labels, YAML, and shell affordances; Fira Code is a CSS fallback, not a separately loaded web font.
+- JetBrains Mono for metadata, tags, route labels, YAML, and shell affordances. Both families are self-hosted through the Astro Fonts API, with system fallbacks.
 
 ### Improve
 
@@ -462,7 +462,7 @@ artifact: resume.pdf
 ### Navigation
 
 - Keep sticky/nav route styling.
-- Add visible contact action or make `resume.pdf` less monopolizing depending on CTA experiment.
+- Add visible contact action or make the `/resume` link less monopolizing depending on CTA experiment.
 - Active section indication would improve orientation on long page.
 
 ### Hidden shell
@@ -471,7 +471,7 @@ Keep as an easter egg. It reinforces the brand and adds personality.
 
 Requirements:
 
-Dialog labeling, tab cycling, close behavior, and focus restoration already exist in source. Preserve those behaviors and validate them in browser testing when authorized; `shell_open` tracking is still proposed.
+A labeled native modal `<dialog>` with browser focus containment, Escape/close/backdrop exit, and focus restoration already exists in source. Preserve those behaviors and validate them in browser testing when authorized; `shell_open` tracking is still proposed.
 
 - Must not block normal keyboard navigation.
 - Must have accessible dialog labeling.
@@ -536,7 +536,7 @@ Start lightweight:
 
 - Derive variant from query param, e.g. `?variant=contact-first`.
 - Store in `localStorage` for repeat consistency.
-- Include variant in every `trackEvent` payload.
+- Include variant in every analytics event payload.
 - Keep default as current or safest variant.
 
 Possible variants:

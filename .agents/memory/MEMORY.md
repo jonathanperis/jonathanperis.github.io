@@ -1,1 +1,1 @@
-- [Architecture](architecture.md) — Astro 7 static export, React 19 hydrated portfolio island, GitHub GraphQL/REST build-time repository data, terminal UI theme, SEO/analytics, and shared data layer design
+- [Architecture](architecture.md) — Astro 7 static export built from Astro components with small bundled scripts (no UI framework), GitHub GraphQL/REST build-time repository data, build-time terminal command table, terminal UI theme, SEO/analytics, and shared data layer design

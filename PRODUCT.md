@@ -1,6 +1,6 @@
 # PRODUCT.md — Jonathan Peris Portfolio
 
-_Implementation status reviewed: 2026-09-17 (source/configuration review). Original overhaul proposals: 2026-05-17._
+_Implementation status reviewed: 2026-10-06 (source/configuration review). Original overhaul proposals: 2026-05-17._
 
 [Documentation index](wiki/index.md) · [Architecture](wiki/architecture.md) · [Design direction](DESIGN.md)
 
@@ -13,10 +13,10 @@ This document combines the current product baseline with proposed enhancements. 
 | Hero and navigation | Identity-first hero, availability, operating signals, `deploy-ledger.yaml`; resume-first CTA and LinkedIn secondary CTA | Contact-first/split-intent tests, strategic operating card, contact navigation |
 | Profile and capability map | Two profile paragraphs, three engineering-principle rows, six skill-category rows | Outcome-specific proof and problem-oriented capability content |
 | Experience | Shared roles, descriptions, dates, locations, and stack tags | Owner-approved impact statements; PDF reconciliation is deferred |
-| Workbench | Build-time GitHub pins intersected with eligible recent repos, category heuristics, Source/Live/Homepage links, separate unpinned ledger | Authored case-file `signal`/`proof` content, grouping/filtering experiments |
+| Workbench | Build-time GitHub profile pins (up to six, in pin order), category heuristics, Source/Live/Homepage links, separate unpinned ledger | Authored case-file `signal`/`proof` content, grouping/filtering experiments |
 | Contact | Hero LinkedIn action and footer social links | Final contact packet and contextual contact measurement |
-| Analytics | `cta_click` for navbar/hero resume and hero LinkedIn; `social_click` for footer socials | Proposed custom events, variant parameters, query selection, and persistence |
-| Accessibility foundations | Semantic sections, focus-visible CSS, dialog labeling/focus cycling/restoration, CSS reduced-motion rules | Browser validation of contrast, focus, hit targets, print output, and JavaScript smooth scrolling |
+| Analytics | `cta_click` for navbar/hero resume, hero LinkedIn, and resume print; `social_click` for footer socials (declared with `data-track-event`/`data-track-label` attributes) | Proposed custom events, variant parameters, query selection, and persistence |
+| Accessibility foundations | Semantic sections, focus-visible CSS, labeled native modal `<dialog>` terminal (browser focus containment, Escape, focus restoration), reveal content visible without JavaScript, CSS reduced-motion rules | Browser validation of contrast, focus, hit targets, and print output |
 
 Operational details belong in the [wiki guides](wiki/index.md). These roadmap updates do not establish that proposed A/B tests, a redesign, or a browser accessibility audit have been completed.
 
@@ -132,7 +132,7 @@ Subcopy:
 
 1. Land on homepage.
 2. Understand identity, role, availability, stack, location, and remote status in under 10 seconds.
-3. Click `resume.pdf` or `View resume`.
+3. Click `/resume` in the nav or `View resume`.
 4. Optionally inspect experience trace and featured work.
 5. Contact on LinkedIn/email.
 
@@ -242,7 +242,7 @@ signals:
 Current:
 
 ```text
-/profile /trace /workbench resume.pdf
+/profile /trace /workbench /resume
 ```
 
 Recommended test:
@@ -409,9 +409,9 @@ Hypothesis: B increases contact clicks from users who scroll past Workbench.
 
 ## Analytics events to keep/add
 
-Implemented today: `cta_click { label }` with `nav_resume`, `hero_resume`, and `hero_linkedin`, plus `social_click { label }`. The exact inventory is in [SEO & Analytics](wiki/seo_and_analytics.md#implemented-custom-events).
+Implemented today: `cta_click { label }` with `nav_resume`, `hero_resume`, `hero_linkedin`, and `resume_print`, plus `social_click { label }`. Elements opt in with `data-track-event`/`data-track-label` attributes handled by a delegated listener in `Analytics.astro`. The exact inventory is in [SEO & Analytics](wiki/seo_and_analytics.md#implemented-custom-events).
 
-Future `trackEvent` extensions should preserve useful existing labels and add only measurements needed by a selected experiment. Location and variant fields below are proposed, not currently emitted.
+Future event extensions should preserve useful existing labels and add only measurements needed by a selected experiment. The current listener sends only `label`; location and variant fields below are proposed, not currently emitted.
 
 Recommended events:
 
@@ -431,7 +431,7 @@ scroll_depth { bucket, variant }
 ### Phase 1 — Documentation and measurement (documentation refreshed; measurement partial)
 
 - Current implementation and proposal status are recorded in `PRODUCT.md`, `DESIGN.md`, and the wiki guides.
-- Existing CTA labels distinguish navbar and hero actions; footer socials emit `social_click` without a location parameter.
+- Existing CTA labels distinguish navbar, hero, and resume-print actions; footer socials emit `social_click` without a location parameter.
 - Experiment measurement beyond those handlers remains pending.
 
 ### Phase 2 — Same-aesthetic hero overhaul (proposed)
@@ -458,7 +458,7 @@ scroll_depth { bucket, variant }
 - Improve text contrast for dim labels.
 - Validate focus states and hit targets.
 - Test 390px, 768px, 1024px, and desktop widths.
-- Preserve existing CSS `prefers-reduced-motion` rules for reveal/cursor effects; evaluate the terminal's JavaScript smooth-scroll behavior separately.
+- Preserve existing CSS `prefers-reduced-motion` rules for reveal/cursor effects; the terminal jumps to new output without smooth scrolling.
 
 ## Definition of done for the overhaul
 

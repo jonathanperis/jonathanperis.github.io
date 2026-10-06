@@ -1,0 +1,33 @@
+---
+interface Props {
+  class?: string;
+  delay?: number;
+}
+
+const { class: className, delay = 0 } = Astro.props;
+---
+
+<div class:list={["reveal", className]} style={delay ? `transition-delay: ${delay}ms` : undefined}>
+  <slot />
+</div>
+
+<script>
+  // Content stays visible without JS: the hidden state only applies under `html.js` (set in RootLayout).
+  const items = document.querySelectorAll<HTMLElement>(".reveal:not(.shown)");
+
+  if ("IntersectionObserver" in window) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          entry.target.classList.add("shown");
+          observer.unobserve(entry.target);
+        }
+      },
+      { threshold: 0.08 },
+    );
+    items.forEach((item) => observer.observe(item));
+  } else {
+    items.forEach((item) => item.classList.add("shown"));
+  }
+</script>
