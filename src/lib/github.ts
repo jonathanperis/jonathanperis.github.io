@@ -173,11 +173,7 @@ export async function fetchRepos(): Promise<GitHubRepo[]> {
       console.error(`[github] GraphQL errors: ${json.errors.map((e) => e.message).join("; ")}`);
     }
 
-    const nodes = json.data?.user?.repositories?.nodes;
-    if (!Array.isArray(nodes) || nodes.length === 0) {
-      console.error("[github] No repos found in response");
-      return FALLBACK;
-    }
+    const nodes = json.data?.user?.repositories?.nodes ?? [];
 
     // Pins come straight from pinnedItems (in pin order), so a pin outside the 100 most recently updated repos still renders.
     const pinned = (json.data?.user?.pinnedItems?.nodes ?? []).filter(isPortfolioRepo).map((n) => normalizeRepo(n, true));
@@ -188,6 +184,11 @@ export async function fetchRepos(): Promise<GitHubRepo[]> {
       .map((n) => normalizeRepo(n, false));
 
     const repos = [...pinned, ...ledger];
+    // Pins and the ledger are read independently, so only fall back when neither produced a repo.
+    if (repos.length === 0) {
+      console.error("[github] No repos found in response");
+      return FALLBACK;
+    }
     const pagesUrls = await mapWithConcurrency(repos, PAGES_LOOKUP_CONCURRENCY, (repo) => fetchPagesUrl(repo.title, token));
 
     return repos.map((repo, index) => ({

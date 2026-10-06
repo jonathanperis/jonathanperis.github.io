@@ -48,7 +48,7 @@ If a repository has a non-Pages homepage, the UI can show it separately as `home
 | Condition | Result |
 |---|---|
 | Missing `GITHUB_TOKEN` | Return the checked-in `FALLBACK` list without API requests. |
-| GraphQL HTTP failure, missing/empty repository array, or fetch/mapping exception (including the 10 s timeout) | Return `FALLBACK`; build logs include the failure. |
+| GraphQL HTTP failure, no eligible pins or repositories in the response, or fetch/mapping exception (including the 10 s timeout) | Return `FALLBACK`; build logs include the failure. |
 | Individual Pages lookup returns 404, another non-success status, no URL, times out, or throws | Keep fetched repository data and its standard Pages homepage fallback, if present. |
 
 Fallback content is a maintained snapshot (six pinned repositories plus two ledger entries), not a live reflection of current pins, descriptions, or star counts. Token permissions and API availability affect enrichment; the presence of a token does not guarantee every Pages lookup succeeds.
