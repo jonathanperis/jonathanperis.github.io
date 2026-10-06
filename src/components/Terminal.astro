@@ -1,0 +1,126 @@
+---
+import { buildCommandTable } from "../lib/terminal-commands";
+
+// Escape "<" so command output can never close the JSON script element early.
+const commands = JSON.stringify(buildCommandTable()).replace(/</g, "\\u003c");
+---
+
+<dialog class="terminal-dialog" aria-label="Interactive terminal" data-terminal>
+  <div class="terminal-titlebar">
+    <div class="window-dots" aria-hidden="true"><span></span><span></span><span></span></div>
+    <span>jonathan.sh</span>
+    <button type="button" data-terminal-close>Close</button>
+  </div>
+  <div class="terminal-body" data-terminal-body>
+    <div role="log" aria-live="polite" data-terminal-output></div>
+    <div class="terminal-input-row">
+      <span aria-hidden="true">$</span>
+      <input
+        autofocus
+        aria-label="Terminal command"
+        spellcheck="false"
+        autocomplete="off"
+        autocapitalize="off"
+        data-terminal-input
+      />
+    </div>
+  </div>
+</dialog>
+<script is:inline type="application/json" id="terminal-commands" set:html={commands}></script>
+
+<script>
+  import { runCommand, type CommandTable } from "../lib/terminal";
+
+  const KONAMI = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"];
+  const GREETING = ["  jonathan.sh ready", '  Type "help" for commands.', ""];
+
+  const dialog = document.querySelector<HTMLDialogElement>("[data-terminal]");
+  const body = dialog?.querySelector<HTMLElement>("[data-terminal-body]");
+  const output = dialog?.querySelector<HTMLElement>("[data-terminal-output]");
+  const input = dialog?.querySelector<HTMLInputElement>("[data-terminal-input]");
+  const closeButton = dialog?.querySelector<HTMLButtonElement>("[data-terminal-close]");
+
+  if (dialog && body && output && input && closeButton) {
+    const table = JSON.parse(document.getElementById("terminal-commands")?.textContent ?? "{}") as CommandTable;
+    const history: string[] = [];
+    let historyIndex = -1;
+    let recentKeys: string[] = [];
+
+    const print = (lines: string[], className = "out-line") => {
+      const fragment = document.createDocumentFragment();
+      for (const line of lines) {
+        const row = document.createElement("div");
+        row.className = className;
+        row.textContent = line;
+        fragment.append(row);
+      }
+      output.append(fragment);
+      body.scrollTop = body.scrollHeight;
+    };
+
+    const open = () => {
+      output.replaceChildren();
+      print(GREETING);
+      dialog.showModal();
+    };
+
+    const submit = () => {
+      const command = input.value;
+      if (!command.trim()) return;
+
+      history.push(command);
+      historyIndex = -1;
+      input.value = "";
+
+      const result = runCommand(command, table);
+      if (result.kind === "clear") output.replaceChildren();
+      else if (result.kind === "exit") dialog.close();
+      else {
+        print([`$ ${command}`], "cmd-line");
+        print(result.lines);
+      }
+    };
+
+    const recall = (direction: -1 | 1) => {
+      if (!history.length) return;
+      if (direction === -1) historyIndex = historyIndex === -1 ? history.length - 1 : Math.max(0, historyIndex - 1);
+      else if (historyIndex === -1) return;
+      else historyIndex = historyIndex + 1 >= history.length ? -1 : historyIndex + 1;
+      input.value = historyIndex === -1 ? "" : history[historyIndex];
+    };
+
+    document.addEventListener("keydown", (event) => {
+      if (dialog.open) return;
+      const key = event.key.length === 1 ? event.key.toLowerCase() : event.key;
+      recentKeys = [...recentKeys, key].slice(-KONAMI.length);
+      if (recentKeys.join(",") === KONAMI.join(",")) {
+        recentKeys = [];
+        open();
+      }
+    });
+
+    input.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") submit();
+      else if (event.key === "ArrowUp" || event.key === "ArrowDown") {
+        event.preventDefault();
+        recall(event.key === "ArrowUp" ? -1 : 1);
+      } else if (event.key === "l" && event.ctrlKey) {
+        event.preventDefault();
+        output.replaceChildren();
+      }
+    });
+
+    closeButton.addEventListener("click", () => dialog.close());
+    // Clicks on the ::backdrop target the dialog element itself.
+    dialog.addEventListener("click", (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+    body.addEventListener("click", () => {
+      if (!window.getSelection()?.toString()) input.focus();
+    });
+    dialog.addEventListener("close", () => {
+      input.value = "";
+      historyIndex = -1;
+    });
+  }
+</script>

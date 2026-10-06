@@ -17,3 +17,14 @@ const GA_ID = import.meta.env.PUBLIC_GA_ID;
     </script>
   </>
 )}
+
+<script>
+  // Delegated CTA tracking: any element with data-track-event reports a GA4 event when gtag is loaded.
+  document.addEventListener("click", (event) => {
+    const target = event.target instanceof Element ? event.target.closest<HTMLElement>("[data-track-event]") : null;
+    const name = target?.dataset.trackEvent;
+    if (!name) return;
+    const gtag = (window as Window & { gtag?: (...args: unknown[]) => void }).gtag;
+    gtag?.("event", name, { label: target.dataset.trackLabel ?? "" });
+  });
+</script>

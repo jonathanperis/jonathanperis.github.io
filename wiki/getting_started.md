@@ -4,8 +4,8 @@
 
 ## Prerequisites
 
-- [Node.js](https://nodejs.org/) **22.12.0 or later**, as required by the current Astro package (GitHub Actions selects Node 22)
-- [Bun](https://bun.sh/) for dependency installation and scripts
+- [Node.js](https://nodejs.org/) **22.12.0 or later**, as required by Astro and declared in `engines` in [`package.json`](../package.json); [`.node-version`](../.node-version) selects Node 22 for version managers and GitHub Actions
+- [Bun](https://bun.sh/) for dependency installation and scripts; the `packageManager` field in `package.json` pins the version CI uses
 - Optional: [GitHub CLI](https://cli.github.com/) (`gh`) to provide a local `GITHUB_TOKEN` when testing dynamic project fetching
 
 ## Installation
@@ -94,12 +94,13 @@ Astro previews the already-built `out/` output locally.
 
 | Variable | Required | Purpose |
 |---|---|---|
-| `GITHUB_TOKEN` | No (fallback data is used when absent) | Fetches pinned names and the public repo ledger through GitHub GraphQL; resolves Pages URLs through REST |
+| `GITHUB_TOKEN` | No (fallback data is used when absent) | Fetches pinned repositories and the public repo ledger through GitHub GraphQL; resolves Pages URLs through REST |
 | `PUBLIC_GA_ID` | No | Google Analytics 4 measurement ID used by `src/components/Analytics.astro` |
 
 ## Troubleshooting
 
 - **Fallback projects appear:** this is expected without `GITHUB_TOKEN`. With a token, inspect `[github]` build logs; GraphQL HTTP failures, unusable responses, or fetch exceptions also select fallback data.
 - **A live link is missing:** an individual Pages lookup can fail independently of repository discovery. Standard `https://jonathanperis.github.io/<repo>/` homepage URLs remain a fallback; token presence alone does not guarantee Pages API access.
-- **A repo or pin is absent:** the query has a first-100 limit and owner/metadata filters. See [Dynamic Projects](dynamic_projects.md).
+- **A repo or pin is absent:** the ledger query has a first-100 limit, pins are limited to six, and owner/fork/metadata filters apply to both. See [Dynamic Projects](dynamic_projects.md).
 - **Preview is stale:** `bun run preview` serves the existing `out/` artifact. Run `bun run build` first.
+- **Build fails with "Expected CommonJS module to have a function wrapper":** Bun's `node` shim (`~/.bun/bin/node`) is first on `PATH`, so `astro build` runs under Bun. Put a real Node.js 22.12+ ahead of it on `PATH` (check with `which node`).

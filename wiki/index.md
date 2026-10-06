@@ -10,22 +10,23 @@ These are repository-hosted Markdown documents in `wiki/`. GitHub Wiki is disabl
 
 ## Current Implementation Snapshot
 
-- **Framework:** Astro 7 static site with React 19 interactive islands.
-- **Package manager:** Bun for install, lint, dev, build, and preview.
+- **Framework:** Astro 7 static site built entirely from Astro components; small bundled client scripts (about 3 KB total) handle reveal, scroll-progress fallback, terminal, and analytics clicks.
+- **Toolchain:** Node.js 22.12+ (`.node-version`) and Bun (pinned via `packageManager`) for install, lint, dev, build, and preview.
 - **Source tree:** `src/pages`, `src/components`, `src/layouts`, `src/lib`, and `src/styles`.
 - **Build output:** `out/`, uploaded as a GitHub Pages artifact by `main-release.yml`.
-- **Data source:** `src/lib/data.ts` for profile/resume data; `src/lib/github.ts` for GitHub repository discovery.
+- **Data source:** `src/lib/data.ts` for profile/resume/terminal data; `src/lib/github.ts` for GitHub repository discovery.
 - **Production URL:** `https://jonathanperis.github.io/`.
 
 ## Features
 
 - Developer-themed dark UI with terminal/system-console aesthetic
-- Scroll progress bar and reveal animations
+- Scroll progress bar (CSS scroll-driven animation with a JavaScript fallback) and reveal animations that leave content visible without JavaScript
 - Dynamic Workbench pinned-repo cards and "Other GitHub repos" ledger fetched at build time via GitHub GraphQL + Pages REST APIs
 - Print-optimized resume page generated from shared data (`/resume/`)
-- Interactive terminal easter egg triggered by Konami code
+- Interactive terminal easter egg (native `<dialog>`) triggered by Konami code
 - SEO optimized: JSON-LD, sitemap, robots.txt, Open Graph, Twitter cards, canonical URLs, and alternate language link
-- Google Analytics 4 integration through `PUBLIC_GA_ID`
+- Self-hosted DM Sans and JetBrains Mono through the Astro Fonts API
+- Google Analytics 4 integration through `PUBLIC_GA_ID`, with attribute-driven CTA/social events
 - Web app manifest and icons (no offline implementation)
 
 ## Guides
@@ -45,12 +46,12 @@ Update the relevant guide in the same change as its source. Link to configuratio
 
 | Change | Authoritative source | Documentation to revisit |
 |---|---|---|
-| Dependencies, commands, runtime support | [`package.json`](../package.json), [`bun.lock`](../bun.lock), installed package engine requirements | README, Getting Started, AGENTS |
+| Dependencies, commands, runtime support | [`package.json`](../package.json), [`bun.lock`](../bun.lock), [`.node-version`](../.node-version), installed package engine requirements | README, Getting Started, AGENTS |
 | CI, release, dependency updates | [Workflows](../.github/workflows/), [`renovate.json`](../renovate.json), shared Renovate preset | README, Deployment, AGENTS |
 | Rendering or source-tree changes | [`astro.config.ts`](../astro.config.ts), [`src/`](../src/) | Architecture, Project Structure, [agent memory](../.agents/memory/architecture.md) |
-| Project discovery | [`src/lib/github.ts`](../src/lib/github.ts), [`Portfolio.tsx`](../src/components/Portfolio.tsx) | Dynamic Projects, Architecture, agent memory |
-| Career/profile content | [`src/lib/data.ts`](../src/lib/data.ts), presentation literals, independent PDF | Resume Page; inspect terminal, metadata, JSON-LD, and PDF for related changes |
+| Project discovery | [`src/lib/github.ts`](../src/lib/github.ts), [`Workbench.astro`](../src/components/sections/Workbench.astro) | Dynamic Projects, Architecture, agent memory |
+| Career/profile content | [`src/lib/data.ts`](../src/lib/data.ts), presentation literals, independent PDF | Resume Page, Easter Egg; inspect section components, terminal commands, metadata, JSON-LD, and PDF for related changes |
 | Metadata, sitemap, analytics | Layout, Astro components, sitemap integration, [`public/`](../public/) | SEO & Analytics |
-| UI or experiment status | Portfolio component and global CSS | PRODUCT, DESIGN, Easter Egg |
+| UI or experiment status | [`src/components/`](../src/components/), [`src/lib/terminal-commands.ts`](../src/lib/terminal-commands.ts), [`src/lib/terminal.ts`](../src/lib/terminal.ts), and global CSS | PRODUCT, DESIGN, Easter Egg |
 
-Before completing an update, resolve relative Markdown links, compare exact commands and symbols with source, and run the repository checks in [Getting Started](getting_started.md). Record browser-only or external-service checks separately from source/build verification. Last documentation/source audit: **2026-09-17**.
+Before completing an update, resolve relative Markdown links, compare exact commands and symbols with source, and run the repository checks in [Getting Started](getting_started.md). Record browser-only or external-service checks separately from source/build verification. Last documentation/source audit: **2026-10-06**.

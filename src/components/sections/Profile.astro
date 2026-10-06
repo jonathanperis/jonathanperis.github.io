@@ -1,0 +1,32 @@
+---
+import Reveal from "../Reveal.astro";
+import SectionLabel from "../SectionLabel.astro";
+import { ENGINEERING_PRINCIPLES } from "../../lib/data";
+---
+
+<section id="profile" class="content-section split-section" aria-labelledby="profile-heading">
+  <Reveal>
+    <SectionLabel id="profile-heading" number="01">Profile packet</SectionLabel>
+  </Reveal>
+  <Reveal delay={100} class="packet-card">
+    <p>
+      My best work sits between architecture and execution: defining boundaries, shipping with tests, and keeping systems legible for the next engineer who has to debug them.
+    </p>
+    <p>
+      The record spans financial platforms, automotive operations, education, healthcare, retail, insurance, and infrastructure work. The common thread is boring reliability, clean ownership, and enough curiosity to keep improving the runtime.
+    </p>
+  </Reveal>
+  <div class="principle-grid">
+    {ENGINEERING_PRINCIPLES.map((principle, index) => (
+      <Reveal delay={index * 70}>
+        <article class="principle-row">
+          <span>{String(index + 1).padStart(2, "0")}</span>
+          <div>
+            <h3>{principle.title}</h3>
+            <p>{principle.body}</p>
+          </div>
+        </article>
+      </Reveal>
+    ))}
+  </div>
+</section>

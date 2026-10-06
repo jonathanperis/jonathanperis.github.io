@@ -1,37 +1,35 @@
 ---
-import { PROFILE, SKILLS, SOCIALS, EDUCATION } from '../lib/data';
+import { CURRENT_ROLE, EDUCATION, PROFILE, SKILLS, SOCIALS } from '../lib/data';
 
 const structuredData = {
   "@context": "https://schema.org",
   "@type": "Person",
   name: PROFILE.name,
   jobTitle: PROFILE.title,
-  worksFor: {
-    "@type": "Organization",
-    name: "Derivative Path",
-  },
-  url: "https://jonathanperis.github.io",
+  ...(CURRENT_ROLE && {
+    worksFor: {
+      "@type": "Organization",
+      name: CURRENT_ROLE.company,
+    },
+  }),
+  url: new URL("/", Astro.site).href,
   sameAs: SOCIALS.map((s) => s.href),
   email: PROFILE.email,
   address: {
     "@type": "PostalAddress",
-    addressLocality: "Itanhaem",
-    addressRegion: "Sao Paulo",
-    addressCountry: "BR",
+    addressLocality: PROFILE.address.locality,
+    addressRegion: PROFILE.address.region,
+    addressCountry: PROFILE.address.countryCode,
   },
-  knowsAbout: [
-    ...SKILLS.languages,
-    ...SKILLS.backend,
-    ...SKILLS.architecture,
-    ...SKILLS.cloud,
-    ...SKILLS.databases,
-    ...SKILLS.frontend,
-  ],
+  knowsAbout: [...new Set(Object.values(SKILLS).flat())],
   alumniOf: {
     "@type": "EducationalOrganization",
     name: EDUCATION.institution,
   },
 };
+
+// Escape "<" so no data value can close the script element early.
+const json = JSON.stringify(structuredData).replace(/</g, "\\u003c");
 ---
 
-<script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+<script is:inline type="application/ld+json" set:html={json} />

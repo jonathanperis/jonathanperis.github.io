@@ -1,0 +1,24 @@
+---
+import Reveal from "../Reveal.astro";
+import SectionLabel from "../SectionLabel.astro";
+import { SKILLS, SKILL_GROUPS } from "../../lib/data";
+---
+
+<section class="content-section" aria-labelledby="stack-heading">
+  <Reveal>
+    <SectionLabel id="stack-heading" number="02">Capability map</SectionLabel>
+  </Reveal>
+  <div class="capability-grid">
+    {SKILL_GROUPS.map(({ key, label, path }, index) => (
+      <Reveal delay={index * 45}>
+        <article class="capability-row">
+          <p>{path}</p>
+          <h3>{label}</h3>
+          <div>
+            {SKILLS[key].map((skill) => <span>{skill}</span>)}
+          </div>
+        </article>
+      </Reveal>
+    ))}
+  </div>
+</section>
