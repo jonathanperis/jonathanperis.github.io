@@ -1,11 +1,40 @@
 ---
 import RootLayout from '../layouts/RootLayout.astro';
-import Portfolio from '../components/Portfolio';
+import ScrollProgress from '../components/ScrollProgress.astro';
+import SiteNav from '../components/SiteNav.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import Terminal from '../components/Terminal.astro';
+import Hero from '../components/sections/Hero.astro';
+import Profile from '../components/sections/Profile.astro';
+import Capabilities from '../components/sections/Capabilities.astro';
+import Trace from '../components/sections/Trace.astro';
+import Workbench from '../components/sections/Workbench.astro';
 import { fetchRepos } from '../lib/github';
 
 const projects = await fetchRepos();
 ---
 
 <RootLayout>
-  <Portfolio projects={projects} client:load />
+  <ScrollProgress />
+
+  <div class="site-shell relative z-10">
+    <SiteNav />
+
+    <main>
+      <Hero />
+
+      <div class="section-bridge" aria-hidden="true">
+        <span>scroll</span><span>/profile packet follows</span>
+      </div>
+
+      <Profile />
+      <Capabilities />
+      <Trace />
+      <Workbench projects={projects} />
+    </main>
+
+    <SiteFooter />
+  </div>
+
+  <Terminal />
 </RootLayout>

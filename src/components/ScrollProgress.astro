@@ -1,0 +1,21 @@
+<div class="scroll-bar fixed top-0 left-0 right-0 h-[2px] z-50" aria-hidden="true"></div>
+
+<script>
+  // Browsers with scroll-driven animations get a CSS-only bar (see globals.css); this is the fallback.
+  const bar = document.querySelector<HTMLElement>(".scroll-bar");
+
+  if (bar && !CSS.supports("animation-timeline: scroll()")) {
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const total = document.documentElement.scrollHeight - window.innerHeight;
+      bar.style.transform = `scaleX(${total > 0 ? window.scrollY / total : 0})`;
+    };
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule, { passive: true });
+  }
+</script>

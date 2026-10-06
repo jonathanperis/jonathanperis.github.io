@@ -1,11 +1,19 @@
 ---
 import RootLayout from '../layouts/RootLayout.astro';
-import { PROFILE, SKILLS, EDUCATION, EXPERIENCES } from '../lib/data';
+import { PROFILE, SKILLS, EDUCATION, EXPERIENCES, YEARS_OF_EXPERIENCE } from '../lib/data';
+
+const contactLinks = [
+  { label: PROFILE.email, href: `mailto:${PROFILE.email}` },
+  { label: PROFILE.location },
+  { label: PROFILE.linkedin, href: `https://www.${PROFILE.linkedin}/` },
+  { label: PROFILE.github, href: `https://${PROFILE.github}` },
+  { label: PROFILE.website, href: `https://${PROFILE.website}/` },
+];
 ---
 
 <RootLayout
   title="Resume — Jonathan Peris"
-  description="Professional resume of Jonathan Peris — Software Engineer with 12+ years of experience in .NET and Fintech."
+  description={`Professional resume of Jonathan Peris — Software Engineer with ${YEARS_OF_EXPERIENCE} years of experience in .NET and Fintech.`}
   canonical="/resume/"
 >
   <!-- Print / Download bar — hidden when printing -->
@@ -15,16 +23,19 @@ import { PROFILE, SKILLS, EDUCATION, EXPERIENCES } from '../lib/data';
         &larr; Back to portfolio
       </a>
       <button
-        onclick="window.print()"
+        type="button"
+        data-print
+        data-track-event="cta_click"
+        data-track-label="resume_print"
         class="font-mono text-xs text-bg bg-green hover:bg-green-dim px-4 py-1.5 rounded-md transition-colors font-semibold"
       >
-        Download PDF
+        Print / Save as PDF
       </button>
     </div>
   </div>
 
   <!-- Resume content — optimized for A4 print -->
-  <div class="resume-page max-w-[800px] mx-auto px-8 py-10 print:px-0 print:py-0 print:max-w-none">
+  <main class="resume-page max-w-[800px] mx-auto px-8 py-10 print:px-0 print:py-0 print:max-w-none">
 
     <!-- Header -->
     <header class="mb-6 print:mb-4">
@@ -35,11 +46,9 @@ import { PROFILE, SKILLS, EDUCATION, EXPERIENCES } from '../lib/data';
         {PROFILE.title}
       </p>
       <div class="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted print:text-gray-500 font-mono">
-        <span>{PROFILE.email}</span>
-        <span>{PROFILE.location}</span>
-        <span>{PROFILE.linkedin}</span>
-        <span>{PROFILE.github}</span>
-        <span>{PROFILE.website}</span>
+        {contactLinks.map(({ label, href }) => href
+          ? <a href={href} class="hover:text-green transition-colors">{label}</a>
+          : <span>{label}</span>)}
       </div>
     </header>
 
@@ -142,7 +151,11 @@ import { PROFILE, SKILLS, EDUCATION, EXPERIENCES } from '../lib/data';
         {EDUCATION.description}
       </p>
     </section>
-  </div>
+  </main>
+
+  <script>
+    document.querySelector("[data-print]")?.addEventListener("click", () => window.print());
+  </script>
 
   <!-- Print styles -->
   <style>

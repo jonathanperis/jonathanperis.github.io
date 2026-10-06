@@ -1,0 +1,13 @@
+---
+interface Props {
+  id: string;
+  number: string;
+}
+
+const { id, number } = Astro.props;
+---
+
+<div class="section-ruler">
+  <p class="font-mono text-[10px] uppercase tracking-[0.28em] text-dim">trace {number}</p>
+  <h2 id={id} class="section-heading"><slot /></h2>
+</div>

@@ -4,15 +4,16 @@
 
 ## Structured Data (JSON-LD)
 
-[`src/components/JsonLd.astro`](../src/components/JsonLd.astro) generates Schema.org `Person` markup using shared data and several presentation literals:
+[`src/components/JsonLd.astro`](../src/components/JsonLd.astro) generates Schema.org `Person` markup from shared data:
 
-- Name and job title from `PROFILE`; employer is the literal `Derivative Path`
+- Name and job title from `PROFILE`; `worksFor` from `CURRENT_ROLE` (the `EXPERIENCES` entry whose period ends with `Present`), omitted if none exists
+- `url` from the configured `Astro.site`
 - Social links (`SOCIALS`) including GitHub, LinkedIn, X, Instagram, Bluesky, and Workana
-- Skills (`knowsAbout`) from the six `SKILLS` categories
+- Skills (`knowsAbout`) from the six `SKILLS` categories, de-duplicated
 - Education (`alumniOf`) from `EDUCATION`
-- Email from `PROFILE`; address is a literal Itanhaém/São Paulo/BR object
+- Email from `PROFILE`; `PostalAddress` from `PROFILE.address` (locality, region, country code)
 
-The website URL is also literal in this component. Review employer/address/URL alongside shared data when updating profile facts. The same Person markup is emitted by the shared layout on both pages.
+The serialized JSON escapes `<` so no data value can close the script element early. The same Person markup is emitted by the shared layout on both pages.
 
 ## Meta Tags
 
@@ -23,16 +24,17 @@ Configured in `src/layouts/RootLayout.astro`:
 | Canonical, Open Graph URL, English alternate URL | `new URL(canonical, Astro.site)` using the configured site and page path |
 | Default canonical path | `/` |
 | Default title | `Jonathan Peris — Software Engineer` |
-| Default description | Software Engineer specializing in .NET and Fintech, 12+ years, enterprise/cloud-native systems |
+| Default description | Software Engineer specializing in .NET and Fintech, `YEARS_OF_EXPERIENCE` years, enterprise/cloud-native systems |
 | Keywords | Jonathan Peris, Software Engineer, .NET, C#, Fintech, Azure, Microservices, CQRS, DDD, Clean Architecture, Backend Developer, Cloud-Native |
-| Open Graph image | `https://jonathanperis.github.io/profile-image-sharing.jpeg` |
-| Open Graph image size | `460x844` |
-| Twitter card | `summary_large_image` |
+| Open Graph image | `/profile-image-sharing.jpeg` resolved against the configured site |
+| Open Graph image size / alt | `1024x1024` (the real file size); `og:image:alt` is `Jonathan Peris` |
+| Twitter card | `summary` (square image) with `twitter:image` set to the same share image |
 | Twitter creator | `@jperis_silva` |
-| Theme color | `#0a0a0f` |
+| Theme color | `#09090b` |
 | Alternate language | `hreflang="en"` |
+| Fonts | Self-hosted via the Astro Fonts API; `<Font>` preloads the latin subset of DM Sans and JetBrains Mono |
 
-The `/resume/` route overrides title, description, and canonical path in `src/pages/resume.astro`. The configured trailing-slash policy, resume navigation, page-specific metadata, and generated sitemap all use `/resume/`. The English alternate link refers to the current page; it is not evidence of a translated route.
+Pages can override `title`, `description`, and `canonical`; the share image is fixed in the layout. The `/resume/` route overrides title, description, and canonical path in `src/pages/resume.astro`. The configured trailing-slash policy, resume navigation, page-specific metadata, and generated sitemap all use `/resume/`. The English alternate link refers to the current page; it is not evidence of a translated route.
 
 ## Sitemap
 
@@ -59,18 +61,19 @@ Sitemap: https://jonathanperis.github.io/sitemap-index.xml
 - Activates only when `PUBLIC_GA_ID` is set.
 - The production workflow passes `PUBLIC_GA_ID=G-35CN95481D`.
 - Emits the standard async `https://www.googletagmanager.com/gtag/js?id=...` loader and inline `gtag('config', GA_ID)` initialization.
-- `Portfolio.tsx` dispatches custom events only when `window.gtag` exists.
+- Always bundles a delegated `click` listener: the closest element with `data-track-event` sends `gtag('event', <data-track-event>, { label: <data-track-label> })`, only when `window.gtag` exists. To track a new link or button, add those two attributes; no per-component handler is needed.
 
 ### Implemented custom events
 
 | Event | Parameters | Trigger |
 |---|---|---|
-| `cta_click` | `{ label: 'nav_resume' }` | Navbar resume link |
-| `cta_click` | `{ label: 'hero_resume' }` | Hero resume link |
-| `cta_click` | `{ label: 'hero_linkedin' }` | Hero LinkedIn link |
-| `social_click` | `{ label: social.label }` | Footer social links |
+| `cta_click` | `{ label: 'nav_resume' }` | Navbar `/resume` link (`SiteNav.astro`) |
+| `cta_click` | `{ label: 'hero_resume' }` | Hero "View resume" link (`Hero.astro`) |
+| `cta_click` | `{ label: 'hero_linkedin' }` | Hero LinkedIn link (`Hero.astro`) |
+| `cta_click` | `{ label: 'resume_print' }` | "Print / Save as PDF" button on `/resume/` |
+| `social_click` | `{ label: social.label }` | Footer social links (`SocialLink.astro`) |
 
-Project/repository clicks, shell activation, section navigation, scroll depth, and resume print actions have no custom event handlers. Variant parameters and persistence are proposals in [PRODUCT](../PRODUCT.md) and [DESIGN](../DESIGN.md). GA4 automatic/enhanced measurement depends on external property settings and is not established by this source inventory.
+Project/repository clicks, shell activation, section navigation, and scroll depth have no custom events. Variant parameters and persistence are proposals in [PRODUCT](../PRODUCT.md) and [DESIGN](../DESIGN.md). GA4 automatic/enhanced measurement depends on external property settings and is not established by this source inventory.
 
 ## Web App Manifest
 
@@ -80,8 +83,8 @@ Project/repository clicks, shell activation, section navigation, scroll depth, a
 - Short name: `JP`
 - `start_url`: `/`
 - `display`: `standalone`
-- Theme color: `#4ade80`
+- Theme color: `#09090b`
 - Background color: `#09090b`
-- SVG favicon and Apple touch icon entries
+- Icons: `favicon.svg` (`any`), `icon-192.png`, `icon-512.png`, and `apple-touch-icon.png` (180x180)
 
 The layout links this manifest and the icons. No service worker or offline implementation is present. Browser installability and offline operation have not been validated by the manifest's presence alone.

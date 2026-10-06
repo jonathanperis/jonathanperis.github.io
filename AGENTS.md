@@ -1,6 +1,6 @@
 # jonathanperis.github.io — AGENTS Guide
 
-Standardized repository instructions for agent harnesses working on this Astro 7 and React 19 static portfolio, deployed to GitHub Pages.
+Standardized repository instructions for agent harnesses working on this Astro 7 static portfolio (Astro components only, no UI framework runtime), deployed to GitHub Pages.
 
 **Live:** https://jonathanperis.github.io/
 
@@ -13,18 +13,19 @@ Standardized repository instructions for agent harnesses working on this Astro 7
 | Technology | Purpose |
 |-----------|---------|
 | Astro 7 | Static site generation, GitHub Pages export, and background dev server support |
-| React 19 | Hydrated interactive portfolio UI |
+| Astro components + client scripts | Static UI; small bundled `<script>`s for reveal, scroll progress, terminal, analytics events |
+| Astro Fonts API | Self-hosted DM Sans / JetBrains Mono, downloaded at build time |
 | TypeScript 6 | Strict type checking through `astro/tsconfigs/strict` |
 | Tailwind CSS 4 | Custom low-glare terminal-style design system via `@tailwindcss/vite` |
 | GitHub GraphQL + REST APIs | Build-time repository and GitHub Pages URL discovery |
 | Google Analytics 4 | Traffic and CTA event tracking when `PUBLIC_GA_ID` is set |
-| Bun | Local and CI package manager/script runner |
+| Bun | Local and CI package manager/script runner, pinned via `packageManager` |
 
 ---
 
 ## Build Commands
 
-Use Node.js **22.12.0 or later** and Bun. [`package.json`](package.json) owns the script definitions; `bun.lock` records resolved dependencies.
+Use Node.js **22.12.0 or later** (`engines`; `.node-version` pins the CI major) and the Bun version in `packageManager`. If `~/.bun/bin/node` shadows a real Node on `PATH`, `astro build` runs under Bun and fails; put real Node first. [`package.json`](package.json) owns the script definitions; `bun.lock` records resolved dependencies.
 
 ```sh
 bun install --frozen-lockfile # install committed dependency versions
@@ -51,20 +52,26 @@ GITHUB_TOKEN=$(gh auth token) PUBLIC_GA_ID=G-35CN95481D bun run build
 
 ```text
 Astro pages/layouts
-├── src/pages/index.astro        # Build-time fetchRepos(), renders Portfolio with client:load
+├── src/pages/index.astro        # Build-time fetchRepos(), composes nav, sections, footer, terminal
 ├── src/pages/resume.astro       # Print-optimized resume route
-└── src/layouts/RootLayout.astro # HTML shell, metadata, fonts, JSON-LD, analytics
+└── src/layouts/RootLayout.astro # HTML shell, metadata, self-hosted fonts, html.js flag, JSON-LD, analytics
 
-Interactive island
-└── src/components/Portfolio.tsx # Main React UI: hero, profile, stack, experience, Workbench, terminal
+Sections (src/components/sections/)
+└── Hero · Profile · Capabilities · Trace · Workbench (.astro)
 
-Astro components
-├── src/components/Analytics.astro # Conditional GA4 loader from PUBLIC_GA_ID
-└── src/components/JsonLd.astro    # Schema.org Person JSON-LD
+Astro components (src/components/)
+├── Reveal.astro         # Reveal wrapper + one IntersectionObserver script
+├── ScrollProgress.astro # CSS scroll-driven bar, JS fallback
+├── Terminal.astro       # Native <dialog> terminal + Konami listener
+├── SiteNav / SiteFooter / SectionLabel / SocialLink (.astro)
+├── Analytics.astro      # Conditional GA4 loader + delegated data-track-event clicks
+└── JsonLd.astro         # Schema.org Person JSON-LD
 
 Data layer
-├── src/lib/github.ts # GitHub GraphQL + REST client with fallback repo data
-└── src/lib/data.ts   # PROFILE, AVAILABILITY, SKILLS, EXPERIENCES, EDUCATION, SOCIALS
+├── src/lib/github.ts            # GitHub GraphQL + REST client with fallback repo data
+├── src/lib/data.ts              # PROFILE, AVAILABILITY, SKILLS, SKILL_GROUPS, EXPERIENCES, EDUCATION, SOCIALS
+├── src/lib/terminal-commands.ts # Build-time terminal command table (from data.ts)
+└── src/lib/terminal.ts          # Client terminal runtime: runCommand()
 ```
 
 ---
@@ -73,12 +80,13 @@ Data layer
 
 - **Static export** — `astro.config.ts` uses Astro's default static output, `outDir: 'out'`, and `trailingSlash: 'always'`. GitHub Pages deploys `/` and `/resume/` from the generated artifact.
 - **Hosting boundary** — Keep build-time data fetching and static hosting; SSR adapters and server-side route caches are not part of this implementation.
+- **Astro-native UI** — No UI framework integration. Render markup in `.astro` components and add behavior with bundled `<script>` blocks; keep client JS small and never make content visibility depend on it (reveal hiding is scoped to `html.js`).
 - **Build-time GitHub data** — `src/pages/index.astro` calls `fetchRepos()` during `bun run build`; the deployed browser page does not call GitHub APIs.
-- **Pinned + ledger model** — `src/lib/github.ts` queries the first 100 recently updated public non-fork repos, filters owners and metadata repos, and marks the intersection with pinned names. It preserves pinned order and removes pins from the lower ledger; there is no pagination. `FEATURED_PROJECTS` in `data.ts` is legacy data without a current renderer.
+- **Pinned + ledger model** — `src/lib/github.ts` takes Workbench cards directly from the profile `pinnedItems` (pin order, owned non-forks, metadata repos excluded) and builds the ledger from the first 100 recently updated public non-fork repos minus pins; there is no pagination. Requests time out after 10 s and Pages lookups run six at a time.
 - **Pages URL enrichment** — REST `GET /repos/jonathanperis/{repo}/pages` provides `pagesUrl`; standard `https://jonathanperis.github.io/<repo>/` homepage URLs are fallback Pages links.
 - **Fallback data** — `FALLBACK` covers absent tokens and failed/unusable GraphQL fetches. Individual Pages lookup failures preserve fetched repo data and standard Pages homepage fallbacks.
-- **Shared profile data** — `src/lib/data.ts` powers the portfolio, resume, and parts of the terminal/JSON-LD. Check presentation literals in `Portfolio.tsx`, `RootLayout.astro`, `resume.astro`, and `JsonLd.astro` when updating profile facts. The separate public PDF has unresolved differences; career reconciliation is deferred by the owner.
-- **Terminal easter egg** — Konami code opens an in-page terminal. `runCmd()` in `Portfolio.tsx` handles `help`, `about`, `stack`, `contact`, `neofetch`, `git log`, `ls`, `cat availability.txt`, `whoami`, `pwd`, `date`, `sudo hire me`, `echo`, `clear`, `exit`, and `quit`.
+- **Shared profile data** — `src/lib/data.ts` powers the portfolio, resume, terminal command table, and JSON-LD (`YEARS_OF_EXPERIENCE`, `PROFILE.address`, and `CURRENT_ROLE` are single sources). Check remaining presentation copy in `src/components/sections/` when updating profile facts. The separate public PDF has unresolved differences; career reconciliation is deferred by the owner.
+- **Terminal easter egg** — Konami code opens a native `<dialog>` terminal. Static output is built at build time by `buildCommandTable()` (`terminal-commands.ts`); `runCommand()` (`terminal.ts`) resolves own-key commands only and handles `help`, `about`, `stack`, `contact`, `neofetch`, `git log`, `ls`, `cat availability.txt`, `whoami`, `pwd`, `date`, `sudo hire me`, `echo`, `clear`, `exit`, and `quit`.
 - **SEO** — `RootLayout.astro` derives canonical, Open Graph URL, and English alternate URL from the page canonical path and configured site. Astro generates `sitemap-index.xml` and `sitemap-0.xml`; robots advertises the generated index. `public/sitemap.xml` preserves the old entry point as a compatibility index, without handwritten route entries or timestamps.
 - **Documentation status** — `wiki/` is repository Markdown, not a deployed documentation route; GitHub Wiki is disabled. PRODUCT/DESIGN distinguish implemented UI from proposals. Update related docs using the maintenance map above.
 
@@ -93,25 +101,31 @@ jonathanperis.github.io/
 │   │   ├── index.astro
 │   │   └── resume.astro
 │   ├── components/
-│   │   ├── Portfolio.tsx
+│   │   ├── sections/            # Hero, Profile, Capabilities, Trace, Workbench
+│   │   ├── Terminal.astro
+│   │   ├── Reveal.astro / ScrollProgress.astro
+│   │   ├── SiteNav.astro / SiteFooter.astro / SectionLabel.astro / SocialLink.astro
 │   │   ├── Analytics.astro
 │   │   └── JsonLd.astro
 │   ├── layouts/
 │   │   └── RootLayout.astro
 │   ├── lib/
 │   │   ├── github.ts
-│   │   └── data.ts
+│   │   ├── data.ts
+│   │   ├── terminal-commands.ts
+│   │   └── terminal.ts
 │   └── styles/
 │       └── globals.css
 ├── public/
 │   ├── cv_jonathan_peris.pdf
 │   ├── manifest.json
 │   ├── robots.txt / sitemap.xml
-│   └── favicon.svg / apple-touch-icon.png
+│   └── favicon.svg / apple-touch-icon.png / icon-192.png / icon-512.png
 ├── wiki/
 ├── astro.config.ts
 ├── tsconfig.json
-├── package.json
+├── package.json                 # packageManager (Bun) + engines (Node)
+├── .node-version
 └── .github/workflows/
     ├── build-check.yml
     ├── main-release.yml
@@ -134,11 +148,11 @@ jonathanperis.github.io/
 | Workflow | Trigger | Purpose |
 |----------|---------|---------|
 | `build-check.yml` | Pull requests to `main`, manual dispatch | Frozen Bun install, `bun audit`, `astro check`, Astro build |
-| `main-release.yml` | Push to `main`, manual dispatch on `main` | Frozen install, build `out/`, upload artifact, deploy GitHub Pages |
+| `main-release.yml` | Push to `main`, manual dispatch on `main` | `build` job (read-only) builds and uploads `out/`; `deploy` job publishes GitHub Pages |
 | `codeql.yml` | Push/PR to `main`, Monday 06:00 UTC, manual dispatch | JavaScript/TypeScript and Actions security-and-quality analysis |
 
 - **Renovate:** `renovate.json` inherits the account's shared preset for weekly dependency updates and SHA-pinned Actions; see the deployment guide for policy details
-- **Workflow permissions:** Read-only contents by default in build/release; Pages and OIDC writes scoped to the deploy job. CodeQL has security-events write permission. Actions are SHA-pinned, and checkout disables persisted credentials
+- **Workflow permissions:** Read-only contents by default in build/release; Pages and OIDC writes scoped to a deploy job that runs no repository code. CodeQL has security-events write permission. Actions are SHA-pinned, and checkout disables persisted credentials
 - **Merge strategy:** Rebase only (squash and merge commits disabled)
 - **Branch protection:** Main branch is protected; changes go through PRs
 - **Community health files:** CODE_OF_CONDUCT, CONTRIBUTING, SECURITY, and SUPPORT live in the [`.github` repo](https://github.com/jonathanperis/.github); do not duplicate them here

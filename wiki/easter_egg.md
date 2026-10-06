@@ -14,17 +14,17 @@ Press these keys in sequence anywhere on the page while the terminal is closed:
 ↑ ↑ ↓ ↓ ← → ← → B A
 ```
 
-The key listener matches lowercase `b` and `a`; press the letter keys without Shift or Caps Lock. The uppercase letters above are the visual hint.
+The key listener lowercases single-character keys, so `B`/`b` and `A`/`a` both match (Shift and Caps Lock are fine).
 
 ### Terminal Features
 
-- In-page modal terminal with focus restoration when closed
+- Native modal `<dialog>` opened with `showModal()`: the browser contains focus inside the dialog, makes the page behind it inert, and restores focus when it closes
 - Command history with arrow up/down
-- Tab or Shift+Tab cycles between the command input and close button
 - Ctrl+L or `clear` clears the terminal
 - Escape, `exit`, `quit`, or the close button closes the terminal
 - Clicking the backdrop closes the terminal
-- Auto-scrolls to the newest terminal output
+- Clicking inside the terminal body refocuses the input unless text is selected
+- Jumps to the newest terminal output (no smooth-scroll animation)
 
 ### Available Commands
 
@@ -32,10 +32,10 @@ The key listener matches lowercase `b` and `a`; press the letter keys without Sh
 |---|---|
 | `help` | Lists supported commands |
 | `about` | Short Jonathan Peris profile summary |
-| `stack` | Backend, architecture, delivery, and data stack overview |
+| `stack` | All six `SKILL_GROUPS` (backend runtime, architecture, delivery, data, languages, interface) |
 | `contact` | GitHub, LinkedIn, and email |
-| `neofetch` | ASCII "JP" logo with Astro/React/TypeScript runtime info |
-| `git log` | Most recent career roles rendered as commit-style rows |
+| `neofetch` | ASCII "JP" logo with "Astro 7 / static HTML" runtime, years of experience, and country |
+| `git log` | Five most recent career roles as commit-style rows, plus a derived count of earlier roles |
 | `ls` | Lists faux terminal files/directories |
 | `cat availability.txt` | Prints current availability text from `AVAILABILITY.full` |
 | `whoami` | Current user/profile summary |
@@ -56,9 +56,9 @@ Built as a small systems manual. Hidden shell: ↑↑↓↓←→←→BA
 
 ### Implementation
 
-- Konami listener lives in `src/components/Portfolio.tsx` inside a `useEffect` hook.
-- The listener tracks the last 10 keystrokes and compares them with the target sequence.
-- Terminal state is managed with React state (`termOpen`, `termInput`, `termHist`, `cmdHist`, `histIdx`).
-- `runCmd()` maps commands to responses and uses `EXPERIENCES`, `AVAILABILITY`, and hardcoded terminal strings.
+- Markup and client script live in [`src/components/Terminal.astro`](../src/components/Terminal.astro). The Konami listener tracks the last 10 keys while the dialog is closed and compares them with the target sequence.
+- Static command output is built at **build time** by `buildCommandTable()` in [`src/lib/terminal-commands.ts`](../src/lib/terminal-commands.ts), derived from `PROFILE`, `SKILLS`/`SKILL_GROUPS`, `EXPERIENCES`, `AVAILABILITY`, and `YEARS_OF_EXPERIENCE` in `data.ts`. The table is embedded in the page as `<script type="application/json" id="terminal-commands">` (with `<` escaped).
+- At runtime, `runCommand()` in [`src/lib/terminal.ts`](../src/lib/terminal.ts) lowercases and trims input, looks it up with `Object.hasOwn` (so `constructor`, `__proto__`, and similar names are reported as unknown commands), and handles the dynamic commands `date`, `echo`, `clear`, and `exit`/`quit`.
+- Output lines are rendered with `textContent`, so command input and data are never parsed as HTML.
 
-The terminal is an in-page command simulation; it does not execute operating-system commands. Opening it has no custom analytics event. CSS reduced-motion rules cover reveal/cursor effects, but terminal auto-scroll still requests smooth scrolling in JavaScript; browser accessibility validation remains separate from these source-level behaviors.
+The terminal is an in-page command simulation; it does not execute operating-system commands. Opening it has no custom analytics event. Browser keyboard and screen-reader validation remains separate from these source-level behaviors.

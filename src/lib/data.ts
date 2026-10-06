@@ -7,16 +7,26 @@ export type Experience = {
   tags: string[];
 };
 
+export const YEARS_OF_EXPERIENCE = "12+";
+
+const ADDRESS = {
+  locality: "Itanhaém",
+  region: "São Paulo",
+  country: "Brazil",
+  countryCode: "BR",
+};
+
 export const PROFILE = {
   name: "Jonathan Peris",
   title: "Software Engineer",
   email: "jperis.silva@gmail.com",
-  location: "Itanhaém, São Paulo, Brazil",
+  address: ADDRESS,
+  location: `${ADDRESS.locality}, ${ADDRESS.region}, ${ADDRESS.country}`,
   github: "github.com/jonathanperis",
   linkedin: "linkedin.com/in/jonathan-peris",
   website: "jonathanperis.github.io",
   summary:
-    "Software Engineer with 12+ years of experience specializing in .NET and Fintech solutions. Proven track record architecting and delivering high-impact, enterprise-grade software. Expertise centered on the modern .NET ecosystem including .NET Core+, ASP.NET Core, Entity Framework, and MAUI. Deeply committed to engineering excellence with CQRS, DDD, Microservices, Hexagonal Architecture, and Cloud-Native principles. Strong DevOps background with Azure, Docker, and CI/CD pipelines.",
+    `Software Engineer with ${YEARS_OF_EXPERIENCE} years of experience specializing in .NET and Fintech solutions. Proven track record architecting and delivering high-impact, enterprise-grade software. Expertise centered on the modern .NET ecosystem including .NET Core+, ASP.NET Core, Entity Framework, and MAUI. Deeply committed to engineering excellence with CQRS, DDD, Microservices, Hexagonal Architecture, and Cloud-Native principles. Strong DevOps background with Azure, Docker, and CI/CD pipelines.`,
 };
 
 export const AVAILABILITY = {
@@ -25,7 +35,7 @@ export const AVAILABILITY = {
 };
 
 export const OPERATING_SIGNALS = [
-  { label: "12+ yrs", value: "production software" },
+  { label: `${YEARS_OF_EXPERIENCE} yrs`, value: "production software" },
   { label: ".NET + Azure", value: "primary lane" },
   { label: "Remote", value: "Brazil to US teams" },
   { label: "Systems", value: "architecture + delivery" },
@@ -54,6 +64,15 @@ export const SKILLS = {
   databases: ["SQL Server", "PostgreSQL"],
   frontend: ["Blazor", "React", "Next.js", "Angular"],
 };
+
+export const SKILL_GROUPS: Array<{ key: keyof typeof SKILLS; label: string; path: string }> = [
+  { key: "backend", label: "backend runtime", path: "/stack/backend" },
+  { key: "architecture", label: "architecture", path: "/stack/boundaries" },
+  { key: "cloud", label: "delivery", path: "/stack/delivery" },
+  { key: "databases", label: "data", path: "/stack/data" },
+  { key: "languages", label: "languages", path: "/stack/languages" },
+  { key: "frontend", label: "interface", path: "/stack/interface" },
+];
 
 export const EDUCATION = {
   degree: "Bachelor of Technology (BTech)",
@@ -157,81 +176,8 @@ export const EXPERIENCES: Experience[] = [
   },
 ];
 
-export type FeaturedProject = {
-  slug: string;
-  name: string;
-  description: string;
-  repoUrl: string;
-  liveUrl: string;
-  lang: string;
-  langColor: string;
-  tags: string[];
-};
-
-export const FEATURED_PROJECTS: FeaturedProject[] = [
-  {
-    slug: "speedy-bird-lynx",
-    name: "Speedy Bird",
-    description:
-      "A Flappy Bird clone built with Lynx (ReactLynx + TypeScript) — ByteDance's cross-platform native UI framework. One codebase renders natively on iOS, Android, and Web. Features accelerating difficulty, medal system, and a full CI/CD pipeline via GitHub Actions.",
-    repoUrl: "https://github.com/jonathanperis/speedy-bird-lynx",
-    liveUrl: "https://jonathanperis.github.io/speedy-bird-lynx/",
-    lang: "TypeScript",
-    langColor: "#3178c6",
-    tags: ["Lynx", "ReactLynx", "TypeScript", "Cross-Platform", "Game Dev"],
-  },
-  {
-    slug: "cpnucleo",
-    name: "Cpnucleo",
-    description:
-      "A full-featured .NET 10 reference implementation — Clean Architecture, DDD, dual REST/gRPC APIs, and 25+ architecture tests enforced at build time. Docs, architecture overview, and API reference available on GitHub Pages.",
-    repoUrl: "https://github.com/jonathanperis/cpnucleo",
-    liveUrl: "https://jonathanperis.github.io/cpnucleo/",
-    lang: "C#",
-    langColor: "#178600",
-    tags: ["Clean Architecture", ".NET", "Docker", "DI", "Testing"],
-  },
-  {
-    slug: "super-mango-editor",
-    name: "Super Mango Editor",
-    description:
-      "A classic side-scrolling platformer built from scratch with C and SDL2. Compiled to WebAssembly so it runs directly in the browser — no install needed. Features sprite animation, collision detection, and retro-style gameplay.",
-    repoUrl: "https://github.com/jonathanperis/super-mango-editor",
-    liveUrl: "https://jonathanperis.github.io/super-mango-editor/",
-    lang: "C",
-    langColor: "#555555",
-    tags: ["C", "SDL2", "WebAssembly", "Game Dev", "Emscripten"],
-  },
-  {
-    slug: "rinha2-back-end-dotnet",
-    name: "Rinha de Backend 2 — .NET",
-    description:
-      "My entry for the Rinha de Backend 2024/Q1 challenge — a high-performance concurrency-focused API built in C# with PostgreSQL and Nginx. Designed to handle extreme load under strict resource constraints (1.5 CPU / 550MB RAM).",
-    repoUrl: "https://github.com/jonathanperis/rinha2-back-end-dotnet",
-    liveUrl: "https://jonathanperis.github.io/rinha2-back-end-dotnet/",
-    lang: "C#",
-    langColor: "#178600",
-    tags: ["C#", "PostgreSQL", "Nginx", "High Performance", "Docker"],
-  },
-  {
-    slug: "rinha2-back-end-k6",
-    name: "Rinha de Backend 2 — K6 Load Tests",
-    description:
-      "Load testing suite for the Rinha de Backend 2024/Q1 challenge using Grafana K6. Simulates realistic concurrent traffic patterns to stress-test API endpoints and validate correctness under heavy load.",
-    repoUrl: "https://github.com/jonathanperis/rinha2-back-end-k6",
-    liveUrl: "https://jonathanperis.github.io/rinha2-back-end-k6/",
-    lang: "JavaScript",
-    langColor: "#f1e05a",
-    tags: ["K6", "Load Testing", "Grafana", "Performance", "Stress Testing"],
-  },
-];
-
-export const ROLES = [
-  "Software Engineer",
-  "Backend Developer",
-  ".NET Architect",
-  "DevOps Engineer",
-];
+/** The open-ended role at the top of EXPERIENCES, if any. */
+export const CURRENT_ROLE = EXPERIENCES.find((exp) => exp.period.endsWith("Present"));
 
 export const SOCIALS = [
   { label: "GitHub", href: "https://github.com/jonathanperis", icon: "M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z", vb: "0 0 16 16" },

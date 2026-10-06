@@ -1,0 +1,46 @@
+---
+import Reveal from "../Reveal.astro";
+import { AVAILABILITY, OPERATING_SIGNALS, PROFILE, YEARS_OF_EXPERIENCE } from "../../lib/data";
+
+const ledger = `operator: ${PROFILE.name}
+location: ${PROFILE.location}
+status: ${AVAILABILITY.full}
+focus:
+  - backend architecture
+  - delivery discipline
+  - reliable systems
+runtime:
+  years: ${YEARS_OF_EXPERIENCE}
+  stack: C# / .NET / Azure / SQL
+  mode: remote-first`;
+---
+
+<section class="kernel-hero" aria-labelledby="hero-title">
+  <div class="scanline" aria-hidden="true"></div>
+  <!-- Above the fold: rendered visible immediately, never gated on a reveal. -->
+  <div class="hero-copy">
+    <p class="status-pill"><span aria-hidden="true"></span>{AVAILABILITY.short}</p>
+    <h1 id="hero-title">{PROFILE.name}</h1>
+    <p class="role-line"><span>Backend architecture / .NET / Azure</span><span class="typing-cursor" aria-hidden="true"></span></p>
+    <p class="hero-lede">
+      I build backend systems that can be understood, operated, and changed after they meet production traffic.
+    </p>
+    <div class="hero-actions">
+      <a href="/resume/" class="primary-action" data-track-event="cta_click" data-track-label="hero_resume">View resume</a>
+      <a href="https://www.linkedin.com/in/jonathan-peris/" target="_blank" rel="noreferrer noopener" class="secondary-action" data-track-event="cta_click" data-track-label="hero_linkedin">Contact on LinkedIn</a>
+    </div>
+    <div class="signal-strip" aria-label="Operating signals">
+      {OPERATING_SIGNALS.map((signal) => <span><b>{signal.label}</b>{signal.value}</span>)}
+    </div>
+  </div>
+
+  <Reveal delay={140} class="hero-console-wrap">
+    <div class="hero-console" aria-label="Build ledger summary">
+      <div class="console-top">
+        <span>deploy-ledger.yaml</span>
+        <span class="console-state">healthy</span>
+      </div>
+      <pre>{ledger}</pre>
+    </div>
+  </Reveal>
+</section>

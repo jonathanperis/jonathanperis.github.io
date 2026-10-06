@@ -1,0 +1,26 @@
+---
+import type { SOCIALS } from "../lib/data";
+
+interface Props {
+  social: (typeof SOCIALS)[number];
+  compact?: boolean;
+}
+
+const { social, compact = false } = Astro.props;
+---
+
+<a
+  href={social.href}
+  target="_blank"
+  rel="noreferrer noopener"
+  aria-label={social.label}
+  title={social.label}
+  class:list={["icon-link", { compact }]}
+  data-track-event="social_click"
+  data-track-label={social.label}
+>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox={social.vb} fill="currentColor" aria-hidden="true">
+    <path d={social.icon} />
+  </svg>
+  {!compact && <span>{social.label}</span>}
+</a>

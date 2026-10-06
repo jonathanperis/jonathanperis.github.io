@@ -1,0 +1,11 @@
+---
+import SocialLink from "./SocialLink.astro";
+import { SOCIALS } from "../lib/data";
+---
+
+<footer class="site-footer">
+  <div class="footer-socials">
+    {SOCIALS.map((social) => <SocialLink social={social} compact />)}
+  </div>
+  <p>Built as a small systems manual. Hidden shell: ↑↑↓↓←→←→BA</p>
+</footer>

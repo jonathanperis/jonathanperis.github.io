@@ -1,0 +1,32 @@
+---
+import Reveal from "../Reveal.astro";
+import SectionLabel from "../SectionLabel.astro";
+import { EXPERIENCES } from "../../lib/data";
+
+/** Stagger only the first few entries so long lists never wait seconds to appear. */
+const MAX_STAGGER_STEPS = 6;
+---
+
+<section id="trace" class="content-section" aria-labelledby="trace-heading">
+  <Reveal>
+    <SectionLabel id="trace-heading" number="03">Experience trace</SectionLabel>
+  </Reveal>
+  <div class="trace-list">
+    {EXPERIENCES.map((exp, index) => (
+      <Reveal delay={Math.min(index, MAX_STAGGER_STEPS) * 45}>
+        <article class:list={["trace-entry", { current: index === 0 }]}>
+          <div class="trace-meta">
+            <span>{String(index).padStart(2, "0")}</span>
+            <time>{exp.period}</time>
+          </div>
+          <div class="trace-body">
+            <h3>{exp.title} <span>@ {exp.company}</span></h3>
+            <p class="trace-location">{exp.location}</p>
+            <p>{exp.description}</p>
+            <div>{exp.tags.map((tag) => <span>{tag}</span>)}</div>
+          </div>
+        </article>
+      </Reveal>
+    ))}
+  </div>
+</section>
