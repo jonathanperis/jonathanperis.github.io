@@ -100,7 +100,8 @@ const commands = JSON.stringify(buildCommandTable()).replace(/</g, "\\u003c");
     });
 
     input.addEventListener("keydown", (event) => {
-      if (event.key === "Enter") submit();
+      // Enter that confirms an IME composition must not submit a half-typed command.
+      if (event.key === "Enter" && !event.isComposing) submit();
       else if (event.key === "ArrowUp" || event.key === "ArrowDown") {
         event.preventDefault();
         recall(event.key === "ArrowUp" ? -1 : 1);
