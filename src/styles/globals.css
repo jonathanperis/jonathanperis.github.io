@@ -37,6 +37,13 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Decorative bleed (e.g. .scanline) must not cause horizontal scrolling. html takes the viewport
+   propagation, so body clips its own content; clip (unlike hidden) keeps sticky positioning intact. */
+html,
+body {
+  overflow-x: clip;
+}
+
 ::selection {
   background-color: rgba(74, 222, 128, 0.2);
   color: var(--color-text);
@@ -93,9 +100,12 @@ body::after {
 @keyframes scroll-progress {
   to { transform: scaleX(1); }
 }
+/* Longhands on purpose: minifiers fold a shorthand + timeline into `animation: … scroll()`, which browsers reject. */
 @supports (animation-timeline: scroll()) {
   .scroll-bar {
-    animation: scroll-progress linear both;
+    animation-name: scroll-progress;
+    animation-timing-function: linear;
+    animation-fill-mode: both;
     animation-timeline: scroll(root block);
   }
 }
