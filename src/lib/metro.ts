@@ -20,7 +20,7 @@ export type Line = {
 
 /** Lines 1–5 are drawn on the map; 6–8 only appear in the Line Guide. Colors live in globals.css (--line-N). */
 export const LINES: Record<LineId, Line> = {
-  1: { id: 1, name: "Career", kind: "every role since 2011" },
+  1: { id: 1, name: "Career", kind: "every tech role since 2011" },
   2: { id: 2, name: ".NET", kind: "backend", skills: "backend" },
   3: { id: 3, name: "Azure", kind: "cloud / delivery", skills: "cloud" },
   4: { id: 4, name: "Architecture", kind: "architecture", skills: "architecture" },
@@ -71,7 +71,7 @@ export const STATIONS: Station[] = [
     id: "sabesp",
     short: "Sabesp",
     name: "Sabesp",
-    roles: [role("Sabesp", "2011")],
+    roles: [role("Sabesp", "Aug 2011")],
     lines: [1],
     caption: "2011 · Tech Support",
     map: { at: [96, 560], dir: "E", span: [0, 0], label: { x: 80, y: 524 } },

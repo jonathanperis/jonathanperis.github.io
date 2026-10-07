@@ -59,17 +59,19 @@ const stations = STATIONS.map((station) => {
 });
 const terminus = stations[stations.length - 1];
 const [terminusFrom] = stationPeriod(TERMINUS);
+// Year only: periods may start with a month ("Aug 2011").
+const originYear = stationPeriod(STATIONS[0])[0].slice(-4);
 ---
 
 <div class="metro" id="map">
   <div class="title-block">
-    <p class="eyebrow">Career system map<b class="dsep">·</b>{STATIONS[0].roles[0].period.slice(0, 4)} — now</p>
+    <p class="eyebrow">Career system map<b class="dsep">·</b>{originYear} — now</p>
     <p class="lede">I build backend systems that can be understood, operated, and <em>changed after they meet production traffic.</em></p>
     <p class="meta">{YEARS_OF_EXPERIENCE} years of production software, drawn as a line: {STATIONS.length} stations, one terminus. The colored lines are the threads that kept running through it. Pick a line to follow it.</p>
   </div>
 
   <p class="swipe" aria-hidden="true">
-    <svg viewBox="0 0 20 20"><path d="M17 10H5M10 4l-6 6 6 6" /></svg>Swipe back to {STATIONS[0].roles[0].period.slice(0, 4)}
+    <svg viewBox="0 0 20 20"><path d="M17 10H5M10 4l-6 6 6 6" /></svg>Swipe back to {originYear}
   </p>
 
   <div class="scroller">
