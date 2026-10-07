@@ -83,7 +83,7 @@ export const EXPERIENCES: Experience[] = [
     company: "Derivative Path",
     location: "New York, US · Remote",
     description:
-      "Software Engineer on the CAAR team, focused on developing and refining the General Ledger, Hedge Accounting, and Fiscal Calendar modules for the DerivativeEDGE platform. Enabling clients to achieve streamlined financial reporting, accurate hedge accounting, and efficient fiscal period management.",
+      "Software Engineer on the CAAR team, focused on developing and refining the General Ledger, Hedge Accounting, and Fiscal Calendar modules for the DerivativeEDGE platform, which manage billions in notional value. Enabling clients to achieve streamlined financial reporting, accurate hedge accounting, and efficient fiscal period management.",
     tags: ["C#", ".NET 8", "SQL Server", "CQRS", "Azure DevOps", "Clean Architecture"],
   },
   {
@@ -159,10 +159,10 @@ export const EXPERIENCES: Experience[] = [
     tags: ["C#", "ASP.NET Web Forms", "WCF", "SQL Server", "API Integration"],
   },
   {
-    period: "2011 — 2013",
+    period: "Aug 2011 — Apr 2013",
     title: "Tech Support Professional",
     company: "Sabesp",
-    location: "São Paulo, BR",
+    location: "Diadema, BR",
     description:
       "Technical support for the state water supply and sanitation company. Configured Active Directory, virtual machines, LDAP, and managed backup contingency. Participated in development of the company's process system.",
     tags: ["Active Directory", "Windows Server", "LDAP", "VMware", "Networking"],
