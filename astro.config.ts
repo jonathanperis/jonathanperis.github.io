@@ -6,7 +6,8 @@ export default defineConfig({
   site: 'https://jonathanperis.github.io',
   outDir: 'out',
   trailingSlash: 'always',
-  integrations: [sitemap()],
+  // /lab/ holds design prototypes: never listed in the sitemap.
+  integrations: [sitemap({ filter: (page) => !page.includes('/lab/') })],
   // Fonts are downloaded at build time and served from this origin (no runtime Google Fonts request).
   fonts: [
     {
@@ -22,6 +23,15 @@ export default defineConfig({
       provider: fontProviders.google(),
       name: 'JetBrains Mono',
       cssVariable: '--font-jetbrains-mono',
+      weights: ['400 700'],
+      styles: ['normal'],
+      subsets: ['latin', 'latin-ext'],
+      fallbacks: ['monospace'],
+    },
+    {
+      provider: fontProviders.google(),
+      name: 'Pixelify Sans',
+      cssVariable: '--font-pixelify',
       weights: ['400 700'],
       styles: ['normal'],
       subsets: ['latin', 'latin-ext'],

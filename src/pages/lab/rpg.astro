@@ -1,0 +1,624 @@
+---
+/**
+ * Design prototype: pixel-art RPG x dev aesthetics.
+ * Self-contained (own shell and styles) so the live portfolio is untouched; excluded from the sitemap and indexing.
+ */
+import { Font } from "astro:assets";
+import PixelArt from "../../components/rpg/PixelArt.astro";
+import PixelPanel from "../../components/rpg/PixelPanel.astro";
+import { CHEST, DATABASE, HEART, HERO, MONITOR, SCROLL, SHIELD, SPELLBOOK, SWORD, type Sprite } from "../../components/rpg/sprites";
+import { AVAILABILITY, CURRENT_ROLE, EXPERIENCES, PROFILE, SKILLS, SKILL_GROUPS, YEARS_OF_EXPERIENCE } from "../../lib/data";
+import { fetchRepos } from "../../lib/github";
+
+const repos = await fetchRepos();
+
+const level = Number.parseInt(YEARS_OF_EXPERIENCE, 10);
+const questCount = EXPERIENCES.length;
+const guildCount = new Set(EXPERIENCES.map((exp) => exp.company)).size;
+const MAX_ICONS = 16;
+
+const counters: Array<{ label: string; value: string; count: number; sprite: Sprite }> = [
+  { label: "Years in production", value: YEARS_OF_EXPERIENCE, count: level, sprite: HEART },
+  { label: "Quests completed", value: `${questCount} roles`, count: questCount, sprite: SCROLL },
+  { label: "Public builds", value: `${repos.length} repos`, count: repos.length, sprite: CHEST },
+];
+
+const sheet = [
+  { key: "NAME", value: PROFILE.name },
+  { key: "CLASS", value: "Backend Architect" },
+  { key: "LV", value: `${level}  (${YEARS_OF_EXPERIENCE} yrs XP)` },
+  { key: "GUILD", value: CURRENT_ROLE ? `${CURRENT_ROLE.company} — ${CURRENT_ROLE.title}` : "Freelance" },
+  { key: "HOME", value: `${PROFILE.address.locality}, ${PROFILE.address.countryCode} · remote` },
+  { key: "PARTY", value: `${guildCount} guilds joined` },
+];
+
+const SLOTS: Record<(typeof SKILL_GROUPS)[number]["key"], { slot: string; sprite: Sprite }> = {
+  backend: { slot: "Main hand", sprite: SWORD },
+  architecture: { slot: "Spellbook", sprite: SPELLBOOK },
+  cloud: { slot: "Armor", sprite: SHIELD },
+  databases: { slot: "Relic", sprite: DATABASE },
+  languages: { slot: "Tongues", sprite: SCROLL },
+  frontend: { slot: "Off-hand", sprite: MONITOR },
+};
+
+const commands = [
+  { label: "View resume", href: "/resume/", hint: "open the full stat sheet" },
+  { label: "Talk", href: "https://www.linkedin.com/in/jonathan-peris/", hint: "LinkedIn", external: true },
+  { label: "Equipment", href: "#equipment", hint: "skills & gear" },
+  { label: "Quest log", href: "/#trace", hint: "experience" },
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#10172e" />
+    <title>Prototype · Jonathan Peris RPG</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <Font cssVariable="--font-pixelify" preload={[{ subset: "latin" }]} />
+    <Font cssVariable="--font-jetbrains-mono" preload={[{ subset: "latin" }]} />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+
+    <header class="hud">
+      <a href="/lab/rpg/" class="hud-logo" aria-label="Prototype home">JP<span>.dev</span></a>
+      <nav aria-label="Prototype navigation">
+        <a href="#sheet">status</a>
+        <a href="#equipment">equip</a>
+        <a href="/">current site</a>
+      </nav>
+      <p class="hud-save"><span>SAVE 01</span> LV {level} · {YEARS_OF_EXPERIENCE} yrs</p>
+    </header>
+
+    <main id="main">
+      <section class="title-screen" aria-labelledby="hero-name">
+        <div class="stage">
+          <div class="stage-sky" aria-hidden="true"></div>
+          <div class="hero-sprite">
+            <PixelArt rows={HERO.rows} palette={HERO.palette} scale={9} label="Pixel-art Jonathan in a green hoodie holding a laptop" />
+          </div>
+          <div class="stage-ground" aria-hidden="true"></div>
+          <div class="nameplate">
+            <h1 id="hero-name">{PROFILE.name}</h1>
+            <p>Lv.{level} Backend Architect</p>
+          </div>
+        </div>
+
+        <div class="hero-ui">
+          <PixelPanel tab="dialogue.txt" class="dialogue">
+            <p class="speaker">JONATHAN</p>
+            <p class="line">
+              I build backend systems that can be understood, operated, and changed after they meet production traffic.
+            </p>
+            <p class="line dim">.NET · Azure · CQRS · DDD — {YEARS_OF_EXPERIENCE} years of production code.</p>
+            <span class="next" aria-hidden="true">▼</span>
+          </PixelPanel>
+
+          <p class="status-effect"><span aria-hidden="true">✦</span> STATUS: AVAILABLE <span class="status-detail">{AVAILABILITY.short}</span></p>
+
+          <PixelPanel tab="commands" class="command-panel">
+            <ul class="command-menu" data-command-menu>
+              {commands.map((cmd) => (
+                <li>
+                  <a
+                    href={cmd.href}
+                    {...(cmd.external ? { target: "_blank", rel: "noreferrer noopener" } : {})}
+                  >
+                    <span class="cursor" aria-hidden="true">▶</span>
+                    <span class="cmd-label">{cmd.label}</span>
+                    <span class="cmd-hint">{cmd.hint}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </PixelPanel>
+        </div>
+      </section>
+
+      <section id="sheet" class="sheet" aria-labelledby="sheet-title">
+        <PixelPanel tab="player.json" as="div" class="stats">
+          <h2 id="sheet-title" class="panel-title">Character sheet</h2>
+          <dl class="stat-list">
+            {sheet.map(({ key, value }) => (
+              <div>
+                <dt>{key}</dt>
+                <dd>{value}</dd>
+              </div>
+            ))}
+          </dl>
+        </PixelPanel>
+
+        <PixelPanel tab="achievements.log" as="div" class="counters">
+          <h2 class="panel-title">Progress</h2>
+          <ul class="counter-list">
+            {counters.map(({ label, value, count, sprite }) => (
+              <li>
+                <p class="counter-head"><span>{label}</span><b>{value}</b></p>
+                <div class="icon-row" aria-hidden="true">
+                  {Array.from({ length: Math.min(count, MAX_ICONS) }, () => (
+                    <PixelArt rows={sprite.rows} palette={sprite.palette} scale={3} />
+                  ))}
+                  {count > MAX_ICONS && <span class="more">+{count - MAX_ICONS}</span>}
+                </div>
+              </li>
+            ))}
+          </ul>
+        </PixelPanel>
+      </section>
+
+      <section id="equipment" class="equipment" aria-labelledby="equipment-title">
+        <PixelPanel tab="equipment.yml">
+          <h2 id="equipment-title" class="panel-title">Equipment</h2>
+          <ul class="slot-grid">
+            {SKILL_GROUPS.map(({ key, label }) => (
+              <li class="slot">
+                <div class="slot-icon" aria-hidden="true">
+                  <PixelArt rows={SLOTS[key].sprite.rows} palette={SLOTS[key].sprite.palette} scale={5} />
+                </div>
+                <div>
+                  <p class="slot-name">{SLOTS[key].slot} <span>// {label}</span></p>
+                  <p class="slot-items">{SKILLS[key].join(" · ")}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </PixelPanel>
+      </section>
+    </main>
+
+    <footer class="lab-footer">
+      <p>PROTOTYPE · /lab/rpg · not indexed</p>
+      <a href="/">← back to the current site</a>
+    </footer>
+
+    <script>
+      // RPG-style menu: arrow keys move the ▶ cursor between commands, following the current grid columns.
+      const menu = document.querySelector<HTMLElement>("[data-command-menu]");
+      const items = menu ? [...menu.querySelectorAll<HTMLAnchorElement>("a")] : [];
+
+      menu?.addEventListener("keydown", (event) => {
+        const columns = getComputedStyle(menu).gridTemplateColumns.split(" ").length;
+        const moves: Record<string, number> = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -columns, ArrowDown: columns };
+        const delta = moves[event.key];
+        const index = items.indexOf(document.activeElement as HTMLAnchorElement);
+        if (delta === undefined || index === -1) return;
+        const next = items[index + delta];
+        if (!next) return;
+        event.preventDefault();
+        next.focus();
+      });
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    --rpg-ink: #0b0d1a;
+    --rpg-night: #10172e;
+    --rpg-navy: #1d2b53;
+    --rpg-paper: #fff1e8;
+    --rpg-mist: #c2c3c7;
+    --rpg-stone: #5f574f;
+    --rpg-yellow: #ffec27;
+    --rpg-green: #00e436;
+    --rpg-red: #ff004d;
+    --rpg-sky: #29adff;
+    --rpg-peach: #ffccaa;
+    --rpg-pixel: var(--font-pixelify);
+    --rpg-mono: var(--font-jetbrains-mono);
+    color-scheme: dark;
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html,
+  body {
+    overflow-x: clip;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background-color: var(--rpg-night);
+    /* Two offset dot layers read as a scattered pixel starfield. */
+    background-image:
+      radial-gradient(var(--rpg-mist) 1px, transparent 1.5px),
+      radial-gradient(rgb(41 173 255 / 0.7) 1px, transparent 1.5px);
+    background-size: 97px 89px, 151px 137px;
+    background-position: 13px 21px, 71px 43px;
+    color: var(--rpg-paper);
+    font-family: var(--rpg-mono);
+    line-height: 1.6;
+    -webkit-font-smoothing: none;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  :focus-visible {
+    outline: 3px dashed var(--rpg-yellow);
+    outline-offset: 3px;
+  }
+
+  .skip {
+    position: absolute;
+    left: -999px;
+  }
+  .skip:focus {
+    left: 1rem;
+    top: 1rem;
+    z-index: 10;
+    background: var(--rpg-yellow);
+    color: var(--rpg-ink);
+    padding: 0.4rem 0.8rem;
+  }
+
+  /* ── HUD ── */
+  .hud {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.7rem clamp(1rem, 4vw, 3rem);
+    background: var(--rpg-ink);
+    box-shadow: 0 4px 0 0 var(--rpg-navy);
+    font-family: var(--rpg-pixel);
+  }
+  .hud-logo {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--rpg-green);
+    text-decoration: none;
+  }
+  .hud-logo span {
+    color: var(--rpg-mist);
+    font-weight: 400;
+  }
+  .hud nav {
+    display: flex;
+    gap: 1.2rem;
+  }
+  .hud nav a {
+    text-decoration: none;
+    color: var(--rpg-mist);
+  }
+  .hud nav a:hover {
+    color: var(--rpg-yellow);
+  }
+  .hud-save {
+    margin: 0;
+    color: var(--rpg-paper);
+    font-size: 0.95rem;
+  }
+  .hud-save span {
+    background: var(--rpg-red);
+    color: var(--rpg-paper);
+    padding: 0 0.4rem;
+    margin-right: 0.4rem;
+  }
+
+  main {
+    width: min(1180px, 100% - 2rem);
+    margin: 0 auto;
+    padding: clamp(1.5rem, 4vw, 3rem) 0 3rem;
+    display: grid;
+    gap: 3rem;
+  }
+
+  /* ── Title screen ── */
+  .title-screen {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: clamp(1.5rem, 4vw, 3.5rem);
+    align-items: center;
+  }
+
+  .stage {
+    position: relative;
+    display: grid;
+    justify-items: center;
+    padding-top: 2.5rem;
+  }
+  .stage-sky {
+    position: absolute;
+    inset: 0 8% 3.2rem;
+    background:
+      radial-gradient(circle at 50% 62%, rgb(0 228 54 / 0.22), transparent 58%),
+      repeating-linear-gradient(0deg, transparent 0 6px, rgb(255 255 255 / 0.025) 6px 8px);
+  }
+  .hero-sprite {
+    position: relative;
+    filter: drop-shadow(6px 6px 0 var(--rpg-ink));
+    animation: idle 1.2s steps(1) infinite;
+  }
+  .hero-sprite .pixel-art {
+    display: block;
+    width: clamp(140px, 22vw, 180px);
+    height: auto;
+  }
+  @keyframes idle {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+  }
+  .stage-ground {
+    position: relative;
+    width: 84%;
+    height: 32px;
+    margin-top: -4px;
+    background:
+      linear-gradient(var(--rpg-green) 0 6px, #008751 6px 12px, transparent 12px),
+      repeating-linear-gradient(90deg, #ab5236 0 16px, #8a4128 16px 32px);
+    box-shadow: 0 6px 0 0 var(--rpg-ink);
+  }
+  .nameplate {
+    margin-top: 1.4rem;
+    text-align: center;
+  }
+  .nameplate h1 {
+    margin: 0;
+    font-family: var(--rpg-pixel);
+    font-size: clamp(2.2rem, 5.4vw, 3.6rem);
+    font-weight: 700;
+    line-height: 1;
+    color: var(--rpg-paper);
+    text-shadow: 4px 4px 0 var(--rpg-ink), -2px -2px 0 var(--rpg-navy);
+  }
+  .nameplate p {
+    margin: 0.6rem 0 0;
+    font-family: var(--rpg-pixel);
+    color: var(--rpg-yellow);
+    font-size: 1.1rem;
+  }
+
+  .hero-ui {
+    display: grid;
+    gap: 1.6rem;
+  }
+  .dialogue .speaker {
+    margin: 0 0 0.4rem;
+    font-family: var(--rpg-pixel);
+    color: var(--rpg-yellow);
+    font-size: 1.05rem;
+    letter-spacing: 0.08em;
+  }
+  .dialogue .line {
+    margin: 0 0 0.6rem;
+    font-size: clamp(1rem, 1.6vw, 1.15rem);
+  }
+  .dialogue .dim {
+    color: var(--rpg-mist);
+    font-size: 0.9rem;
+  }
+  .dialogue .next {
+    position: absolute;
+    right: 1.2rem;
+    bottom: 0.7rem;
+    color: var(--rpg-paper);
+    animation: blink 0.8s steps(1) infinite;
+  }
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+
+  .status-effect {
+    margin: 0 4px;
+    font-family: var(--rpg-pixel);
+    color: var(--rpg-green);
+    font-size: 1.05rem;
+  }
+  .status-effect .status-detail {
+    color: var(--rpg-mist);
+    font-family: var(--rpg-mono);
+    font-size: 0.85rem;
+    margin-left: 0.5rem;
+  }
+
+  .command-menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.6rem 1.2rem;
+  }
+  .command-menu a {
+    display: grid;
+    grid-template-columns: 1.2rem 1fr;
+    align-items: baseline;
+    padding: 0.3rem 0.2rem;
+    text-decoration: none;
+  }
+  .command-menu .cursor {
+    grid-row: span 2;
+    color: var(--rpg-yellow);
+    visibility: hidden;
+    animation: blink 0.8s steps(1) infinite;
+  }
+  .command-menu a:hover .cursor,
+  .command-menu a:focus-visible .cursor,
+  .command-menu li:first-child a .cursor {
+    visibility: visible;
+  }
+  .command-menu:has(a:hover, a:focus-visible) li:first-child a:not(:hover, :focus-visible) .cursor {
+    visibility: hidden;
+  }
+  .command-menu a:focus-visible {
+    outline: none;
+    background: rgb(255 236 39 / 0.08);
+  }
+  .cmd-label {
+    font-family: var(--rpg-pixel);
+    font-size: 1.25rem;
+    text-transform: uppercase;
+  }
+  .cmd-hint {
+    grid-column: 2;
+    color: var(--rpg-mist);
+    font-size: 0.78rem;
+  }
+
+  /* ── Character sheet ── */
+  .sheet {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    gap: 1.6rem;
+  }
+  .panel-title {
+    margin: 0 0 1rem;
+    font-family: var(--rpg-pixel);
+    font-size: 1.5rem;
+    color: var(--rpg-paper);
+  }
+  .stat-list {
+    margin: 0;
+    display: grid;
+    gap: 0.45rem;
+  }
+  .stat-list div {
+    display: grid;
+    grid-template-columns: 6rem 1fr;
+    gap: 1rem;
+    align-items: baseline;
+    border-bottom: 2px dotted rgb(194 195 199 / 0.25);
+    padding-bottom: 0.35rem;
+  }
+  .stat-list dt {
+    font-family: var(--rpg-pixel);
+    color: var(--rpg-yellow);
+  }
+  .stat-list dd {
+    margin: 0;
+  }
+
+  .counter-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1.1rem;
+  }
+  .counter-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin: 0 0 0.35rem;
+    font-size: 0.85rem;
+    color: var(--rpg-mist);
+  }
+  .counter-head b {
+    font-family: var(--rpg-pixel);
+    color: var(--rpg-paper);
+    font-size: 1rem;
+  }
+  .icon-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px;
+  }
+  .icon-row .more {
+    font-family: var(--rpg-pixel);
+    color: var(--rpg-yellow);
+    margin-left: 0.3rem;
+  }
+
+  /* ── Equipment ── */
+  .slot-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 330px), 1fr));
+    gap: 1rem 1.6rem;
+  }
+  .slot {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.9rem;
+    align-items: start;
+  }
+  .slot-icon {
+    display: grid;
+    place-items: center;
+    width: 64px;
+    height: 64px;
+    background: var(--rpg-night);
+    box-shadow:
+      0 -3px 0 0 var(--rpg-stone),
+      0 3px 0 0 var(--rpg-stone),
+      -3px 0 0 0 var(--rpg-stone),
+      3px 0 0 0 var(--rpg-stone);
+  }
+  .slot-name {
+    margin: 0;
+    font-family: var(--rpg-pixel);
+    color: var(--rpg-yellow);
+    font-size: 1.05rem;
+  }
+  .slot-name span {
+    font-family: var(--rpg-mono);
+    color: var(--rpg-stone);
+    font-size: 0.75rem;
+    filter: brightness(1.6);
+  }
+  .slot-items {
+    margin: 0.15rem 0 0;
+    font-size: 0.88rem;
+    color: var(--rpg-paper);
+  }
+
+  .lab-footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    width: min(1180px, 100% - 2rem);
+    margin: 0 auto;
+    padding: 1.5rem 0 2.5rem;
+    border-top: 4px dashed var(--rpg-navy);
+    font-family: var(--rpg-pixel);
+    color: var(--rpg-mist);
+  }
+  .lab-footer p {
+    margin: 0;
+  }
+
+  @media (max-width: 860px) {
+    .title-screen,
+    .sheet {
+      grid-template-columns: 1fr;
+    }
+    .hud nav {
+      display: none;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .command-menu {
+      grid-template-columns: 1fr;
+    }
+    .stat-list div {
+      grid-template-columns: 4.5rem 1fr;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-sprite,
+    .dialogue .next,
+    .command-menu .cursor {
+      animation: none;
+    }
+  }
+</style>

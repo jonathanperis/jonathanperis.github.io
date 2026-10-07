@@ -1,0 +1,46 @@
+---
+/**
+ * Renders pixel art from a character grid as a crisp SVG at build time.
+ * Each character in `rows` is one pixel; `.` (or any key missing from `palette`) is transparent.
+ * Horizontal runs of the same color merge into one rect to keep the markup small.
+ */
+interface Props {
+  rows: readonly string[];
+  palette: Record<string, string>;
+  /** CSS size of one art pixel. */
+  scale?: number;
+  label?: string;
+  class?: string;
+}
+
+const { rows, palette, scale = 4, label, class: className } = Astro.props;
+
+const width = Math.max(...rows.map((row) => row.length));
+const height = rows.length;
+
+const rects: Array<{ x: number; y: number; w: number; fill: string }> = [];
+rows.forEach((row, y) => {
+  let x = 0;
+  while (x < row.length) {
+    const key = row[x];
+    let run = 1;
+    while (row[x + run] === key) run++;
+    if (Object.hasOwn(palette, key)) rects.push({ x, y, w: run, fill: palette[key] });
+    x += run;
+  }
+});
+---
+
+<svg
+  class:list={["pixel-art", className]}
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox={`0 0 ${width} ${height}`}
+  width={width * scale}
+  height={height * scale}
+  shape-rendering="crispEdges"
+  role={label ? "img" : undefined}
+  aria-label={label}
+  aria-hidden={label ? undefined : "true"}
+>
+  {rects.map(({ x, y, w, fill }) => <rect x={x} y={y} width={w} height="1" fill={fill} />)}
+</svg>

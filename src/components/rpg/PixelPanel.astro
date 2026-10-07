@@ -1,0 +1,48 @@
+---
+/** JRPG-style window: notched pixel border, hard drop shadow, and an editor-tab style title. */
+interface Props {
+  tab?: string;
+  class?: string;
+  as?: "section" | "div" | "aside";
+  labelledby?: string;
+}
+
+const { tab, class: className, as: Tag = "div", labelledby } = Astro.props;
+---
+
+<Tag class:list={["pixel-panel", className]} aria-labelledby={labelledby}>
+  {tab && <span class="pixel-panel-tab" aria-hidden="true">{tab}</span>}
+  <slot />
+</Tag>
+
+<style>
+  .pixel-panel {
+    position: relative;
+    margin: 4px;
+    padding: 1.6rem 1.4rem 1.4rem;
+    color: var(--rpg-paper);
+    background: linear-gradient(180deg, #24346a 0%, var(--rpg-navy) 55%, #141d3d 100%);
+    /* Four edge shadows without corners give the notched pixel border; the inset ring is the inner bevel. */
+    box-shadow:
+      0 -4px 0 0 var(--rpg-paper),
+      0 4px 0 0 var(--rpg-paper),
+      -4px 0 0 0 var(--rpg-paper),
+      4px 0 0 0 var(--rpg-paper),
+      inset 0 0 0 4px #10172e,
+      inset 0 4px 0 4px rgb(255 255 255 / 0.06);
+    filter: drop-shadow(8px 8px 0 var(--rpg-ink));
+  }
+
+  .pixel-panel-tab {
+    position: absolute;
+    top: -14px;
+    left: 18px;
+    padding: 2px 10px;
+    background: var(--rpg-ink);
+    color: var(--rpg-yellow);
+    font-family: var(--font-jetbrains-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    box-shadow: 0 0 0 2px var(--rpg-paper);
+  }
+</style>
