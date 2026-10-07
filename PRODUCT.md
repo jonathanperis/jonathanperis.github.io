@@ -12,7 +12,7 @@ This document combines the current product baseline with the proposals that stil
 |---|---|---|
 | Header and status | Station-sign header (name, title, subtitle, line roundels 1–5 that act as map-filter labels, nav: Stations, Connections, Lines, Information, Resume); "Good service" status strip with availability, location, and live Itanhaém clock | Contact entry in the header nav (Information is reachable; no direct contact CTA) |
 | Career map | Build-time SVG map: Career line through nine stations (ten roles), .NET, Azure, and Architecture lines, Side Projects line of pinned repos; CSS-only line filter; "You are here" terminus | Browser validation of legibility and hit targets at small widths |
-| Experience | Station Index: roles newest first with periods, locations, descriptions, served lines, and tags; education as "Depot" | Owner-approved impact statements; PDF reconciliation is deferred |
+| Experience | Station Index: roles newest first with periods, locations, descriptions, served lines, and tags; education as "Depot" | Owner-approved impact statements |
 | Projects | Connections departures board of GitHub profile pins (up to six, pin order) with Source/Live site/Homepage links and stars; "Later departures" `<details>` ledger | Authored proof per project (`signal`/`proof`); contextual accessible names for repeated links |
 | Skills | Line Guide: six skill lines with computed interchanges | Problem-oriented capability framing |
 | Principles | Service Notes: three engineering principles as advisories | Outcome-specific proof |

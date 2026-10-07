@@ -37,7 +37,7 @@ jonathanperis.github.io/
 │   └── styles/
 │       └── globals.css              # Tailwind import, design tokens, route bullets, terminal, line filter
 ├── public/
-│   ├── cv_jonathan_peris.pdf        # Independent CV asset; reconciliation deferred
+│   ├── cv_jonathan_peris.pdf        # Print of /resume/ (regenerated manually)
 │   ├── manifest.json                # Web app metadata and icons
 │   ├── robots.txt                   # Advertises generated sitemap-index.xml
 │   ├── sitemap.xml                  # Compatibility index pointing to generated sitemap-0.xml

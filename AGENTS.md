@@ -92,7 +92,7 @@ Data layer
 - **Pinned + ledger model** — `src/lib/github.ts` takes the pinned repos (Connections departures board and the map's Side Projects line) directly from the profile `pinnedItems` (pin order, owned non-forks, metadata repos excluded) and builds the "Later departures" ledger from the first 100 recently updated public non-fork repos minus pins; there is no pagination. Requests time out after 10 s and Pages lookups run six at a time.
 - **Pages URL enrichment** — REST `GET /repos/jonathanperis/{repo}/pages` provides `pagesUrl`; standard `https://jonathanperis.github.io/<repo>/` homepage URLs are fallback Pages links.
 - **Fallback data** — `FALLBACK` covers absent tokens and failed/unusable GraphQL fetches. Individual Pages lookup failures preserve fetched repo data and standard Pages homepage fallbacks.
-- **Shared profile data** — `src/lib/data.ts` powers the portfolio, resume, terminal command table, and JSON-LD (`YEARS_OF_EXPERIENCE`, `PROFILE.address`, and `CURRENT_ROLE` are single sources). Check remaining presentation copy in `src/components/` (sign, status strip, sections) and the station captions in `src/lib/metro.ts` when updating profile facts. The separate public PDF has unresolved differences; career reconciliation is deferred by the owner.
+- **Shared profile data** — `src/lib/data.ts` powers the portfolio, resume, terminal command table, and JSON-LD (`YEARS_OF_EXPERIENCE`, `PROFILE.address`, and `CURRENT_ROLE` are single sources). Check remaining presentation copy in `src/components/` (sign, status strip, sections) and the station captions in `src/lib/metro.ts` when updating profile facts. `public/cv_jonathan_peris.pdf` is a checked-in print of `/resume/` (headless Chrome, A4); regenerate it after resume or `data.ts` changes (see [Resume Page](wiki/resume_page.md#downloadable-pdf)).
 - **Terminal easter egg** — Konami code opens a native `<dialog>` terminal. Static output is built at build time by `buildCommandTable()` (`terminal-commands.ts`); `runCommand()` (`terminal.ts`) resolves own-key commands only and handles `help`, `about`, `stack`, `contact`, `neofetch`, `git log`, `ls`, `cat availability.txt`, `whoami`, `pwd`, `date`, `sudo hire me`, `echo`, `clear`, `exit`, and `quit`.
 - **SEO** — `RootLayout.astro` derives canonical, Open Graph URL, and English alternate URL from the page canonical path and configured site. Astro generates `sitemap-index.xml` and `sitemap-0.xml`; robots advertises the generated index. `public/sitemap.xml` preserves the old entry point as a compatibility index, without handwritten route entries or timestamps.
 - **Documentation status** — `wiki/` is repository Markdown, not a deployed documentation route; GitHub Wiki is disabled. PRODUCT/DESIGN distinguish implemented UI from proposals. Update related docs using the maintenance map above.
@@ -125,7 +125,7 @@ jonathanperis.github.io/
 │   └── styles/
 │       └── globals.css
 ├── public/
-│   ├── cv_jonathan_peris.pdf
+│   ├── cv_jonathan_peris.pdf    # Checked-in print of /resume/
 │   ├── manifest.json
 │   ├── robots.txt / sitemap.xml
 │   └── favicon.svg / apple-touch-icon.png / icon-192.png / icon-512.png

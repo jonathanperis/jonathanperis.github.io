@@ -44,7 +44,7 @@ Maintained alongside the [architecture guide](../../wiki/architecture.md) and [d
 
 `src/lib/metro.ts` layers the map on top: `LINES` 1–8 (1 Career, 2 .NET, 3 Azure, 4 Architecture, 5 Side Projects; 6 Languages, 7 Data, 8 Frontend in the Line Guide only), `MAP_LINES`, `GUIDE_LINES`, and `STATIONS` with hand-placed coordinates. `role(company, periodStart)` looks roles up in `EXPERIENCES` and throws at build time when one is missing; the two 2018–2021 T-Systems roles share a station. `src/lib/metro-geometry.ts` holds the build-time path math.
 
-The same data feeds the homepage sections, resume route, terminal command table, metadata descriptions, and `JsonLd.astro` (employer from `CURRENT_ROLE`, address from `PROFILE.address`). The SiteSign subtitle, map lede, station captions, advisory lines, Customer Information copy, and some terminal strings are presentation literals and need review when facts change. The independent public CV PDF has unresolved career differences; the owner deferred reconciliation.
+The same data feeds the homepage sections, resume route, terminal command table, metadata descriptions, and `JsonLd.astro` (employer from `CURRENT_ROLE`, address from `PROFILE.address`). The SiteSign subtitle, map lede, station captions, advisory lines, Customer Information copy, and some terminal strings are presentation literals and need review when facts change. The public CV PDF is a checked-in print of `/resume/`; regenerate it when resume data or layout changes.
 
 ## UI Features
 

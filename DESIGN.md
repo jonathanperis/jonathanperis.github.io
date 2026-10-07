@@ -93,7 +93,7 @@ Light line colors (4, 6, 7, 8) carry ink numerals for contrast. Line definitions
 | `CustomerInfo` | Bordered two-pane block: "Now boarding" availability board with Based / Works / Timetable (Resume · PDF), and contact rows (label, mono handle, arrow) that invert to black on hover/focus |
 | `SiteFooter` | Mono row: diagram note, "Hidden service" Konami hint, copyright |
 | `Terminal` | "Control room · jonathan.sh" dialog: sign background, ink border, red offset shadow, yellow prompt |
-| `/resume/` | Same tokens on paper: black print bar, red section headings and print button, hairline tags; print rules switch to plain black on white |
+| `/resume/` | White A4 sheet on paper under a black toolbar; red title line, accent bar, small red caps section heads with hairline rules, skills label/value table, "Title · Company" entries with red company, mono dates/locations, red-dot bullets, and mono "Stack:" lines; prints in color on A4 |
 
 ## Interaction rules
 
