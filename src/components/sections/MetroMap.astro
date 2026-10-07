@@ -1,0 +1,537 @@
+---
+import RouteBullet from "../RouteBullet.astro";
+import { SKILLS, YEARS_OF_EXPERIENCE } from "../../lib/data";
+import type { GitHubRepo } from "../../lib/github";
+import { LINES, MAP_LINES, STATIONS, TERMINUS, stationPeriod, type LineId } from "../../lib/metro";
+import { LINE_SPACING, capsule, offsetPolyline, roundedPath, tick, unit, type Point } from "../../lib/metro-geometry";
+
+interface Props {
+  pins: GitHubRepo[];
+}
+
+const { pins } = Astro.props;
+
+/** Repos drawn as stops on the Side Projects line; the rest are on the Connections board. */
+const MAX_MAP_REPOS = 6;
+const REPO_STEP = 44;
+const repos = pins.slice(0, MAX_MAP_REPOS);
+
+const EAST: Point = [1, 0];
+const SOUTH: Point = [0, 1];
+const NORTH_EAST = unit([1, -1]);
+
+// Hand-drawn line routes in the 1440 × 692 viewBox. The Career line is the reference; .NET and Azure
+// run parallel to it (below and above) once they join, so their corners are concentric.
+const career: Point[] = [[96, 560], [300, 560], [420, 440], [700, 440], [820, 320], [1230, 320]];
+const dotnet = offsetPolyline(career, LINE_SPACING);
+dotnet[0] = [232, dotnet[0][1]]; // .NET starts at Conecta (2013)
+const azure: Point[] = [[600, 96], ...offsetPolyline([[600, 440], [700, 440], [820, 320], [1230, 320]], -LINE_SPACING)];
+const architecture: Point[] = [[980, 84], [980, 630]];
+const sideEnd = 412 + Math.max(repos.length - 1, 0) * REPO_STEP + 34;
+const side: Point[] = [[1230, 320], [1296, 320], [1340, 364], [1340, sideEnd]];
+
+const careerPath = roundedPath(career);
+const routes: Array<{ line: LineId; d: string }> = [
+  { line: 4, d: roundedPath(architecture) },
+  ...(repos.length ? [{ line: 5 as LineId, d: roundedPath(side) }] : []),
+  { line: 3, d: roundedPath(azure, -LINE_SPACING) },
+  { line: 2, d: roundedPath(dotnet, LINE_SPACING) },
+  { line: 1, d: careerPath },
+];
+
+// Skill stops along the Azure and Architecture lines come straight from data.ts.
+const azureStops = SKILLS.cloud.filter((skill) => skill !== "Azure").map((name, i) => ({ name, y: 150 + i * 56 }));
+// Longest names go above the bundle, where there is room to the left of the line.
+const archByLength = [...SKILLS.architecture].sort((a, b) => b.length - a.length);
+const archStops = [
+  ...archByLength.slice(0, 3).map((name, i) => ({ name, y: 124 + i * 52, side: 1 as const })),
+  ...archByLength.slice(3).map((name, i) => ({ name, y: 430 + i * 58, side: -1 as const })),
+];
+
+const direction = { E: EAST, NE: NORTH_EAST } as const;
+const stations = STATIONS.map((station) => {
+  const [from, to] = stationPeriod(station);
+  const dir = direction[station.map.dir];
+  const isTerminus = station === TERMINUS;
+  return {
+    ...station,
+    period: `${from} — ${to}`,
+    shape: station.map.span[0] === station.map.span[1]
+      ? null
+      : capsule(station.map.at, dir, station.map.span[0], station.map.span[1], isTerminus ? 11 : 9.5),
+  };
+});
+const terminus = stations[stations.length - 1];
+const [terminusFrom] = stationPeriod(TERMINUS);
+---
+
+<div class="metro" id="map">
+  <div class="title-block">
+    <p class="eyebrow">Career system map<b class="dsep">·</b>{STATIONS[0].roles[0].period.slice(0, 4)} — now</p>
+    <p class="lede">I build backend systems that can be understood, operated, and <em>changed after they meet production traffic.</em></p>
+    <p class="meta">{YEARS_OF_EXPERIENCE} years of production software, drawn as a line: {STATIONS.length} stations, one terminus. The colored lines are the threads that kept running through it. Pick a line to follow it.</p>
+  </div>
+
+  <p class="swipe" aria-hidden="true">
+    <svg viewBox="0 0 20 20"><path d="M17 10H5M10 4l-6 6 6 6" /></svg>Swipe back to {STATIONS[0].roles[0].period.slice(0, 4)}
+  </p>
+
+  <div class="scroller">
+    <svg class="map" viewBox="0 18 1440 692" role="group" aria-label={`Career map from ${STATIONS[0].name} to ${TERMINUS.name}`}>
+      <!-- Coast: Itanhaém, where the line starts -->
+      <g aria-hidden="true">
+        <path d="M0,668 H292 L344,720 H0 Z" class="water" />
+        <path d="M0,668 H292 L344,720" class="coast" />
+        <text x="150" y="702" class="sea">Oceano Atlântico</text>
+        <rect x="58" y="661" width="14" height="14" class="st" />
+        <text x="80" y="658" class="town">ITANHAÉM, SP</text>
+      </g>
+
+      <g aria-hidden="true">
+        {routes.map(({ line, d }) => <path d={d} class="route" data-line={line} data-lines={line} />)}
+      </g>
+
+      <g data-lines="3">
+        {azureStops.map(({ name, y }) => <>
+          <line {...tick([600, y], SOUTH, -1)} class="tick" data-line="3" />
+          <text x="622" y={y + 5} class="sk">{name}</text>
+        </>)}
+      </g>
+      <g data-lines="4">
+        {archStops.map(({ name, y, side: s }) => <>
+          <line {...tick([980, y], SOUTH, s)} class="tick" data-line="4" />
+          <text x={s === 1 ? 958 : 1002} y={y + 5} text-anchor={s === 1 ? "end" : "start"} class="sk">{name}</text>
+        </>)}
+      </g>
+
+      <!-- The train rides the Career line once on load and waits at the terminus (CSS motion path). -->
+      <g class="train" style={`offset-path: path("${careerPath}")`} aria-hidden="true">
+        <rect x="-19" y="-7.5" width="38" height="15" rx="7.5" />
+        <rect x="-12" y="-3" width="6" height="6" rx="1" class="win" />
+        <rect x="-3" y="-3" width="6" height="6" rx="1" class="win" />
+        <rect x="6" y="-3" width="6" height="6" rx="1" class="win" />
+      </g>
+
+      {stations.slice(0, -1).map((station) => (
+        <a href={`#stn-${station.id}`} class="stop" data-lines={station.lines.join(" ")} aria-label={`${station.name}, ${station.period}`}>
+          {station.shape
+            ? <rect {...station.shape} class="st" />
+            : <circle cx={station.map.at[0]} cy={station.map.at[1]} r="9" class="st" />}
+          {station.map.label && <>
+            <text x={station.map.label.x} y={station.map.label.y} text-anchor={station.map.label.anchor ?? "start"} class="nm">{station.short}</text>
+            <text x={station.map.label.x} y={station.map.label.y + 17} text-anchor={station.map.label.anchor ?? "start"} class="cap">{station.caption}</text>
+          </>}
+        </a>
+      ))}
+
+      <!-- Terminus callout -->
+      <a href={`#stn-${terminus.id}`} class="stop here" data-lines={terminus.lines.join(" ")} aria-label={`You are here: ${terminus.name}, since ${terminusFrom}`}>
+        <circle cx={terminus.map.at[0]} cy={terminus.map.at[1]} r="22" class="pulse" aria-hidden="true" />
+        {terminus.shape && <rect {...terminus.shape} class="st" />}
+        <path d="M1230,288 V276" class="leader" />
+        <rect x="1172" y="150" width="128" height="26" class="yah-box" />
+        <text x="1236" y="168" text-anchor="middle" class="yah">YOU ARE HERE</text>
+        <text x="1172" y="210" class="nm big">{terminus.short}</text>
+        <text x="1172" y="232" class="cap">{terminusFrom} — now</text>
+        <text x="1172" y="250" class="cap">{terminus.roles[0].location}</text>
+        {repos.length > 0 && <text x="1172" y="268" class="cap change">Change here for Line 5</text>}
+      </a>
+
+      {repos.map((repo, i) => {
+        const y = 412 + i * REPO_STEP;
+        return (
+          <a href={`#repo-${repo.title}`} class="stop repo" data-lines="5" aria-label={`${repo.title}, ${repo.lang || "repository"}`}>
+            <line {...tick([1340, y], SOUTH, 1)} class="tick" data-line="5" />
+            <text x="1316" y={y + 2} text-anchor="end" class="repo-nm">{repo.title}</text>
+            <text x="1316" y={y + 17} text-anchor="end" class="cap">{[repo.lang, `★${repo.stars}`].filter(Boolean).join(" · ")}</text>
+          </a>
+        );
+      })}
+
+      <g aria-hidden="true">
+        {[
+          { line: 1 as LineId, at: [70, 560] },
+          { line: 3 as LineId, at: [600, 80] },
+          { line: 4 as LineId, at: [980, 68] },
+          { line: 4 as LineId, at: [980, 646] },
+          ...(repos.length ? [{ line: 5 as LineId, at: [1340, sideEnd + 16] }] : []),
+        ].map(({ line, at }) => (
+          <g data-lines={line}>
+            <circle cx={at[0]} cy={at[1]} r="15" class="end" data-line={line} />
+            <text x={at[0]} y={at[1] + 5.4} text-anchor="middle" class:list={["end-n", { dark: line === 4 }]}>{line}</text>
+          </g>
+        ))}
+        <g transform="translate(1380,74)">
+          <circle r="22" class="compass" />
+          <path d="M0,-16 L7,8 L0,3 L-7,8 Z" />
+          <text y="-28" text-anchor="middle" class="cap strong">N</text>
+        </g>
+        <text x="1410" y="128" text-anchor="end" class="cap">Diagram not to scale</text>
+      </g>
+    </svg>
+  </div>
+
+  <!-- Line filter: plain radios + :has() in globals.css, so it needs no JavaScript. -->
+  <fieldset class="legend">
+    <legend>Lines<b class="dsep">·</b><span>pick one to follow</span></legend>
+    <label class="all">
+      <input type="radio" name="line" id="line-all" checked />
+      <span class="swatch" aria-hidden="true"></span>All lines
+    </label>
+    {MAP_LINES.map((id) => (
+      <label for={`line-${id}`}>
+        <input type="radio" name="line" id={`line-${id}`} />
+        <RouteBullet line={id} />{LINES[id].name}
+      </label>
+    ))}
+    <span class="interchange">
+      <svg viewBox="0 0 30 20" aria-hidden="true">
+        <rect x="0" y="3.5" width="30" height="5.5" fill="var(--color-line-1)" />
+        <rect x="0" y="11" width="30" height="5.5" fill="var(--color-line-2)" />
+        <rect x="10" y="1.3" width="10" height="17.4" rx="5" fill="#fff" stroke="var(--color-ink)" stroke-width="2.4" />
+      </svg>Interchange
+    </span>
+  </fieldset>
+</div>
+
+<style>
+  .metro {
+    position: relative;
+    max-width: var(--max);
+    margin: 0 auto;
+    container-type: inline-size;
+  }
+  /* 1 map unit in CSS px: overlays scale with the map. */
+  .metro > * {
+    --u: calc(100cqw / 1440);
+  }
+
+  /* ── Title block and legend overlay the empty corners of the diagram ── */
+  .title-block {
+    position: absolute;
+    top: calc(30 * var(--u));
+    left: calc(70 * var(--u));
+    width: calc(470 * var(--u));
+  }
+  .eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+  .eyebrow::after {
+    content: "";
+    flex: 1;
+    height: 2px;
+    background: var(--color-ink);
+  }
+  .lede {
+    margin-top: calc(16 * var(--u));
+    font-size: calc(33 * var(--u));
+    font-weight: 700;
+    letter-spacing: -0.012em;
+    line-height: 1.13;
+  }
+  .lede em {
+    font-style: normal;
+    box-shadow: inset 0 -0.22em 0 #ffd94d;
+  }
+  .meta {
+    max-width: 410px;
+    margin-top: calc(18 * var(--u));
+    color: var(--color-grey);
+    font-size: calc(15 * var(--u));
+    line-height: 1.45;
+  }
+
+  .map {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1440 / 692;
+  }
+
+  .legend {
+    position: absolute;
+    top: calc(548 * var(--u));
+    left: calc(470 * var(--u));
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    align-items: center;
+    gap: calc(8 * var(--u)) calc(18 * var(--u));
+    padding: calc(14 * var(--u)) calc(18 * var(--u));
+    border: 2px solid var(--color-ink);
+    background: var(--color-card);
+    font-size: calc(14 * var(--u));
+    font-weight: 700;
+  }
+  .legend legend {
+    float: left;
+    grid-column: 1 / -1;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+  .legend legend span {
+    color: var(--color-grey);
+    letter-spacing: 0.04em;
+    text-transform: none;
+    font-weight: 600;
+  }
+  .legend label,
+  .interchange {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 3px 8px 3px 4px;
+    border: 2px solid transparent;
+    border-radius: 99px;
+  }
+  .legend label {
+    cursor: pointer;
+  }
+  .legend label:hover {
+    border-color: var(--color-hair);
+  }
+  .legend label:has(input:checked) {
+    border-color: var(--color-ink);
+  }
+  .legend label:has(input:focus-visible) {
+    outline: 3px solid var(--color-line-3);
+    outline-offset: 2px;
+  }
+  .legend input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .legend .bullet {
+    font-size: calc(15 * var(--u));
+  }
+  .swatch {
+    width: 1.55em;
+    height: 1.55em;
+    border-radius: 50%;
+    background: conic-gradient(var(--color-line-1) 0 20%, var(--color-line-2) 0 40%, var(--color-line-3) 0 60%, var(--color-line-4) 0 80%, var(--color-line-5) 0);
+  }
+  .interchange svg {
+    width: 30px;
+    height: 20px;
+    flex: none;
+  }
+
+  .swipe {
+    display: none;
+  }
+
+  /* ── SVG ── */
+  .map text {
+    fill: var(--color-ink);
+    font-family: var(--font-sans);
+  }
+  .water { fill: var(--color-water); }
+  .coast {
+    fill: none;
+    stroke: #9fb6c1;
+    stroke-width: 1.5;
+  }
+  .sea {
+    fill: #5b7a88 !important;
+    font-size: 13px;
+    font-style: italic;
+    letter-spacing: 0.04em;
+  }
+  .town {
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+  }
+  .route {
+    fill: none;
+    stroke: var(--line);
+    stroke-width: 12;
+  }
+  .tick {
+    stroke: var(--line);
+    stroke-width: 5;
+  }
+  .st {
+    fill: #fff;
+    stroke: var(--color-ink);
+    stroke-width: 3.5;
+    transition: fill 0.15s ease;
+  }
+  .nm {
+    font-size: 17px;
+    font-weight: 800;
+    letter-spacing: -0.005em;
+  }
+  .nm.big {
+    font-size: 27px;
+    font-weight: 900;
+    letter-spacing: -0.015em;
+  }
+  .cap {
+    fill: #55554f !important;
+    font-family: var(--font-mono) !important;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .cap.strong {
+    fill: var(--color-ink) !important;
+    font-weight: 700;
+  }
+  .cap.change {
+    fill: var(--color-line-5) !important;
+    font-weight: 700;
+  }
+  .sk {
+    font-size: 14.5px;
+    font-weight: 600;
+  }
+  .repo-nm {
+    font-family: var(--font-mono) !important;
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .yah-box { fill: var(--color-ink); }
+  .yah {
+    fill: #fff !important;
+    font-size: 12.5px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+  }
+  .leader {
+    stroke: var(--color-ink);
+    stroke-width: 2;
+  }
+  .end { fill: var(--line); }
+  .end-n {
+    fill: #fff !important;
+    font-size: 16px;
+    font-weight: 800;
+  }
+  .end-n.dark { fill: var(--color-ink) !important; }
+  .compass {
+    fill: none;
+    stroke: var(--color-ink);
+    stroke-width: 1.5;
+  }
+
+  /* Stations are links into the Station Index. */
+  .stop {
+    cursor: pointer;
+    outline: none;
+  }
+  .stop:hover .st,
+  .stop:focus-visible .st {
+    fill: #ffd94d;
+  }
+  .stop:hover .nm,
+  .stop:hover .repo-nm,
+  .stop:focus-visible .nm,
+  .stop:focus-visible .repo-nm {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+  }
+  .stop:focus-visible .nm,
+  .stop:focus-visible .repo-nm {
+    fill: var(--color-line-3);
+  }
+
+  .train {
+    display: none;
+  }
+  .train rect { fill: var(--color-ink); }
+  .train .win { fill: #ffd94d; }
+  .pulse {
+    fill: none;
+    stroke: var(--color-line-1);
+    stroke-width: 3;
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+
+  @supports (offset-path: path("M0 0")) {
+    .train {
+      display: block;
+      offset-rotate: auto;
+      offset-distance: calc(100% - 36px);
+      animation: ride 6.5s cubic-bezier(0.45, 0, 0.25, 1) 0.6s both;
+    }
+  }
+  @keyframes ride {
+    from { offset-distance: 0%; }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .pulse {
+      animation: pulse 2.4s ease-out 7s infinite;
+    }
+  }
+  @keyframes pulse {
+    from { transform: scale(0.7); opacity: 0.8; }
+    to { transform: scale(2.1); opacity: 0; }
+  }
+
+  /* ── Below 1100px the overlays stack and the map scrolls sideways at a readable size ── */
+  @media (max-width: 1100px) {
+    .metro {
+      display: flex;
+      flex-direction: column;
+    }
+    .title-block {
+      position: static;
+      width: auto;
+      max-width: 640px;
+      padding: 26px var(--pad) 18px;
+    }
+    .lede { font-size: 26px; margin-top: 16px; }
+    .meta { font-size: 15px; margin-top: 16px; }
+    .swipe {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+      padding: 10px var(--pad);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+    .swipe svg {
+      width: 14px;
+      height: 14px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 3;
+    }
+    /* rtl starts the scroll at the right edge, on "You are here". */
+    .scroller {
+      overflow-x: auto;
+      overflow-y: hidden;
+      direction: rtl;
+      border-top: 2px solid var(--color-ink);
+      border-bottom: 2px solid var(--color-ink);
+    }
+    .map {
+      width: 1180px;
+      max-width: none;
+      direction: ltr;
+    }
+    .legend {
+      position: static;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 8px 12px;
+      margin: 16px var(--pad) 0;
+      padding: 14px 16px;
+      font-size: 14px;
+    }
+    .legend .bullet { font-size: 14px; }
+  }
+</style>

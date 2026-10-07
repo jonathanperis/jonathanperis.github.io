@@ -11,8 +11,8 @@ export default defineConfig({
   fonts: [
     {
       provider: fontProviders.google(),
-      name: 'DM Sans',
-      cssVariable: '--font-dm-sans',
+      name: 'Overpass',
+      cssVariable: '--font-overpass',
       weights: ['400 900'],
       styles: ['normal'],
       subsets: ['latin', 'latin-ext'],
@@ -20,8 +20,8 @@ export default defineConfig({
     },
     {
       provider: fontProviders.google(),
-      name: 'JetBrains Mono',
-      cssVariable: '--font-jetbrains-mono',
+      name: 'Overpass Mono',
+      cssVariable: '--font-overpass-mono',
       weights: ['400 700'],
       styles: ['normal'],
       subsets: ['latin', 'latin-ext'],

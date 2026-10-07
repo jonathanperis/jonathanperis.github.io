@@ -1,0 +1,319 @@
+---
+import RouteBullet from "../RouteBullet.astro";
+import SectionHead from "../SectionHead.astro";
+import type { GitHubRepo } from "../../lib/github";
+
+interface Props {
+  projects: GitHubRepo[];
+}
+
+const { projects } = Astro.props;
+const pinned = projects.filter((project) => project.pinned);
+const later = projects.filter((project) => !project.pinned);
+
+const hasSeparateHomepage = (project: GitHubRepo) => !!project.homepageUrl && project.homepageUrl !== project.pagesUrl;
+---
+
+<section id="connections" class="page-section" aria-labelledby="connections-heading">
+  <SectionHead id="connections-heading" title="Connections" line={5} note="Side Projects line · pinned on GitHub, refreshed at every build" />
+
+  <div class="board">
+    <table>
+      <thead>
+        <tr><th scope="col">Plat.</th><th scope="col">Destination</th><th scope="col">Language</th><th scope="col">Board</th><th scope="col" class="num">Stars</th></tr>
+      </thead>
+      <tbody>
+        {pinned.map((project, index) => (
+          <tr id={`repo-${project.title}`}>
+            <td class="plat">{String(index + 1).padStart(2, "0")}</td>
+            <td class="dest">
+              <a href={project.url} target="_blank" rel="noreferrer noopener" data-track-event="project_click" data-track-label={project.title}>
+                <RouteBullet line={5} />{project.title}
+              </a>
+              <p>{project.description || "Repository note pending."}</p>
+            </td>
+            <td class="lang">
+              {project.lang && <><i style={`background: ${project.langColor}`} aria-hidden="true"></i>{project.lang}</>}
+            </td>
+            <td class="links">
+              <a href={project.url} target="_blank" rel="noreferrer noopener">Source</a>
+              {project.pagesUrl && <a href={project.pagesUrl} target="_blank" rel="noreferrer noopener">Live site</a>}
+              {hasSeparateHomepage(project) && <a href={project.homepageUrl} target="_blank" rel="noreferrer noopener">Homepage</a>}
+            </td>
+            <td class="num stars">★ {project.stars}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+
+  {later.length > 0 && (
+    <details class="later">
+      <summary>
+        <span class="k">Later departures</span>
+        <span>{later.length} more public {later.length === 1 ? "repository" : "repositories"}, most recently updated first</span>
+        <span class="toggle" aria-hidden="true"></span>
+      </summary>
+      <ul>
+        {later.map((project) => (
+          <li>
+            <a href={project.url} target="_blank" rel="noreferrer noopener">{project.title}</a>
+            <p>{project.description || "Repository note pending."}</p>
+            <span class="meta">
+              {[project.lang, project.stars > 0 ? `★ ${project.stars}` : ""].filter(Boolean).join(" · ")}
+              {project.pagesUrl && <a href={project.pagesUrl} target="_blank" rel="noreferrer noopener">Live</a>}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </details>
+  )}
+  <p class="all"><a href="https://github.com/jonathanperis" target="_blank" rel="noreferrer noopener">All repositories on GitHub →</a></p>
+</section>
+
+<style>
+  .board {
+    padding: 8px 26px 18px;
+    background: var(--color-sign);
+    color: #fff;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  th {
+    padding: 16px 12px 10px;
+    border-bottom: 2px solid #fff;
+    color: #b8b8b2;
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-align: left;
+    text-transform: uppercase;
+  }
+  td {
+    padding: 14px 12px 12px;
+    border-bottom: 1px solid #3a3a37;
+    vertical-align: top;
+  }
+  tr:last-child td {
+    border-bottom: 0;
+  }
+  tbody tr {
+    scroll-margin-top: 16px;
+  }
+  tbody tr:target td {
+    animation: arrive 1.6s ease-out;
+  }
+  @keyframes arrive {
+    from { background: #3d3a1c; }
+  }
+  .num {
+    text-align: right;
+  }
+  .plat {
+    width: 60px;
+    color: #d9d9d4;
+    font-family: var(--font-mono);
+    font-size: 15px;
+  }
+  .dest a {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-mono);
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    overflow-wrap: anywhere;
+  }
+  .dest a:hover {
+    text-decoration: underline;
+  }
+  .dest p {
+    max-width: 560px;
+    margin-top: 3px;
+    color: #c9c9c3;
+    font-size: 15px;
+    line-height: 1.4;
+  }
+  .lang {
+    width: 150px;
+    color: #e7e7e2;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    white-space: nowrap;
+  }
+  .lang i {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin-right: 8px;
+    border-radius: 50%;
+  }
+  .links {
+    width: 220px;
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .links a {
+    display: inline-block;
+    margin: 0 12px 4px 0;
+    border-bottom: 2px solid var(--color-line-5);
+  }
+  .links a:hover {
+    border-color: #fff;
+  }
+  .stars {
+    width: 90px;
+    font-family: var(--font-mono);
+    font-size: 15px;
+    font-weight: 700;
+  }
+
+  .later {
+    border-bottom: 2px solid var(--color-ink);
+  }
+  summary {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 16px 0;
+    font-size: 15px;
+    cursor: pointer;
+    list-style: none;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  .k {
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .toggle {
+    position: relative;
+    width: 18px;
+    height: 18px;
+    margin-left: auto;
+  }
+  .toggle::before,
+  .toggle::after {
+    content: "";
+    position: absolute;
+    top: 7px;
+    left: 0;
+    width: 18px;
+    height: 4px;
+    background: var(--color-ink);
+    transition: transform 0.2s ease;
+  }
+  .toggle::after {
+    transform: rotate(90deg);
+  }
+  .later[open] .toggle::after {
+    transform: rotate(0deg);
+  }
+  .later ul {
+    list-style: none;
+    padding-bottom: 12px;
+  }
+  .later li {
+    display: grid;
+    grid-template-columns: 280px 1fr 190px;
+    gap: 20px;
+    align-items: baseline;
+    padding: 10px 0;
+    border-top: 1px solid var(--color-hair);
+    font-size: 15px;
+  }
+  .later li > a {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    overflow-wrap: anywhere;
+  }
+  .later li > a:hover {
+    text-decoration: underline;
+  }
+  .later p {
+    color: #2a2a28;
+    line-height: 1.4;
+  }
+  .meta {
+    color: var(--color-grey);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    text-align: right;
+  }
+  .meta a {
+    margin-left: 10px;
+    border-bottom: 2px solid var(--color-line-5);
+    color: var(--color-ink);
+    font-weight: 700;
+  }
+  .all {
+    padding: 14px 0 0;
+    font-size: 15px;
+    font-weight: 700;
+  }
+  .all a {
+    border-bottom: 2px solid var(--color-ink);
+  }
+
+  @media (max-width: 900px) {
+    .board {
+      padding: 4px 14px 10px;
+    }
+    thead {
+      display: none;
+    }
+    tbody tr {
+      display: grid;
+      grid-template-columns: 40px 1fr auto;
+      padding: 14px 0;
+      border-bottom: 1px solid #3a3a37;
+    }
+    tbody tr:last-child {
+      border-bottom: 0;
+    }
+    td {
+      width: auto !important;
+      padding: 0 4px;
+      border: 0;
+    }
+    .dest {
+      grid-column: 2 / 4;
+    }
+    .dest a {
+      font-size: 17px;
+    }
+    .dest a :global(.bullet) {
+      display: none;
+    }
+    .lang {
+      grid-column: 2;
+      margin-top: 10px;
+    }
+    .stars {
+      grid-column: 3;
+      grid-row: 2;
+      margin-top: 10px;
+    }
+    .links {
+      grid-column: 2 / 4;
+      margin-top: 8px;
+    }
+    .later li {
+      grid-template-columns: 1fr;
+      gap: 4px;
+    }
+    .meta {
+      text-align: left;
+    }
+    summary {
+      flex-wrap: wrap;
+      gap: 6px 14px;
+    }
+  }
+</style>
