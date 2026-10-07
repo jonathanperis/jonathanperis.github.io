@@ -1,0 +1,95 @@
+---
+import { AVAILABILITY, PROFILE } from "../lib/data";
+---
+
+<div class="status">
+  <div class="status-inner">
+    <span class="tag">Service status</span>
+    <span class="good"><i aria-hidden="true"></i>Good service</span>
+    <span class="msg">{AVAILABILITY.full}</span>
+    <span class="rt">{PROFILE.address.locality}, {PROFILE.address.region}</span>
+    <span class="sep" aria-hidden="true"></span>
+    <!-- Server-rendered offset; the script upgrades it to the live local time. -->
+    <span class="rt clock">Local time <time data-clock>UTC−3</time></span>
+  </div>
+</div>
+
+<script>
+  const clock = document.querySelector<HTMLTimeElement>("[data-clock]");
+  if (clock) {
+    const format = new Intl.DateTimeFormat("en-GB", { timeZone: "America/Sao_Paulo", hour: "2-digit", minute: "2-digit" });
+    const tick = () => {
+      clock.textContent = `${format.format(new Date())} (UTC−3)`;
+    };
+    tick();
+    setInterval(tick, 30_000);
+  }
+</script>
+
+<style>
+  .status {
+    border-bottom: 3px solid var(--color-ink);
+    background: var(--color-card);
+  }
+  .status-inner {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    max-width: var(--max);
+    min-height: 46px;
+    margin: 0 auto;
+    padding: 0 var(--pad);
+    font-size: 15px;
+  }
+  .tag {
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .good {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 800;
+    white-space: nowrap;
+  }
+  .good i {
+    display: block;
+    width: 12px;
+    height: 12px;
+    background: var(--color-line-5);
+  }
+  .rt {
+    color: var(--color-grey);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .msg + .rt {
+    margin-left: auto;
+  }
+  .clock time {
+    color: var(--color-ink);
+    font-family: var(--font-mono);
+    font-weight: 600;
+  }
+  .sep {
+    width: 1px;
+    height: 20px;
+    background: var(--color-hair);
+  }
+  @media (max-width: 1100px) {
+    .msg + .rt,
+    .sep { display: none; }
+    .clock { margin-left: auto; }
+  }
+  @media (max-width: 760px) {
+    .status-inner {
+      flex-wrap: wrap;
+      gap: 6px 12px;
+      padding: 10px var(--pad);
+      font-size: 14px;
+    }
+    .clock { margin-left: 0; }
+  }
+</style>

@@ -29,13 +29,11 @@ const keywords = [
 ---
 
 <!doctype html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#09090b" />
-    <!-- Marks JS as available so reveal animations can hide content; without JS everything stays visible. -->
-    <script is:inline>document.documentElement.classList.add('js');</script>
+    <meta name="theme-color" content="#161616" />
 
     <title>{title}</title>
     <meta name="description" content={description} />
@@ -67,14 +65,14 @@ const keywords = [
     <link rel="manifest" href="/manifest.json" />
 
     <!-- Self-hosted fonts (Astro Fonts API) -->
-    <Font cssVariable="--font-dm-sans" preload={[{ subset: 'latin' }]} />
-    <Font cssVariable="--font-jetbrains-mono" preload={[{ subset: 'latin' }]} />
+    <Font cssVariable="--font-overpass" preload={[{ subset: 'latin' }]} />
+    <Font cssVariable="--font-overpass-mono" preload={[{ subset: 'latin' }]} />
 
     <link rel="alternate" hreflang="en" href={canonicalUrl} />
 
     <JsonLd />
   </head>
-  <body class="antialiased">
+  <body>
     <slot />
     <Analytics />
   </body>

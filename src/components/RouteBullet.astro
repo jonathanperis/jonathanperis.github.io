@@ -1,0 +1,20 @@
+---
+import type { LineId } from "../lib/metro";
+
+interface Props {
+  line: LineId;
+  /** Font size in px; the roundel scales with it. */
+  size?: number;
+  label?: string;
+}
+
+const { line, size, label } = Astro.props;
+---
+
+<span
+  class="bullet"
+  data-line={line}
+  style={size ? `font-size: ${size}px` : undefined}
+  aria-label={label}
+  aria-hidden={label ? undefined : "true"}
+  role={label ? "img" : undefined}>{line}</span>

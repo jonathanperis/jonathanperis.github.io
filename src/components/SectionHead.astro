@@ -1,0 +1,51 @@
+---
+import RouteBullet from "./RouteBullet.astro";
+import type { LineId } from "../lib/metro";
+
+interface Props {
+  id: string;
+  title: string;
+  note?: string;
+  line?: LineId;
+}
+
+const { id, title, note, line } = Astro.props;
+---
+
+<div class="section-head">
+  {line ? <RouteBullet line={line} size={18} /> : <slot name="symbol" />}
+  <h2 id={id}>{title}</h2>
+  {note && <p>{note}</p>}
+</div>
+
+<style>
+  .section-head {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 18px;
+    margin-top: 64px;
+    padding: 14px 22px 11px;
+    background: var(--color-sign);
+    color: #fff;
+  }
+  h2 {
+    font-size: 30px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    line-height: 1;
+  }
+  p {
+    color: #bdbdb8;
+    font-family: var(--font-mono);
+    font-size: 13px;
+  }
+  @media (max-width: 760px) {
+    .section-head {
+      grid-template-columns: auto 1fr;
+      padding: 12px 14px 9px;
+    }
+    h2 { font-size: 23px; }
+    p { display: none; }
+  }
+</style>
