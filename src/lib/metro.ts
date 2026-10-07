@@ -52,7 +52,7 @@ export type Station = {
     at: Point;
     /** Direction of travel through the station: east or north-east. */
     dir: "E" | "NE";
-    /** Lines crossed, as offsets from the Career line in line-spacing units (-1 = Azure above, 1 = .NET below). */
+    /** Lines crossed, as offsets from the Career line in line-spacing units (-2 = Architecture, -1 = Azure, 1 = .NET). */
     span: [number, number];
     label?: Label;
   };
@@ -108,7 +108,7 @@ export const STATIONS: Station[] = [
     short: "T-Systems do Brasil",
     name: "T-Systems do Brasil",
     roles: [role("T-Systems do Brasil", "Dec 2019"), role("T-Systems do Brasil", "Sep 2018")],
-    lines: [1, 2, 3, 4],
+    lines: [1, 2, 3],
     caption: "2018 — 2021 · Azure joins",
     map: { at: [650, 440], dir: "E", span: [-1, 1], label: { x: 634, y: 488 } },
   },
@@ -119,7 +119,7 @@ export const STATIONS: Station[] = [
     roles: [role("XP Inc.", "Jan 2021")],
     lines: [1, 2, 3, 4],
     caption: "2021 · Miami",
-    map: { at: [880, 320], dir: "E", span: [-1, 1], label: { x: 864, y: 368 } },
+    map: { at: [880, 320], dir: "E", span: [-2, 1], label: { x: 864, y: 368 } },
   },
   {
     id: "knowfully",
@@ -128,7 +128,7 @@ export const STATIONS: Station[] = [
     roles: [role("KnowFully Learning Group", "Jun 2021")],
     lines: [1, 2, 3, 4],
     caption: "2021 — 2023",
-    map: { at: [980, 320], dir: "E", span: [-1, 1], label: { x: 1000, y: 276 } },
+    map: { at: [980, 320], dir: "E", span: [-2, 1], label: { x: 964, y: 368 } },
   },
   {
     id: "t-systems",
@@ -146,7 +146,7 @@ export const STATIONS: Station[] = [
     roles: [role("Derivative Path", "Jul 2023")],
     lines: [1, 2, 3, 4, 5],
     caption: "",
-    map: { at: [1230, 320], dir: "E", span: [-1, 1] },
+    map: { at: [1230, 320], dir: "E", span: [-2, 1] },
   },
 ];
 
