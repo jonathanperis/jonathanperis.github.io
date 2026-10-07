@@ -13,10 +13,10 @@ Standardized repository instructions for agent harnesses working on this Astro 7
 | Technology | Purpose |
 |-----------|---------|
 | Astro 7 | Static site generation, GitHub Pages export, and background dev server support |
-| Astro components + client scripts | Static UI; small bundled `<script>`s for reveal, scroll progress, terminal, analytics events |
-| Astro Fonts API | Self-hosted DM Sans / JetBrains Mono, downloaded at build time |
+| Astro components + client scripts | Static UI, including a build-time SVG metro map; small inlined `<script>`s for the status clock, scroll-progress fallback, terminal, and analytics events |
+| Astro Fonts API | Self-hosted Overpass / Overpass Mono, downloaded at build time |
 | TypeScript 6 | Strict type checking through `astro/tsconfigs/strict` |
-| Tailwind CSS 4 | Custom low-glare terminal-style design system via `@tailwindcss/vite` |
+| Tailwind CSS 4 | Transit-signage ("Career Metro Map") design system via `@tailwindcss/vite` |
 | GitHub GraphQL + REST APIs | Build-time repository and GitHub Pages URL discovery |
 | Google Analytics 4 | Traffic and CTA event tracking when `PUBLIC_GA_ID` is set |
 | Bun | Local and CI package manager/script runner, pinned via `packageManager` |
@@ -52,24 +52,29 @@ GITHUB_TOKEN=$(gh auth token) PUBLIC_GA_ID=G-35CN95481D bun run build
 
 ```text
 Astro pages/layouts
-├── src/pages/index.astro        # Build-time fetchRepos(), composes nav, sections, footer, terminal
-├── src/pages/resume.astro       # Print-optimized resume route
-└── src/layouts/RootLayout.astro # HTML shell, metadata, self-hosted fonts, html.js flag, JSON-LD, analytics
+├── src/pages/index.astro        # Build-time fetchRepos(), composes sign, status strip, sections, footer, terminal
+├── src/pages/resume.astro       # Print-optimized resume route (light paper/ink theme)
+└── src/layouts/RootLayout.astro # HTML shell, metadata, self-hosted fonts, JSON-LD, analytics
 
-Sections (src/components/sections/)
-└── Hero · Profile · Capabilities · Trace · Workbench (.astro)
+Sections (src/components/sections/), in page order
+└── MetroMap · StationIndex · Connections · LineGuide · ServiceNotes · CustomerInfo (.astro)
 
 Astro components (src/components/)
-├── Reveal.astro         # Reveal wrapper + one IntersectionObserver script
+├── SiteSign.astro       # Station-sign header: name, line roundels (map filter labels), nav
+├── StatusStrip.astro    # "Good service" strip, availability, live Itanhaém clock
+├── RouteBullet.astro    # Colored line roundel
+├── SectionHead.astro    # Black section sign with roundel/symbol
 ├── ScrollProgress.astro # CSS scroll-driven bar, JS fallback
-├── Terminal.astro       # Native <dialog> terminal + Konami listener
-├── SiteNav / SiteFooter / SectionLabel / SocialLink (.astro)
+├── Terminal.astro       # Native <dialog> "Control room" terminal + Konami listener
+├── SiteFooter.astro     # Diagram note, Konami hint, copyright
 ├── Analytics.astro      # Conditional GA4 loader + delegated data-track-event clicks
 └── JsonLd.astro         # Schema.org Person JSON-LD
 
 Data layer
 ├── src/lib/github.ts            # GitHub GraphQL + REST client with fallback repo data
-├── src/lib/data.ts              # PROFILE, AVAILABILITY, SKILLS, SKILL_GROUPS, EXPERIENCES, EDUCATION, SOCIALS
+├── src/lib/data.ts              # PROFILE, AVAILABILITY, ENGINEERING_PRINCIPLES, SKILLS, SKILL_GROUPS, EXPERIENCES, EDUCATION, SOCIALS
+├── src/lib/metro.ts             # LINES 1–8, MAP_LINES, GUIDE_LINES, STATIONS (map coordinates; roles looked up from data.ts)
+├── src/lib/metro-geometry.ts    # Build-time SVG path math: offsetPolyline, roundedPath, capsule, tick
 ├── src/lib/terminal-commands.ts # Build-time terminal command table (from data.ts)
 └── src/lib/terminal.ts          # Client terminal runtime: runCommand()
 ```
@@ -80,12 +85,14 @@ Data layer
 
 - **Static export** — `astro.config.ts` uses Astro's default static output, `outDir: 'out'`, and `trailingSlash: 'always'`. GitHub Pages deploys `/` and `/resume/` from the generated artifact.
 - **Hosting boundary** — Keep build-time data fetching and static hosting; SSR adapters and server-side route caches are not part of this implementation.
-- **Astro-native UI** — No UI framework integration. Render markup in `.astro` components and add behavior with bundled `<script>` blocks; keep client JS small and never make content visibility depend on it (reveal hiding is scoped to `html.js`).
+- **Astro-native UI** — No UI framework integration. Render markup in `.astro` components and add behavior with small `<script>` blocks (about 3 KB inlined in total: clock, terminal, analytics, scroll-progress fallback); keep client JS small and never make content visibility depend on it.
+- **Career Metro Map** — `src/lib/metro.ts` maps the career onto transit lines (1 Career, 2 .NET, 3 Azure, 4 Architecture, 5 Side Projects on the map; 6 Languages, 7 Data, 8 Frontend only in the Line Guide). `STATIONS` hold hand-placed coordinates and look up roles from `EXPERIENCES` with `role(company, periodStart)`, which throws at build time if a role is missing; the two 2018–2021 T-Systems roles share one station. `MetroMap.astro` draws the SVG at build time with `metro-geometry.ts`.
+- **CSS-only interactivity** — The map legend is a radio group (`#line-all`, `#line-1`…`#line-5`); `:has()` rules in `globals.css` dim `[data-lines]` elements in the map and Station Index that the chosen line does not serve. SiteSign roundels are `<label for="line-N">`. Map stations link to `#stn-<id>` rows and repo stops to `#repo-<name>` rows, which flash via `:target`. The train (CSS motion path) and "You are here" pulse respect `prefers-reduced-motion`.
 - **Build-time GitHub data** — `src/pages/index.astro` calls `fetchRepos()` during `bun run build`; the deployed browser page does not call GitHub APIs.
-- **Pinned + ledger model** — `src/lib/github.ts` takes Workbench cards directly from the profile `pinnedItems` (pin order, owned non-forks, metadata repos excluded) and builds the ledger from the first 100 recently updated public non-fork repos minus pins; there is no pagination. Requests time out after 10 s and Pages lookups run six at a time.
+- **Pinned + ledger model** — `src/lib/github.ts` takes the pinned repos (Connections departures board and the map's Side Projects line) directly from the profile `pinnedItems` (pin order, owned non-forks, metadata repos excluded) and builds the "Later departures" ledger from the first 100 recently updated public non-fork repos minus pins; there is no pagination. Requests time out after 10 s and Pages lookups run six at a time.
 - **Pages URL enrichment** — REST `GET /repos/jonathanperis/{repo}/pages` provides `pagesUrl`; standard `https://jonathanperis.github.io/<repo>/` homepage URLs are fallback Pages links.
 - **Fallback data** — `FALLBACK` covers absent tokens and failed/unusable GraphQL fetches. Individual Pages lookup failures preserve fetched repo data and standard Pages homepage fallbacks.
-- **Shared profile data** — `src/lib/data.ts` powers the portfolio, resume, terminal command table, and JSON-LD (`YEARS_OF_EXPERIENCE`, `PROFILE.address`, and `CURRENT_ROLE` are single sources). Check remaining presentation copy in `src/components/sections/` when updating profile facts. The separate public PDF has unresolved differences; career reconciliation is deferred by the owner.
+- **Shared profile data** — `src/lib/data.ts` powers the portfolio, resume, terminal command table, and JSON-LD (`YEARS_OF_EXPERIENCE`, `PROFILE.address`, and `CURRENT_ROLE` are single sources). Check remaining presentation copy in `src/components/` (sign, status strip, sections) and the station captions in `src/lib/metro.ts` when updating profile facts. The separate public PDF has unresolved differences; career reconciliation is deferred by the owner.
 - **Terminal easter egg** — Konami code opens a native `<dialog>` terminal. Static output is built at build time by `buildCommandTable()` (`terminal-commands.ts`); `runCommand()` (`terminal.ts`) resolves own-key commands only and handles `help`, `about`, `stack`, `contact`, `neofetch`, `git log`, `ls`, `cat availability.txt`, `whoami`, `pwd`, `date`, `sudo hire me`, `echo`, `clear`, `exit`, and `quit`.
 - **SEO** — `RootLayout.astro` derives canonical, Open Graph URL, and English alternate URL from the page canonical path and configured site. Astro generates `sitemap-index.xml` and `sitemap-0.xml`; robots advertises the generated index. `public/sitemap.xml` preserves the old entry point as a compatibility index, without handwritten route entries or timestamps.
 - **Documentation status** — `wiki/` is repository Markdown, not a deployed documentation route; GitHub Wiki is disabled. PRODUCT/DESIGN distinguish implemented UI from proposals. Update related docs using the maintenance map above.
@@ -101,10 +108,10 @@ jonathanperis.github.io/
 │   │   ├── index.astro
 │   │   └── resume.astro
 │   ├── components/
-│   │   ├── sections/            # Hero, Profile, Capabilities, Trace, Workbench
+│   │   ├── sections/            # MetroMap, StationIndex, Connections, LineGuide, ServiceNotes, CustomerInfo
 │   │   ├── Terminal.astro
-│   │   ├── Reveal.astro / ScrollProgress.astro
-│   │   ├── SiteNav.astro / SiteFooter.astro / SectionLabel.astro / SocialLink.astro
+│   │   ├── SiteSign.astro / StatusStrip.astro / SiteFooter.astro
+│   │   ├── RouteBullet.astro / SectionHead.astro / ScrollProgress.astro
 │   │   ├── Analytics.astro
 │   │   └── JsonLd.astro
 │   ├── layouts/
@@ -112,6 +119,7 @@ jonathanperis.github.io/
 │   ├── lib/
 │   │   ├── github.ts
 │   │   ├── data.ts
+│   │   ├── metro.ts / metro-geometry.ts
 │   │   ├── terminal-commands.ts
 │   │   └── terminal.ts
 │   └── styles/
