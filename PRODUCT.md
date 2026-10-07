@@ -1,471 +1,153 @@
 # PRODUCT.md — Jonathan Peris Portfolio
 
-_Implementation status reviewed: 2026-10-06 (source/configuration review). Original overhaul proposals: 2026-05-17._
+_Implementation status reviewed: 2026-10-07 (source/configuration review of the Career Metro Map redesign). The May 2026 overhaul proposals written for the previous dark terminal UI are superseded; see [Superseded proposals](#superseded-proposals)._
 
 [Documentation index](wiki/index.md) · [Architecture](wiki/architecture.md) · [Design direction](DESIGN.md)
 
 ## Implementation status
 
-This document combines the current product baseline with proposed enhancements. The status table is the implementation reference; the later strategies, experiments, and success criteria describe future work rather than shipped functionality.
+This document combines the current product baseline with the proposals that still apply. The status table is the implementation reference; sections marked _proposal_ describe future work rather than shipped functionality.
 
 | Area | Current implementation | Remaining proposal or validation |
 |---|---|---|
-| Hero and navigation | Identity-first hero, availability, operating signals, `deploy-ledger.yaml`; resume-first CTA and LinkedIn secondary CTA | Contact-first/split-intent tests, strategic operating card, contact navigation |
-| Profile and capability map | Two profile paragraphs, three engineering-principle rows, six skill-category rows | Outcome-specific proof and problem-oriented capability content |
-| Experience | Shared roles, descriptions, dates, locations, and stack tags | Owner-approved impact statements; PDF reconciliation is deferred |
-| Workbench | Build-time GitHub profile pins (up to six, in pin order), category heuristics, Source/Live/Homepage links, separate unpinned ledger | Authored case-file `signal`/`proof` content, grouping/filtering experiments |
-| Contact | Hero LinkedIn action and footer social links | Final contact packet and contextual contact measurement |
-| Analytics | `cta_click` for navbar/hero resume, hero LinkedIn, and resume print; `social_click` for footer socials (declared with `data-track-event`/`data-track-label` attributes) | Proposed custom events, variant parameters, query selection, and persistence |
-| Accessibility foundations | Semantic sections, focus-visible CSS, labeled native modal `<dialog>` terminal (browser focus containment, Escape, focus restoration), reveal content visible without JavaScript, CSS reduced-motion rules | Browser validation of contrast, focus, hit targets, and print output |
+| Header and status | Station-sign header (name, title, subtitle, line roundels 1–5 that act as map-filter labels, nav: Stations, Connections, Lines, Information, Resume); "Good service" status strip with availability, location, and live Itanhaém clock | Contact entry in the header nav (Information is reachable; no direct contact CTA) |
+| Career map | Build-time SVG map: Career line through nine stations (ten roles), .NET, Azure, and Architecture lines, Side Projects line of pinned repos; CSS-only line filter; "You are here" terminus | Browser validation of legibility and hit targets at small widths |
+| Experience | Station Index: roles newest first with periods, locations, descriptions, served lines, and tags; education as "Depot" | Owner-approved impact statements; PDF reconciliation is deferred |
+| Projects | Connections departures board of GitHub profile pins (up to six, pin order) with Source/Live site/Homepage links and stars; "Later departures" `<details>` ledger | Authored proof per project (`signal`/`proof`); contextual accessible names for repeated links |
+| Skills | Line Guide: six skill lines with computed interchanges | Problem-oriented capability framing |
+| Principles | Service Notes: three engineering principles as advisories | Outcome-specific proof |
+| Contact | Customer Information: availability, location, email, six social rows with handles, resume and PDF links | Contextual contact measurement |
+| Analytics | `cta_click` (`nav_resume`, `info_resume`, `info_pdf`, `info_email`, `resume_print`), `social_click`, `project_click`, declared with `data-track-event`/`data-track-label` | Variant parameters, query selection, persistence, shell/scroll events |
+| Accessibility foundations | Semantic sections with labeled headings, focus-visible outlines, labeled native `<dialog>` terminal, labeled map stops, ink numerals on light line colors, content and filter work without JavaScript, CSS reduced-motion rules | Browser validation of contrast, focus, hit targets, screen-reader output, and print |
 
-Operational details belong in the [wiki guides](wiki/index.md). These roadmap updates do not establish that proposed A/B tests, a redesign, or a browser accessibility audit have been completed.
+Operational details belong in the [wiki guides](wiki/index.md). These notes do not establish that A/B tests or a browser accessibility audit have been completed.
 
 ## Product summary
 
-Jonathan Peris Portfolio is a personal technical website for a senior backend/.NET/Azure engineer. It should make Jonathan easy to evaluate for remote senior engineering roles, backend architecture consulting, and technical leadership work while preserving the current dark systems-console aesthetic.
+Jonathan Peris Portfolio is a personal technical website for a senior backend/.NET/Azure engineer. It should make Jonathan easy to evaluate for remote senior engineering roles, backend architecture consulting, and technical leadership work.
 
-The site is not a generic resume page. It is a compact “systems manual” for Jonathan’s operating style: reliability before theater, boundaries with a reason, and delivery as part of architecture.
+The site presents the career as a transit system: roles are stations on a Career line, recurring skills are colored lines that join along the way, pinned repositories are a Side Projects line and a departures board, and principles are service notes. The metaphor organizes real data rather than decorating it, and plain labels (Stations, Connections, Lines, Information, Resume) keep it readable for non-engineers.
 
 ## Current product state
 
-The current homepage already has a strong identity:
+Page order on `/`:
 
-- Dark green-black operator console mood.
-- Route-like navigation: `/profile`, `/trace`, `/workbench`.
-- Large identity-first hero with `Jonathan Peris` as the anchor.
-- Availability signal: “Open to remote roles + consulting.”
-- Clear stack signal: backend architecture / .NET / Azure.
-- YAML/status-card metaphor: `deploy-ledger.yaml` and `healthy`.
-- Hidden terminal/easter egg that reinforces the developer persona.
-- Profile, capability, experience, pinned Workbench cards, unpinned repository ledger, and footer/social sections.
+1. Station-sign header and service-status strip.
+2. Career system map with title block, lede, and line-filter legend.
+3. Station Index (experience).
+4. Connections (pinned repositories) and Later departures (other public repositories).
+5. Line Guide (skills by line).
+6. Service Notes (engineering principles).
+7. Customer Information (contact, resume, PDF).
+8. Footer with the Konami hint; hidden "Control room" terminal.
 
-The proposed next product move is an overhaul that keeps this aesthetic but makes it more purposeful, proof-led, and conversion-oriented.
+`/resume/` is a separate print-optimized page in the same light paper/ink style.
 
 ## Primary audiences
 
 ### 1. Senior engineering recruiters and hiring managers
 
-They need to answer quickly:
-
-- What role is Jonathan best suited for?
-- Is he senior enough for architecture and ownership?
-- What stack does he operate in?
-- Has he worked with production systems and distributed teams?
-- Where is the resume/contact path?
+They need to answer quickly: what role Jonathan fits, whether he is senior enough for architecture and ownership, which stack he operates in, whether he has production and distributed-team experience, and where the resume/contact path is.
 
 ### 2. Technical leaders and founders evaluating consulting help
 
-They need to answer:
-
-- What kinds of backend problems can Jonathan help with?
-- Is this mostly coding, architecture, delivery, or team enablement?
-- Does he understand reliability, operations, and maintainability?
-- Can he work remotely across Brazil/US team contexts?
-- How do we start a conversation?
+They need to answer: what backend problems Jonathan helps with, whether the work is coding, architecture, delivery, or team enablement, whether he understands reliability and maintainability, whether he can work remotely across Brazil/US contexts, and how to start a conversation.
 
 ### 3. Engineers and technical peers
 
-They need to answer:
-
-- Is the craft credible?
-- Are the public repos and projects interesting?
-- Does the site feel technically intentional or decorative?
-- Can they inspect code, docs, and experiments?
+They need to answer: whether the craft is credible, whether the public repos are interesting, whether the site feels intentional, and whether they can inspect code, docs, and experiments.
 
 ## Product goals
 
-1. Increase clarity in the first viewport without flattening the personality.
-2. Make contact and resume actions obvious throughout the page.
-3. Turn the console aesthetic from decoration into information architecture.
-4. Show proof of production-oriented backend work through case-file language, repository artifacts, and anonymized outcomes.
-5. Improve scanning for recruiters while keeping enough technical depth for engineers.
-6. Preserve the current dark systems/manual aesthetic.
-7. Provide A/B testing hooks for message, CTA, and layout experiments.
+1. Communicate role, stack, availability, and location in the first viewport.
+2. Keep resume and contact actions reachable from the top and the end of the page.
+3. Make the metro metaphor carry information: lines, stations, and interchanges reflect actual roles and skills.
+4. Show proof of production-oriented backend work through experience, repository artifacts, and principles.
+5. Support fast scanning for recruiters while keeping technical depth for engineers.
+6. Keep the page static, light on JavaScript, and usable without it.
 
 ## Non-goals
 
-- Do not replace the site with a bright corporate SaaS template.
-- Do not add stock illustrations, generic headshot-first hero patterns, or generic “passionate developer” copy.
-- Do not make the interface so terminal-like that non-engineering visitors cannot understand it.
-- Do not overfit for a single public project; the site should represent Jonathan’s overall career and operating style.
-- Do not remove the hidden shell/easter egg unless analytics or usability testing shows it causes confusion.
+- Do not replace the site with a generic corporate SaaS template.
+- Do not add stock illustrations, headshot-first hero patterns, or generic "passionate developer" copy.
+- Do not let the transit metaphor hide plain facts; dates, roles, and links must stay readable as text.
+- Do not overfit for a single public project; the site represents Jonathan's overall career and operating style.
+- Do not remove the hidden terminal unless analytics or usability testing shows it causes confusion.
 
 ## Positioning
 
 ### Current positioning
 
-> Backend architecture / .NET / Azure
+> Software Engineer — backend architecture, .NET, Azure. Fintech focus.
 
 > I build backend systems that can be understood, operated, and changed after they meet production traffic.
 
-This is strong and on-brand. It should be tightened into a more outcome-forward promise.
+The first line is the station-sign subtitle; the second is the map lede.
 
-### Recommended positioning variants for testing
+### Positioning variants for testing (proposal)
 
-#### Variant A — recruiter/senior-role focused
-
-> Senior .NET engineer for production backend systems.
-
-Subcopy:
-
-> 12+ years building financial, automotive, education, healthcare, retail, and infrastructure software with clean boundaries, tests, and delivery discipline.
-
-#### Variant B — consulting/problem focused
-
-> Backend architecture for teams that need calmer production systems.
-
-Subcopy:
-
-> I help .NET/Azure teams clarify service boundaries, improve delivery paths, and keep critical systems operable after launch.
-
-#### Variant C — current aesthetic refined
-
-> Backend systems that stay legible under real traffic.
-
-Subcopy:
-
-> .NET, Azure, SQL, CQRS, DDD, CI/CD, and production ownership — applied with enough pragmatism to survive the next incident.
+- **A — recruiter/senior-role focused:** "Senior .NET engineer for production backend systems." Subcopy: 12+ years building financial, automotive, education, healthcare, retail, and infrastructure software with clean boundaries, tests, and delivery discipline.
+- **B — consulting/problem focused:** "Backend architecture for teams that need calmer production systems." Subcopy: helping .NET/Azure teams clarify service boundaries, improve delivery paths, and keep critical systems operable after launch.
+- **C — current tone refined:** "Backend systems that stay legible under real traffic."
 
 ## Core user journeys
 
 ### Journey 1 — Recruiter evaluation
 
-1. Land on homepage.
-2. Understand identity, role, availability, stack, location, and remote status in under 10 seconds.
-3. Click `/resume` in the nav or `View resume`.
-4. Optionally inspect experience trace and featured work.
-5. Contact on LinkedIn/email.
+1. Land on the homepage; read name, title, subtitle, and the "Good service" availability line.
+2. Click **Resume** in the header, or scan the map and Station Index.
+3. Contact through Customer Information (email, LinkedIn).
 
-Success metrics:
-
-- Resume click-through rate.
-- LinkedIn click-through rate.
-- Scroll depth to `Experience trace`.
-- Time to first CTA click.
+Measured today: `cta_click` `nav_resume`, `info_resume`, `info_pdf`, `info_email`; `social_click`.
 
 ### Journey 2 — Consulting lead
 
-1. Land on homepage.
-2. Understand backend problems Jonathan solves.
-3. Read capability map and workbench case files.
-4. See proof of reliability/delivery/architecture mindset.
-5. Click contact CTA.
+1. Land on the homepage; read the map lede and Customer Information availability.
+2. Review Line Guide and Service Notes for problem fit.
+3. Contact through Customer Information.
 
-Success metrics:
-
-- Contact click-through rate.
-- Scroll depth to `Workbench`.
-- Clicks on case-file/project cards.
-- Return visits from same referrer.
+Measured today: `info_email` and `social_click`. Section reach is not measured.
 
 ### Journey 3 — Engineer peer inspection
 
-1. Land on homepage.
-2. Explore Workbench/public repos.
-3. Inspect GitHub/source/live links.
-4. Discover hidden shell or deeper technical details.
+1. Follow the Side Projects line from the map to the Connections board.
+2. Open repository, live site, or homepage links; expand Later departures.
+3. Discover the hidden terminal.
 
-Success metrics:
+Measured today: `project_click` on repository-name links only. Source/Live/Homepage links, ledger links, and terminal activation are not measured.
 
-- Source link clicks.
-- Live project clicks.
-- Repository tail clicks.
-- Hidden shell activation, if measurable.
+## Open proposals
 
-## Product audit findings
+These still apply to the metro design and are not implemented.
 
-These qualitative design hypotheses originate in the May overhaul proposal. The implementation status above was rechecked against source in September; conversion performance and visual accessibility still require measured validation.
+- **Contact emphasis** — test whether a contact action in the header or map title block increases contact clicks compared with the current resume-first header link.
+- **Proof on the board** — add authored `signal`/`proof` copy to pinned repositories, emphasizing what each shows (architecture discipline, performance, cross-platform experiments, documentation, release automation).
+- **Impact in the Station Index** — add owner-approved impact statements per role; keep domain, stack, and production context scannable.
+- **Problem-oriented skills** — complement the Line Guide with short "what I help with" framing (architecture recovery, backend delivery, cloud operations, team enablement).
+- **Experiment infrastructure** — lightweight query/local variants (e.g. `?variant=contact-first`), persisted per visitor if needed and included in analytics events. Avoid a heavy experimentation platform unless traffic warrants it.
 
-### What works
+## Analytics events
 
-- Strong, coherent identity: dark terminal/manual aesthetic matches backend architecture positioning.
-- Large hero is memorable and not generic.
-- Availability, stack, years of experience, remote status, and operating style are visible.
-- CTA buttons are clear in the hero.
-- The copy avoids many portfolio clichés.
-- Route-style IA and YAML card are distinctive and technically aligned.
+Implemented: `cta_click { label }` with `nav_resume`, `info_resume`, `info_pdf`, `info_email`, and `resume_print`; `social_click { label }` from Customer Information social rows; `project_click { label }` with the repository name from the Connections board. Elements opt in with `data-track-event`/`data-track-label`, handled by a delegated listener in `Analytics.astro`. The exact inventory is in [SEO & Analytics](wiki/seo_and_analytics.md#implemented-custom-events).
 
-### Friction points
-
-- The first viewport leads with name and mood before a sharper outcome promise.
-- The YAML card repeats bio/status data instead of communicating stronger value or service fit.
-- `View resume` is primary, but consulting/contact intent is secondary.
-- Section labels such as `Profile packet`, `Trace`, and `Workbench` are stylish but may need plain-English reinforcement.
-- Workbench and repository areas should become stronger proof sections, not just project/repo lists.
-- Small muted text and dense monospace areas may be low contrast for some users.
-- Repeated dark cards can flatten the page if every section uses the same module style.
-
-## Overhaul strategy
-
-Keep the current aesthetic; increase the product clarity.
-
-### 1. Hero: sharpen the promise
-
-The hero should answer:
-
-- Who is this?
-- What does he specialize in?
-- What problem does he solve?
-- What action should I take?
-
-Recommended hero content architecture:
-
-```text
-[availability/status pill]
-Jonathan Peris
-Backend architecture for production .NET systems.
-I help teams clarify boundaries, ship safer releases, and keep critical systems operable after launch.
-[Start conversation] [View resume.pdf]
-[12+ yrs] [.NET/Azure] [Remote BR→US] [Architecture + delivery]
-```
-
-### 2. YAML/status card: make it strategic
-
-Replace repeated bio content with a stronger operating profile:
-
-```yaml
-operator: Jonathan Peris
-mode: senior backend / consulting
-best_for:
-  - .NET systems with unclear boundaries
-  - Azure delivery pipelines that need discipline
-  - teams modernizing production services
-  - reliability work after the first incident
-signals:
-  - 12+ years production software
-  - finance / automotive / education / healthcare
-  - remote Brazil to US teams
-```
-
-### 3. Navigation: keep routes, add clarity
-
-Current:
-
-```text
-/profile /trace /workbench /resume
-```
-
-Recommended test:
-
-```text
-/profile /capabilities /trace /workbench contact
-```
-
-or keep the current labels but add plain-language titles inside sections:
-
-```text
-TRACE 01 — Profile packet / how I work
-TRACE 02 — Capability map / what I help with
-TRACE 03 — Experience trace / selected roles
-TRACE 04 — Workbench / public proof
-TRACE 05 — Contact packet / open channel
-```
-
-### 4. Profile: narrative plus scan layer
-
-Keep the two paragraphs and existing engineering-principle rows. A future enhancement can make those rows more outcome-specific or add a compact proof strip with independently supported claims:
-
-- Defines service boundaries and ownership models.
-- Ships production software with tests and CI/CD feedback loops.
-- Works across finance, automotive, education, healthcare, retail, insurance, and infrastructure.
-- Remote-first with Brazil-to-US team experience.
-
-### 5. Capability map: make it buyer-friendly
-
-Reframe from pure skill taxonomy into “problems I help solve”:
-
-- Architecture recovery: service boundaries, modularization, CQRS/DDD where useful.
-- Backend delivery: .NET APIs, SQL-backed systems, tests, release discipline.
-- Cloud operations: Azure, CI/CD, Docker/Kubernetes, observability paths.
-- Team enablement: documentation, ownership, handoff clarity, pragmatic standards.
-
-### 6. Experience trace: add impact shape
-
-Each role should show:
-
-- Role/company/domain.
-- Stack.
-- Responsibility/impact.
-- Production context.
-
-Use concise log/case language, not only resume paragraphs.
-
-### 7. Workbench: convert projects into proof
-
-Use a case-file card structure:
-
-```text
-CASE 01 / runtime lab
-Speedy Bird
-signal: cross-platform native UI experiment
-proof: Lynx + TypeScript + CI/CD + browser deploy
-actions: Source / Live
-```
-
-For public technical repos, emphasize what each proves about Jonathan:
-
-- architecture discipline,
-- performance engineering,
-- cross-platform experimentation,
-- documentation quality,
-- release automation.
-
-### 8. Repository tail: curate, do not dump
-
-The repository tail should feel intentional. Prefer a curated “latest artifacts” or “lab index” over an unweighted list.
-
-Add filtering or grouping later if needed:
-
-- architecture samples,
-- performance labs,
-- game/runtime experiments,
-- docs/reference builds.
-
-### 9. Footer: final conversion card
-
-End with a clear final action:
-
-```yaml
-contact_packet:
-  status: available for remote roles + select consulting
-  best_channel: LinkedIn / email
-  artifact: resume.pdf
-```
-
-Buttons:
-
-- Start conversation
-- View resume
-- Open GitHub
-
-## A/B testing plan
-
-Use lightweight URL/query variants or configuration flags first. Avoid shipping a heavy experimentation platform unless traffic volume warrants it.
-
-### Experiment 1 — CTA priority
-
-- A: Primary `View resume`; secondary `Contact on LinkedIn`.
-- B: Primary `Start conversation`; secondary `View resume.pdf`.
-
-Hypothesis: B improves consulting/contact clicks; A may perform better for recruiter traffic.
-
-Measure:
-
-- `cta_click` by label.
-- LinkedIn/email clicks.
-- Resume clicks.
-- Scroll depth.
-
-### Experiment 2 — Hero value proposition
-
-- A: `Backend architecture / .NET / Azure`.
-- B: `Backend architecture for production .NET systems`.
-- C: `Backend systems that stay legible under real traffic`.
-
-Hypothesis: B improves recruiter comprehension; C preserves stronger brand personality.
-
-Measure:
-
-- CTA click rate from first viewport.
-- Bounce rate.
-- Time on page.
-
-### Experiment 3 — YAML card content
-
-- A: Current deploy ledger bio/status card.
-- B: Strategic `best_for`/`signals` card.
-- C: Mini case-file/status report card.
-
-Hypothesis: B improves perceived relevance for consulting leads without changing the visual aesthetic.
-
-### Experiment 4 — Section labels
-
-- A: Current stylized labels only: `Profile packet`, `Capability map`, `Experience trace`.
-- B: Hybrid labels: `Profile packet / how I work`, `Capability map / what I help with`.
-
-Hypothesis: B improves comprehension for non-engineer visitors while retaining the console aesthetic.
-
-### Experiment 5 — Workbench framing
-
-- A: Current project cards.
-- B: Case-file cards with `signal`, `proof`, and `actions`.
-- C: Repository-tree interface with expandable cards.
-
-Hypothesis: B increases proof comprehension; C may increase technical visitor exploration.
-
-### Experiment 6 — Proof density
-
-- A: Current narrative density.
-- B: Add proof chips and anonymized outcomes.
-
-Hypothesis: B improves trust and scroll depth, especially for hiring managers.
-
-### Experiment 7 — Final CTA block
-
-- A: Current small footer/social links.
-- B: Full-width `contact_packet` terminal card before footer.
-
-Hypothesis: B increases contact clicks from users who scroll past Workbench.
-
-## Analytics events to keep/add
-
-Implemented today: `cta_click { label }` with `nav_resume`, `hero_resume`, `hero_linkedin`, and `resume_print`, plus `social_click { label }`. Elements opt in with `data-track-event`/`data-track-label` attributes handled by a delegated listener in `Analytics.astro`. The exact inventory is in [SEO & Analytics](wiki/seo_and_analytics.md#implemented-custom-events).
-
-Future event extensions should preserve useful existing labels and add only measurements needed by a selected experiment. The current listener sends only `label`; location and variant fields below are proposed, not currently emitted.
-
-Recommended events:
+Future extensions should keep existing labels and add only measurements a selected experiment needs. The listener sends only `label` today; the fields below are proposed:
 
 ```text
 cta_click { label, location, variant }
 nav_click { label, variant }
-project_click { slug, action, variant }
+project_click { label, action, variant }
 repo_click { name, variant }
 contact_click { channel, location, variant }
-resume_click { location, variant }
 shell_open { method, variant }
 scroll_depth { bucket, variant }
 ```
 
-## Implementation roadmap
+## Superseded proposals
 
-### Phase 1 — Documentation and measurement (documentation refreshed; measurement partial)
+The 2026-05-17 overhaul plan assumed the previous dark terminal UI and proposed refining it: a sharper identity hero with a `deploy-ledger.yaml`/`best_for` card, route-style `/profile /trace /workbench` navigation with `TRACE NN` labels, Workbench case-file cards, and a YAML `contact_packet` footer. The Career Metro Map redesign replaced that UI, so those specifications no longer apply. Its intent survives where noted above; the final contact block is now Customer Information. The original text is available in git history.
 
-- Current implementation and proposal status are recorded in `PRODUCT.md`, `DESIGN.md`, and the wiki guides.
-- Existing CTA labels distinguish navbar, hero, and resume-print actions; footer socials emit `social_click` without a location parameter.
-- Experiment measurement beyond those handlers remains pending.
+## Validation still pending
 
-### Phase 2 — Same-aesthetic hero overhaul (proposed)
-
-- Test contact-first vs resume-first CTA order.
-- Replace YAML card content with `best_for`/`signals` content.
-- Add a `/contact` or equivalent route/action in nav.
-
-### Phase 3 — Proof-led middle and lower page (partially established; enhancements proposed)
-
-- Build on the existing engineering-principle rows with approved outcome evidence.
-- Reframe capability map as problems Jonathan helps solve.
-- Convert workbench cards to case-file cards.
-- Add final `contact_packet` CTA.
-
-### Phase 4 — A/B test infrastructure (not implemented)
-
-- Add query/local variant support, e.g. `?variant=contact-first`.
-- Persist variant per visitor with localStorage if needed.
-- Include variant in analytics events.
-
-### Phase 5 — Polish and accessibility (foundations implemented; validation pending)
-
-- Improve text contrast for dim labels.
-- Validate focus states and hit targets.
-- Test 390px, 768px, 1024px, and desktop widths.
-- Preserve existing CSS `prefers-reduced-motion` rules for reveal/cursor effects; the terminal jumps to new output without smooth scrolling.
-
-## Definition of done for the overhaul
-
-- First viewport communicates role, audience, value, and action in under 10 seconds.
-- Contact and resume CTAs are visible in hero and near page end.
-- Workbench reads as proof, not just decoration.
-- Repository tail is curated and understandable.
-- The page still feels like Jonathan’s dark systems manual.
-- Accessibility checks pass for contrast, keyboard focus, labels, and reduced motion.
-- A/B variants are documented and measurable.
+- First viewport communicates role, audience, value, and action in under 10 seconds (not measured).
+- Contrast, keyboard focus, labels, hit targets, reduced motion, and print output checked in a browser at 390px, 768px, 1024px, and 1440px (requires explicit authorization).
+- Any A/B variant is documented and measurable before it ships.
