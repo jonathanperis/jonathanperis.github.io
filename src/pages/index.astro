@@ -1,40 +1,36 @@
 ---
 import RootLayout from '../layouts/RootLayout.astro';
 import ScrollProgress from '../components/ScrollProgress.astro';
-import SiteNav from '../components/SiteNav.astro';
+import SiteSign from '../components/SiteSign.astro';
+import StatusStrip from '../components/StatusStrip.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import Terminal from '../components/Terminal.astro';
-import Hero from '../components/sections/Hero.astro';
-import Profile from '../components/sections/Profile.astro';
-import Capabilities from '../components/sections/Capabilities.astro';
-import Trace from '../components/sections/Trace.astro';
-import Workbench from '../components/sections/Workbench.astro';
+import MetroMap from '../components/sections/MetroMap.astro';
+import StationIndex from '../components/sections/StationIndex.astro';
+import Connections from '../components/sections/Connections.astro';
+import LineGuide from '../components/sections/LineGuide.astro';
+import ServiceNotes from '../components/sections/ServiceNotes.astro';
+import CustomerInfo from '../components/sections/CustomerInfo.astro';
 import { fetchRepos } from '../lib/github';
 
 const projects = await fetchRepos();
+const pins = projects.filter((project) => project.pinned);
 ---
 
 <RootLayout>
   <ScrollProgress />
+  <SiteSign />
+  <StatusStrip />
 
-  <div class="site-shell relative z-10">
-    <SiteNav />
+  <main>
+    <MetroMap pins={pins} />
+    <StationIndex />
+    <Connections projects={projects} />
+    <LineGuide />
+    <ServiceNotes />
+    <CustomerInfo />
+  </main>
 
-    <main>
-      <Hero />
-
-      <div class="section-bridge" aria-hidden="true">
-        <span>scroll</span><span>/profile packet follows</span>
-      </div>
-
-      <Profile />
-      <Capabilities />
-      <Trace />
-      <Workbench projects={projects} />
-    </main>
-
-    <SiteFooter />
-  </div>
-
+  <SiteFooter />
   <Terminal />
 </RootLayout>

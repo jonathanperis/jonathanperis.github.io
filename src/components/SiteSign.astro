@@ -1,0 +1,149 @@
+---
+import { PROFILE } from "../lib/data";
+import { LINES, MAP_LINES } from "../lib/metro";
+
+const links = [
+  { href: "#stations", label: "Stations" },
+  { href: "#connections", label: "Connections" },
+  { href: "#lines", label: "Lines" },
+  { href: "#info", label: "Information" },
+];
+---
+
+<header class="sign">
+  <div class="sign-inner">
+    <div>
+      <h1>{PROFILE.name}</h1>
+      <p class="sub"><strong>{PROFILE.title}</strong> — backend architecture, .NET, Azure. Fintech focus.</p>
+    </div>
+    <div class="sign-side">
+      <!-- Each roundel is a label for the map's line filter, so it works without JavaScript. -->
+      <div class="routes">
+        {MAP_LINES.map((id) => (
+          <label for={`line-${id}`} class="bullet" data-line={id} title={`Highlight the ${LINES[id].name} line`}>
+            {id}<span class="sr-only"> {LINES[id].name} line</span>
+          </label>
+        ))}
+      </div>
+      <nav aria-label="Primary navigation">
+        {links.map((link) => (
+          <a href={link.href}>
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3v12M4 10l6 6 6-6" /></svg>{link.label}
+          </a>
+        ))}
+        <a href="/resume/" data-track-event="cta_click" data-track-label="nav_resume">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 10h12M10 4l6 6-6 6" /></svg>Resume
+        </a>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<style>
+  .sign {
+    position: relative;
+    background: var(--color-sign);
+    color: #fff;
+  }
+  /* The thin white rule along the top of a station sign. */
+  .sign::before {
+    content: "";
+    position: absolute;
+    top: 9px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #fff;
+    opacity: 0.92;
+  }
+  .sign-inner {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: 24px;
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 28px var(--pad) 22px;
+  }
+  h1 {
+    padding-top: 0.08em;
+    font-size: 78px;
+    font-weight: 800;
+    letter-spacing: -0.018em;
+    line-height: 0.9;
+  }
+  .sub {
+    margin-top: 12px;
+    color: #e9e9e6;
+    font-size: 19px;
+    font-weight: 500;
+  }
+  .sub strong {
+    color: #fff;
+    font-weight: 800;
+  }
+  .routes {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+  }
+  .routes .bullet {
+    font-size: 22px;
+    cursor: pointer;
+    transition: transform 0.15s ease;
+  }
+  .routes .bullet:hover {
+    transform: translateY(-2px);
+  }
+  nav {
+    display: flex;
+    justify-content: flex-end;
+    gap: 22px;
+    margin-top: 16px;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+  nav a {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding-bottom: 2px;
+    border-bottom: 2px solid transparent;
+  }
+  nav a:hover {
+    border-color: #fff;
+  }
+  nav svg {
+    width: 14px;
+    height: 14px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 3;
+    stroke-linecap: square;
+  }
+  @media (max-width: 1100px) {
+    h1 { font-size: 58px; }
+  }
+  @media (max-width: 760px) {
+    .sign-inner {
+      grid-template-columns: 1fr;
+      gap: 16px;
+      padding: 26px var(--pad) 20px;
+    }
+    h1 { font-size: 46px; }
+    .sub {
+      font-size: 16px;
+      line-height: 1.35;
+    }
+    .routes { justify-content: flex-start; }
+    .routes .bullet { font-size: 17px; }
+    nav {
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      gap: 8px 16px;
+      margin-top: 12px;
+      font-size: 14px;
+    }
+  }
+</style>

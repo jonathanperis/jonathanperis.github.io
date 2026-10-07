@@ -1,0 +1,186 @@
+---
+import RouteBullet from "../RouteBullet.astro";
+import SectionHead from "../SectionHead.astro";
+import { SKILLS } from "../../lib/data";
+import { GUIDE_LINES, interchangesFor } from "../../lib/metro";
+
+const guides = GUIDE_LINES.map((line) => ({
+  line,
+  interchanges: interchangesFor(line),
+  stops: line.skills ? SKILLS[line.skills] : [],
+}));
+---
+
+<section id="lines" class="page-section" aria-labelledby="lines-heading">
+  <SectionHead id="lines-heading" title="Line Guide" line={2} note="Skills by line · a ring marks an interchange between lines" />
+  <div class="guides">
+    {guides.map(({ line, interchanges, stops }) => (
+      <div class="guide" data-line={line.id}>
+        <h3><RouteBullet line={line.id} size={20} />{line.name} Line<small>{line.kind}</small></h3>
+        <ol class="track">
+          {stops.map((skill) => {
+            const change = interchanges.get(skill);
+            return (
+              <li class:list={["stop", { x: change }]}>
+                <span class="t">
+                  {skill}
+                  {change && <span class="xn">change for {change.join(", ")}</span>}
+                </span>
+              </li>
+            );
+          })}
+        </ol>
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .guides {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 56px;
+    border-bottom: 2px solid var(--color-ink);
+  }
+  .guide {
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--color-hair);
+  }
+  .guide:nth-last-child(-n + 2) {
+    border-bottom: 0;
+  }
+  h3 {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding-top: 16px;
+    font-size: 20px;
+    font-weight: 800;
+    line-height: 1.05;
+  }
+  h3 :global(.bullet) {
+    align-self: center;
+  }
+  h3 small {
+    color: var(--color-grey);
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    font-weight: 500;
+  }
+  .track {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    padding-top: 16px;
+    list-style: none;
+  }
+  .track::before {
+    content: "";
+    position: absolute;
+    top: 28px;
+    left: 0;
+    right: 0;
+    height: 12px;
+    background: var(--line);
+  }
+  .track::after {
+    content: "";
+    position: absolute;
+    top: 22px;
+    right: 0;
+    width: 4px;
+    height: 24px;
+    background: var(--line);
+  }
+  .stop {
+    position: relative;
+    flex: 1;
+    padding: 34px 8px 0 0;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+  .stop::before {
+    content: "";
+    position: absolute;
+    top: 24px;
+    left: 18px;
+    width: 5px;
+    height: 12px;
+    background: var(--line);
+  }
+  .stop.x::before {
+    top: 3px;
+    left: 9px;
+    width: 22px;
+    height: 30px;
+    border: 3.5px solid var(--color-ink);
+    border-radius: 11px;
+    background: #fff;
+  }
+  .t {
+    display: block;
+    padding-left: 12px;
+  }
+  .xn {
+    display: block;
+    margin-top: 2px;
+    color: var(--color-grey);
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    font-weight: 500;
+  }
+  @media (max-width: 760px) {
+    .guides {
+      grid-template-columns: 1fr;
+    }
+    .guide:nth-last-child(2) {
+      border-bottom: 1px solid var(--color-hair);
+    }
+    h3 {
+      flex-wrap: wrap;
+      padding-top: 22px;
+    }
+    .track {
+      flex-wrap: wrap;
+      gap: 8px 16px;
+      padding: 10px 0 4px 44px;
+    }
+    .track::before {
+      top: 0;
+      bottom: 0;
+      left: 10px;
+      width: 12px;
+      height: auto;
+    }
+    .track::after,
+    .stop::before {
+      display: none;
+    }
+    .stop {
+      flex: none;
+      padding: 0;
+    }
+    .t {
+      padding-left: 0;
+    }
+    .stop.x .t {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .stop.x .t::before {
+      content: "";
+      order: -1;
+      width: 14px;
+      height: 20px;
+      border: 3px solid var(--color-ink);
+      border-radius: 7px;
+      background: #fff;
+    }
+    .xn {
+      display: inline;
+      margin: 0 0 0 2px;
+    }
+  }
+</style>
