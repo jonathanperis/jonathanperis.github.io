@@ -30,9 +30,9 @@ Configured in `src/layouts/RootLayout.astro`:
 | Open Graph image size / alt | `1024x1024` (the real file size); `og:image:alt` is `Jonathan Peris` |
 | Twitter card | `summary` (square image) with `twitter:image` set to the same share image |
 | Twitter creator | `@jperis_silva` |
-| Theme color | `#09090b` |
+| Theme color | `#161616` (the sign black) |
 | Alternate language | `hreflang="en"` |
-| Fonts | Self-hosted via the Astro Fonts API; `<Font>` preloads the latin subset of DM Sans and JetBrains Mono |
+| Fonts | Self-hosted via the Astro Fonts API; `<Font>` preloads the latin subset of Overpass and Overpass Mono |
 
 Pages can override `title`, `description`, and `canonical`; the share image is fixed in the layout. The `/resume/` route overrides title, description, and canonical path in `src/pages/resume.astro`. The configured trailing-slash policy, resume navigation, page-specific metadata, and generated sitemap all use `/resume/`. The English alternate link refers to the current page; it is not evidence of a translated route.
 
@@ -61,19 +61,21 @@ Sitemap: https://jonathanperis.github.io/sitemap-index.xml
 - Activates only when `PUBLIC_GA_ID` is set.
 - The production workflow passes `PUBLIC_GA_ID=G-35CN95481D`.
 - Emits the standard async `https://www.googletagmanager.com/gtag/js?id=...` loader and inline `gtag('config', GA_ID)` initialization.
-- Always bundles a delegated `click` listener: the closest element with `data-track-event` sends `gtag('event', <data-track-event>, { label: <data-track-label> })`, only when `window.gtag` exists. To track a new link or button, add those two attributes; no per-component handler is needed.
+- Always includes a delegated `click` listener (inlined script): the closest element with `data-track-event` sends `gtag('event', <data-track-event>, { label: <data-track-label> })`, only when `window.gtag` exists. To track a new link or button, add those two attributes; no per-component handler is needed.
 
 ### Implemented custom events
 
 | Event | Parameters | Trigger |
 |---|---|---|
-| `cta_click` | `{ label: 'nav_resume' }` | Navbar `/resume` link (`SiteNav.astro`) |
-| `cta_click` | `{ label: 'hero_resume' }` | Hero "View resume" link (`Hero.astro`) |
-| `cta_click` | `{ label: 'hero_linkedin' }` | Hero LinkedIn link (`Hero.astro`) |
+| `cta_click` | `{ label: 'nav_resume' }` | Header "Resume" link (`SiteSign.astro`) |
+| `cta_click` | `{ label: 'info_resume' }` | Customer Information "Resume" link (`CustomerInfo.astro`) |
+| `cta_click` | `{ label: 'info_pdf' }` | Customer Information "PDF" link to `/cv_jonathan_peris.pdf` (`CustomerInfo.astro`) |
+| `cta_click` | `{ label: 'info_email' }` | Customer Information email row (`CustomerInfo.astro`) |
 | `cta_click` | `{ label: 'resume_print' }` | "Print / Save as PDF" button on `/resume/` |
-| `social_click` | `{ label: social.label }` | Footer social links (`SocialLink.astro`) |
+| `social_click` | `{ label: social.label }` | Customer Information social rows (`CustomerInfo.astro`), e.g. `GitHub`, `LinkedIn` |
+| `project_click` | `{ label: repo name }` | Repository name link on the Connections board (`Connections.astro`) |
 
-Project/repository clicks, shell activation, section navigation, and scroll depth have no custom events. Variant parameters and persistence are proposals in [PRODUCT](../PRODUCT.md) and [DESIGN](../DESIGN.md). GA4 automatic/enhanced measurement depends on external property settings and is not established by this source inventory.
+The former `hero_resume` and `hero_linkedin` labels were retired with the previous hero. Board Source/Live/Homepage links, "Later departures" links, map station and line-filter interactions, shell activation, section navigation, and scroll depth have no custom events. Variant parameters and persistence are proposals in [PRODUCT](../PRODUCT.md) and [DESIGN](../DESIGN.md). GA4 automatic/enhanced measurement depends on external property settings and is not established by this source inventory.
 
 ## Web App Manifest
 
@@ -83,8 +85,8 @@ Project/repository clicks, shell activation, section navigation, and scroll dept
 - Short name: `JP`
 - `start_url`: `/`
 - `display`: `standalone`
-- Theme color: `#09090b`
-- Background color: `#09090b`
-- Icons: `favicon.svg` (`any`), `icon-192.png`, `icon-512.png`, and `apple-touch-icon.png` (180x180)
+- Theme color: `#161616`
+- Background color: `#fbfaf6` (the paper color)
+- Icons: `favicon.svg` (`any`), `icon-192.png`, `icon-512.png`, and `apple-touch-icon.png` (180x180), all a red "JP" roundel on black
 
 The layout links this manifest and the icons. No service worker or offline implementation is present. Browser installability and offline operation have not been validated by the manifest's presence alone.

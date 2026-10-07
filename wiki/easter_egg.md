@@ -51,8 +51,12 @@ The key listener lowercases single-character keys, so `B`/`b` and `A`/`a` both m
 The footer contains a subtle hint:
 
 ```text
-Built as a small systems manual. Hidden shell: ↑↑↓↓←→←→BA
+Hidden service: ↑↑↓↓←→←→BA
 ```
+
+### Appearance
+
+The dialog is styled as a metro "Control room" console: titlebar `Control room · jonathan.sh` with a text Close button, black sign background, ink border with a red (line 1) offset shadow, yellow (line 6) prompt and echoed commands. Output uses the system monospace stack rather than Overpass Mono, because the `neofetch` art needs box-drawing glyphs that Overpass Mono lacks. Styles live in the terminal section of [`src/styles/globals.css`](../src/styles/globals.css).
 
 ### Implementation
 
