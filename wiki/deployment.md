@@ -57,6 +57,10 @@ The build and release workflows share one toolchain source: Node from `.node-ver
 
 [`renovate.json`](../renovate.json) extends the account's [shared preset](https://github.com/jonathanperis/.github/blob/main/default.json). As reviewed on 2026-09-17, it configures weekly updates, Monday lockfile maintenance, grouped Astro/Tailwind updates, and SHA-pinned GitHub Actions. Major updates and Actions updates require review rather than automerge. Recheck the shared preset when documenting policy changes; it can evolve independently of this repository.
 
+This repository adds one local rule: TypeScript is held below 7 (`allowedVersions: "<7"`) because `@astrojs/check` only supports TypeScript `^5 || ^6`. Remove the rule once `@astrojs/check` accepts TypeScript 7.
+
+Renovate runs through the Mend-hosted app. Its account-level mode must be **Interactive**; in Silent mode it scans and logs updates but creates no PRs, branches, or Dependency Dashboard issues.
+
 ## Manual Local Build
 
 ```bash
