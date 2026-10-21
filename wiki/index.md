@@ -2,7 +2,7 @@
 
 Personal developer portfolio for **Jonathan Peris** — Software Engineer with 12+ years of experience in .NET, Azure, backend architecture, and reliable delivery.
 
-**Live site:** [jonathanperis.github.io](https://jonathanperis.github.io)
+**Live site:** [www.jonathanperis.tech](https://www.jonathanperis.tech)
 
 These are repository-hosted Markdown documents in `wiki/`. GitHub Wiki is disabled; Astro publishes the portfolio and resume, not these documentation pages.
 
@@ -15,7 +15,7 @@ These are repository-hosted Markdown documents in `wiki/`. GitHub Wiki is disabl
 - **Source tree:** `src/pages`, `src/components`, `src/layouts`, `src/lib`, and `src/styles`.
 - **Build output:** `out/`, uploaded as a GitHub Pages artifact by `main-release.yml`.
 - **Data source:** `src/lib/data.ts` for profile/resume/terminal data; `src/lib/metro.ts` for the map's lines and stations (roles looked up from `data.ts`); `src/lib/github.ts` for GitHub repository discovery.
-- **Production URL:** `https://jonathanperis.github.io/`.
+- **Production URL:** `https://www.jonathanperis.tech/`.
 
 ## Features
 

@@ -51,7 +51,7 @@ There are no handwritten page entries, priorities, change frequencies, or `lastm
 ```txt
 User-agent: *
 Allow: /
-Sitemap: https://jonathanperis.github.io/sitemap-index.xml
+Sitemap: https://www.jonathanperis.tech/sitemap-index.xml
 ```
 
 ## Google Analytics 4

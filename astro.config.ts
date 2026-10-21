@@ -3,7 +3,7 @@ import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
-  site: 'https://jonathanperis.github.io',
+  site: 'https://www.jonathanperis.tech',
   outDir: 'out',
   trailingSlash: 'always',
   integrations: [sitemap()],
