@@ -24,7 +24,7 @@ export const PROFILE = {
   location: `${ADDRESS.locality}, ${ADDRESS.region}, ${ADDRESS.country}`,
   github: "github.com/jonathanperis",
   linkedin: "linkedin.com/in/jonathan-peris",
-  website: "jonathanperis.github.io",
+  website: "www.jonathanperis.tech",
   summary:
     `Software Engineer with ${YEARS_OF_EXPERIENCE} years of experience specializing in .NET and Fintech solutions. Proven track record architecting and delivering high-impact, enterprise-grade software. Expertise centered on the modern .NET ecosystem including .NET Core+, ASP.NET Core, Entity Framework, and MAUI. Deeply committed to engineering excellence with CQRS, DDD, Microservices, Hexagonal Architecture, and Cloud-Native principles. Strong DevOps background with Azure, Docker, and CI/CD pipelines.`,
 };

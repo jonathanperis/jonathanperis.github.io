@@ -2,7 +2,7 @@
 
 Standardized repository instructions for agent harnesses working on this Astro 7 static portfolio (Astro components only, no UI framework runtime), deployed to GitHub Pages.
 
-**Live:** https://jonathanperis.github.io/
+**Live:** https://www.jonathanperis.tech/
 
 **Documentation:** [Index](wiki/index.md) · [Setup](wiki/getting_started.md) · [Deployment](wiki/deployment.md) · [Maintenance map](wiki/index.md#keeping-documentation-current)
 

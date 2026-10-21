@@ -4,7 +4,7 @@
 
 [![Build Check](https://github.com/jonathanperis/jonathanperis.github.io/actions/workflows/build-check.yml/badge.svg)](https://github.com/jonathanperis/jonathanperis.github.io/actions/workflows/build-check.yml) [![Main Release](https://github.com/jonathanperis/jonathanperis.github.io/actions/workflows/main-release.yml/badge.svg)](https://github.com/jonathanperis/jonathanperis.github.io/actions/workflows/main-release.yml) [![CodeQL](https://github.com/jonathanperis/jonathanperis.github.io/actions/workflows/codeql.yml/badge.svg)](https://github.com/jonathanperis/jonathanperis.github.io/actions/workflows/codeql.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-**[Live site →](https://jonathanperis.github.io/)** | **[Documentation →](wiki/index.md)** | **[Agent guide →](AGENTS.md)**
+**[Live site →](https://www.jonathanperis.tech/)** | **[Documentation →](wiki/index.md)** | **[Agent guide →](AGENTS.md)**
 
 ---
 
@@ -12,7 +12,7 @@
 
 Astro-native portfolio (no UI framework runtime) with a static export for GitHub Pages. It fetches the repositories pinned on Jonathan's GitHub profile plus owned public, non-fork repositories from the GitHub GraphQL API at build time, resolves live GitHub Pages links through the REST API, and renders them in a "Career Metro Map" UI styled after transit signage (Vignelli / São Paulo Metrô): roles are stations on a Career line, skills and side projects are colored lines, and pinned repositories appear on a departures board.
 
-The site includes a print-optimized [`/resume/`](https://jonathanperis.github.io/resume/) route, SEO metadata, JSON-LD, optional GA4 analytics, a web app manifest, and a Konami-code terminal easter egg. Shared profile and resume data live in [`src/lib/data.ts`](src/lib/data.ts) and feed the portfolio, resume, terminal command table, and JSON-LD; [`src/lib/metro.ts`](src/lib/metro.ts) adds the map vocabulary (lines, stations, coordinates), and some presentation copy is maintained in the Astro components.
+The site includes a print-optimized [`/resume/`](https://www.jonathanperis.tech/resume/) route, SEO metadata, JSON-LD, optional GA4 analytics, a web app manifest, and a Konami-code terminal easter egg. Shared profile and resume data live in [`src/lib/data.ts`](src/lib/data.ts) and feed the portfolio, resume, terminal command table, and JSON-LD; [`src/lib/metro.ts`](src/lib/metro.ts) adds the map vocabulary (lines, stations, coordinates), and some presentation copy is maintained in the Astro components.
 
 Project data refreshes when the site is rebuilt and deployed. The deployed browser does not fetch GitHub APIs. Without a token, or if the GraphQL fetch fails, the build uses checked-in fallback projects. See [Dynamic Projects](wiki/dynamic_projects.md) for filtering, the 100-repository limit, and Pages URL fallback behavior.
 
