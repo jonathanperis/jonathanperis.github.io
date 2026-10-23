@@ -14,6 +14,7 @@ export type GitHubRepo = {
 const GITHUB_OWNER = "jonathanperis";
 const PAGES_ORIGIN = `https://${GITHUB_OWNER}.github.io/`;
 const EXCLUDE_REPOS = new Set(["jonathanperis.github.io", ".github", "jonathanperis"]);
+const EXCLUDED_NAME = /^rinha/i;
 const REQUEST_TIMEOUT_MS = 10_000;
 const PAGES_LOOKUP_CONCURRENCY = 6;
 
@@ -24,9 +25,7 @@ const FALLBACK: GitHubRepo[] = [
   { title: "jonlib", description: "Jonlib: graphics and math libraries written in Bend 2, targeting raylib 6.0 parity.", url: "https://github.com/jonathanperis/jonlib", lang: "Python", langColor: "#3572A5", stars: 0, pinned: true },
   { title: "blazor-mudblazor-starter", description: "Local-first .NET 10 learning sandbox for Blazor Server and MudBlazor, with hands-on labs for state, forms, APIs, SQLite, authentication, localization, CSV, and Docker.", url: "https://github.com/jonathanperis/blazor-mudblazor-starter", lang: "C#", langColor: "#7355dd", stars: 2, homepageUrl: "https://blazor-mudblazor-starter.jonathanperis.tech/demo/", pagesUrl: "https://blazor-mudblazor-starter.jonathanperis.tech/", pinned: true },
   { title: "speedy-bird-lynx", description: "Flappy Bird-inspired arcade game built with ReactLynx and TypeScript. Android host, Lynx web preview, playable Canvas demo, and Astro docs; iOS source scaffold included. Every pipe makes it faster.", url: "https://github.com/jonathanperis/speedy-bird-lynx", lang: "TypeScript", langColor: "#3178c6", stars: 1, homepageUrl: "https://speedy-bird-lynx.jonathanperis.tech/", pagesUrl: "https://speedy-bird-lynx.jonathanperis.tech/", pinned: true },
-  { title: "rinha2-back-end-dotnet", description: "High-performance backend for the Rinha de Backend challenge — built with ASP.NET 9, PostgreSQL, Nginx, Native AOT, and Docker", url: "https://github.com/jonathanperis/rinha2-back-end-dotnet", lang: "HTML", langColor: "#e34c26", stars: 3, homepageUrl: "https://jonathanperis.github.io/rinha2-back-end-dotnet/", pagesUrl: "https://jonathanperis.github.io/rinha2-back-end-dotnet/" },
-  { title: "rinha4-back-end-c", description: "Rinha de Backend 2026 C implementation with raw HTTP/1, Unix sockets, SCM_RIGHTS load balancing, and exact IVF fraud scoring", url: "https://github.com/jonathanperis/rinha4-back-end-c", lang: "C", langColor: "#555555", stars: 0, homepageUrl: "https://jonathanperis.github.io/rinha4-back-end-c/", pagesUrl: "https://jonathanperis.github.io/rinha4-back-end-c/" },
-  { title: "rinha2-back-end-k6", description: "Grafana k6 stress tests for the Rinha de Backend challenge — Dockerized with InfluxDB metrics export", url: "https://github.com/jonathanperis/rinha2-back-end-k6", lang: "JavaScript", langColor: "#f1e05a", stars: 0, homepageUrl: "https://jonathanperis.github.io/rinha2-back-end-k6/", pagesUrl: "https://jonathanperis.github.io/rinha2-back-end-k6/" },
+  { title: "csharpc", description: "A C# front-end for LLVM: compiles C# source to small, fast native executables via Roslyn + LLVM — like clang, rustc and gollvm. Written in C#.", url: "https://github.com/jonathanperis/csharpc", lang: "C#", langColor: "#7355dd", stars: 1 },
 ];
 
 const REPO_FIELDS = `
@@ -37,6 +36,8 @@ const REPO_FIELDS = `
   stargazerCount
   updatedAt
   isFork
+  isPrivate
+  isArchived
   owner { login }
   primaryLanguage { name color }
 `;
@@ -62,6 +63,8 @@ type RepoNode = {
   stargazerCount: number;
   updatedAt?: string;
   isFork: boolean;
+  isPrivate: boolean;
+  isArchived: boolean;
   owner: { login: string };
   primaryLanguage: { name: string; color: string | null } | null;
 };
@@ -124,7 +127,13 @@ async function mapWithConcurrency<T, R>(items: T[], limit: number, task: (item: 
 }
 
 function isPortfolioRepo(n: RepoNode | null): n is RepoNode {
-  return !!n && n.owner.login === GITHUB_OWNER && !n.isFork && !EXCLUDE_REPOS.has(n.name);
+  return !!n
+    && n.owner.login === GITHUB_OWNER
+    && !n.isFork
+    && !n.isPrivate
+    && !n.isArchived
+    && !EXCLUDE_REPOS.has(n.name)
+    && !EXCLUDED_NAME.test(n.name);
 }
 
 function normalizeRepo(n: RepoNode, pinned: boolean): GitHubRepo {
