@@ -106,7 +106,7 @@ Light line colors (4, 6, 7, 8) carry ink numerals for contrast. Line definitions
 
 ## Responsive behavior
 
-- **Below 1100px** — The map's title block and legend stop overlaying and stack above and below it. The map keeps a readable 1180px width inside a horizontal scroller that starts at the right edge ("You are here") through a `direction: rtl` container, with a "Swipe back to 2011" hint. The header name shrinks, and the status strip drops the location.
+- **Below 1100px** — The map's title block and legend stop overlaying and stack above and below it. The map keeps a readable 1180px width inside a horizontal scroller that starts at the right edge ("You are here") through a `direction: rtl` container, with a "Swipe back to 2008" hint. The header name shrinks, and the status strip drops the location.
 - **Below 900px** — The Connections table becomes stacked rows; Service Notes and Customer Information become single columns.
 - **Below 760px** — The header stacks with wrapping nav; the Station Index moves dates into the body and narrows the strip; Line Guide tracks turn vertical; section-head notes are hidden.
 

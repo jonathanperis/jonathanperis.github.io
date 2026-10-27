@@ -3,6 +3,8 @@ export type Experience = {
   title: string;
   company: string;
   location: string;
+  /** LinkedIn employment type: Full-time, Part-time, or Internship. */
+  employment: string;
   description: string;
   tags: string[];
 };
@@ -19,6 +21,9 @@ const ADDRESS = {
 export const PROFILE = {
   name: "Jonathan Peris",
   title: "Software Engineer",
+  /** LinkedIn headline. C# and .NET are the core; Rust, Go, and Python are called out separately. */
+  headline:
+    "Software Engineer | .NET · C# · Azure | Backend Architecture (CQRS, DDD, Microservices) | Fintech",
   email: "jperis.silva@gmail.com",
   address: ADDRESS,
   location: `${ADDRESS.locality}, ${ADDRESS.region}, ${ADDRESS.country}`,
@@ -26,12 +31,12 @@ export const PROFILE = {
   linkedin: "linkedin.com/in/jonathan-peris",
   website: "www.jonathanperis.tech",
   summary:
-    `Software Engineer with ${YEARS_OF_EXPERIENCE} years of experience specializing in .NET and Fintech solutions. Proven track record architecting and delivering high-impact, enterprise-grade software. Expertise centered on the modern .NET ecosystem including .NET Core+, ASP.NET Core, Entity Framework, and MAUI. Deeply committed to engineering excellence with CQRS, DDD, Microservices, Hexagonal Architecture, and Cloud-Native principles. Strong DevOps background with Azure, Docker, and CI/CD pipelines.`,
+    `Software Engineer with ${YEARS_OF_EXPERIENCE} years of experience specializing in .NET and Fintech solutions. I architect and deliver high-impact, enterprise-grade software — from General Ledger and Hedge Accounting modules managing billions in notional value to educational platforms serving thousands of students. My expertise is centered on the modern .NET ecosystem (.NET Core+, ASP.NET Core, Entity Framework, MAUI) and on CQRS, DDD, Microservices, Clean Architecture, Hexagonal Architecture, and Cloud-Native principles. Strong DevOps background with Azure, Azure DevOps, Docker, and CI/CD. Actively exploring Rust, Go, and Python for high-performance and concurrent systems.`,
 };
 
 export const AVAILABILITY = {
   short: "Open to remote roles + consulting",
-  full: "Open to remote roles and select backend architecture consulting.",
+  full: "Open to remote roles and select backend architecture consulting — especially in FinTech and enterprise environments.",
 };
 
 export const ENGINEERING_PRINCIPLES = [
@@ -49,8 +54,11 @@ export const ENGINEERING_PRINCIPLES = [
   },
 ];
 
+/** Languages in active study. They are not part of the core C# / .NET stack. */
+export const EXPLORING_LANGUAGES = ["Rust", "Go", "Python"];
+
 export const SKILLS = {
-  languages: ["C#", "Rust", "Go", "Python", "TypeScript", "JavaScript"],
+  languages: ["C#", "TypeScript", "JavaScript"],
   backend: [".NET Core+", "ASP.NET Core", "Entity Framework", "MAUI", "Blazor"],
   architecture: ["CQRS", "DDD", "Microservices", "Hexagonal", "Clean Architecture", "SAGA Pattern"],
   cloud: ["Azure", "Azure DevOps", "Docker", "Kubernetes", "CI/CD"],
@@ -82,26 +90,29 @@ export const EXPERIENCES: Experience[] = [
     title: "Software Engineer",
     company: "Derivative Path",
     location: "New York, US · Remote",
+    employment: "Full-time",
     description:
-      "Software Engineer on the CAAR team, focused on developing and refining the General Ledger, Hedge Accounting, and Fiscal Calendar modules for the DerivativeEDGE platform, which manage billions in notional value. Enabling clients to achieve streamlined financial reporting, accurate hedge accounting, and efficient fiscal period management.",
+      "On the CAAR team, developing the General Ledger, Hedge Accounting, and Fiscal Calendar modules for the DerivativeEDGE platform, which manage billions in notional value.",
     tags: ["C#", ".NET 8", "SQL Server", "CQRS", "Azure DevOps", "Clean Architecture"],
   },
   {
     period: "Feb 2023 — Jul 2023",
     title: "Principal .NET Developer",
     company: "T-Systems do Brasil",
-    location: "São Bernardo do Campo, BR · Remote",
+    location: "São Bernardo do Campo, SP · Remote",
+    employment: "Full-time",
     description:
-      "Spearheaded the critical platform and architecture migration of SGP Eletrônica — vital software for mapping and parameterization of Electronic Control Units (ECUs) within Mercedes-Benz trucks and buses. Ensured seamless transition while modernizing architecture and enhancing capabilities for advanced automotive diagnostics.",
+      "Technical lead for the platform and architecture migration of SGP Eletrônica, the ECU mapping and parameterization software for Mercedes-Benz trucks and buses.",
     tags: ["C#", "ASP.NET Core", "Blazor", "Entity Framework", "Azure", "SQL Server"],
   },
   {
     period: "Jun 2021 — Feb 2023",
     title: "Software Engineer",
     company: "KnowFully Learning Group",
-    location: "Radnor, PA, US · Remote",
+    location: "Radnor Township, PA, US · Remote",
+    employment: "Full-time",
     description:
-      "Drove full-cycle development of the ExamReview platform — backend services, infrastructure, and mobile. Engineered the CMS delivering educational materials to thousands of students via LMS. Built the Admin platform for access control and hierarchy structuring. All platforms on Azure with Microservices, CQRS, and full test coverage.",
+      "Full-cycle development of the ExamReview platform across backend, infrastructure, and mobile. Built the CMS feeding the LMS for thousands of students, and the Admin platform, on Azure with microservices, CQRS, and full test coverage.",
     tags: ["C#", "Azure", "Microservices", "CQRS", "Xamarin", "Azure DevOps"],
   },
   {
@@ -109,63 +120,89 @@ export const EXPERIENCES: Experience[] = [
     title: "DevOps Engineer",
     company: "XP Inc.",
     location: "Miami, FL, US · Remote",
+    employment: "Full-time",
     description:
-      "Ensured reliability of international wire transfers within XP Inc.'s international accounts group. Maintained and enhanced monitoring processes for Brazil-US fund transfers, managing Azure infrastructure and .NET Core microservices leveraging SAGA patterns and message queues for transactional consistency.",
+      "International wire transfers between Brazil and the US, monitoring, and Azure infrastructure with .NET Core microservices using SAGA and message queues.",
     tags: ["Azure", ".NET Core", "Docker", "SAGA Pattern", "RabbitMQ", "CI/CD"],
   },
   {
     period: "Dec 2019 — Jan 2021",
     title: "Principal .NET Developer",
     company: "T-Systems do Brasil",
-    location: "São Bernardo do Campo, BR",
+    location: "São Bernardo do Campo, SP",
+    employment: "Full-time",
     description:
-      "Led design and development of key internal applications in Agile/Scrum. Engineered T-Atendo (helpdesk for Mercedes-Benz factory workers), Multi Manager (resource booking for on-site assets), and T-Entrego (corporate gift distribution platform). All built with .NET Core, Azure, and microservices.",
+      "Led T-Atendo (helpdesk for Mercedes-Benz factory workers), Multi Manager (resource booking), and T-Entrego (corporate gift distribution) with .NET Core, Azure, and microservices, in Agile/Scrum. Technical lead of the team, guiding and mentoring the developers who reported to him.",
     tags: ["C#", ".NET Core", "Azure", "Microservices", "REST API", "Scrum"],
   },
   {
     period: "Sep 2018 — Dec 2019",
     title: "Senior .NET Developer",
     company: "T-Systems do Brasil",
-    location: "São Bernardo do Campo, BR",
+    location: "São Bernardo do Campo, SP",
+    employment: "Full-time",
     description:
-      "Built specialized applications for factory operations and corporate functions. Developed mileage control systems for Mercedes-Benz trucks and maintained institutional and intranet applications for internal communication and processes.",
+      "Mileage control systems for Mercedes-Benz trucks, and institutional and intranet applications.",
     tags: ["C#", ".NET Framework", "SQL Server", "Azure DevOps", "JavaScript", "MVC"],
   },
   {
     period: "May 2017 — Sep 2018",
     title: ".NET Developer",
-    company: "5A Attiva / Amil (UnitedHealth Group)",
-    location: "São Paulo, BR",
+    company: "UnitedHealth Group",
+    location: "São Paulo area",
+    employment: "Full-time",
     description:
-      "Developed hospital internal control applications and proof of concept projects. 5A Attiva maintains all internal Amil clinical systems in hospitals and clinics across Brazil.",
+      "Hospital internal control applications and proofs of concept. 5A Attiva maintains Amil clinical systems.",
     tags: ["C#", "ASP.NET MVC", "SQL Server", "Entity Framework", "Healthcare"],
   },
   {
     period: "Oct 2015 — May 2017",
     title: ".NET Developer",
-    company: "Sonda IT / Leroy Merlin",
-    location: "São Paulo, BR",
+    company: "Leroy Merlin",
+    location: "São Paulo area",
+    employment: "Full-time",
     description:
-      "Developed the second version of the label generation system for all Leroy Merlin stores and expanded the business operations management system. SONDA is a leader in systems integration and IT services in Latin America.",
+      "Second version of the label generation system for all stores, and the business operations management system, via SONDA.",
     tags: ["C#", "ASP.NET MVC", "Angular", "Web API", "SQL Server"],
   },
   {
     period: "May 2013 — Sep 2015",
     title: ".NET Developer",
-    company: "Conecta Serviços",
-    location: "São Paulo, BR",
+    company: "Conecta Comercio e Serviços Ltda.",
+    location: "São Paulo area",
+    employment: "Full-time",
     description:
-      "Developed insurance sales applications for major insurers including Zurich, Assurant, Mapfre, and Cardiff. Built integration with SIGEP WEB (Post Office) for ticket issuance and object returns.",
+      "Insurance sales applications for Zurich, Assurant, Mapfre, and Cardiff, and SIGEP WEB (Correios) integration.",
     tags: ["C#", "ASP.NET Web Forms", "WCF", "SQL Server", "API Integration"],
   },
   {
     period: "Aug 2011 — Apr 2013",
     title: "Tech Support Professional",
     company: "Sabesp",
-    location: "Diadema, BR",
+    location: "Diadema",
+    employment: "Internship",
     description:
-      "Technical support for the state water supply and sanitation company. Configured Active Directory, virtual machines, LDAP, and managed backup contingency. Participated in development of the company's process system.",
+      "Active Directory, virtual machines, LDAP, and backup contingency, plus process system development.",
     tags: ["Active Directory", "Windows Server", "LDAP", "VMware", "Networking"],
+  },
+  {
+    period: "Jan 2011 — Jun 2011",
+    title: "E-learning Support Assistant",
+    company: "Prepara Cursos Profissionalizantes",
+    location: "São Bernardo do Campo, SP · On-site",
+    employment: "Full-time",
+    description:
+      "Technical and pedagogical support for online and hybrid students (Grupo MoveEdu).",
+    tags: ["E-learning", "Technical support"],
+  },
+  {
+    period: "Jun 2008 — Dec 2010",
+    title: "Digital Learning Assistant at the Acessa Escola Program",
+    company: "Governo do Estado de São Paulo",
+    location: "Diadema, SP · On-site",
+    employment: "Part-time",
+    description: "Digital inclusion program in state schools.",
+    tags: ["E-learning", "Digital inclusion"],
   },
 ];
 

@@ -1,4 +1,4 @@
-import { AVAILABILITY, EXPERIENCES, PROFILE, SKILLS, SKILL_GROUPS, YEARS_OF_EXPERIENCE } from "./data";
+import { AVAILABILITY, EXPERIENCES, EXPLORING_LANGUAGES, PROFILE, SKILLS, SKILL_GROUPS, YEARS_OF_EXPERIENCE } from "./data";
 import type { CommandTable } from "./terminal";
 
 const GIT_LOG_LIMIT = 5;
@@ -26,8 +26,17 @@ export function buildCommandTable(): CommandTable {
     pwd: ["/home/jonathan/portfolio"],
     ls: ["availability.txt  architecture/  experience.log  projects/  resume.pdf"],
     "cat availability.txt": [AVAILABILITY.full],
-    about: ["", `  ${PROFILE.name}`, `  ${PROFILE.title}, ${YEARS_OF_EXPERIENCE} years`, "  C#, .NET, Azure, CQRS, DDD", `  Remote from ${PROFILE.address.country}`, ""],
-    stack: ["", ...SKILL_GROUPS.map(({ key, label }) => `  ${label.padEnd(labelWidth)}${SKILLS[key].join(", ")}`), ""],
+    about: ["", `  ${PROFILE.name}`, `  ${PROFILE.headline}`, `  ${YEARS_OF_EXPERIENCE} years · C# and .NET`, "  Exploring Rust, Go, and Python", `  Remote from ${PROFILE.address.country}`, ""],
+    stack: [
+      "",
+      ...SKILL_GROUPS.flatMap(({ key, label }) => {
+        const row = `  ${label.padEnd(labelWidth)}${SKILLS[key].join(", ")}`;
+        return key === "languages"
+          ? [row, `  ${"exploring".padEnd(labelWidth)}${EXPLORING_LANGUAGES.join(", ")}`]
+          : [row];
+      }),
+      "",
+    ],
     contact: ["", `  GitHub     ${PROFILE.github}`, `  LinkedIn   ${PROFILE.linkedin}`, `  Email      ${PROFILE.email}`, ""],
     "git log": [
       "",
