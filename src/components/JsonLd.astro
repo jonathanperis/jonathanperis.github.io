@@ -1,5 +1,5 @@
 ---
-import { CURRENT_ROLE, EDUCATION, PROFILE, SKILLS, SOCIALS } from '../lib/data';
+import { CURRENT_ROLE, EDUCATION, EXPLORING_LANGUAGES, PROFILE, SKILLS, SOCIALS } from '../lib/data';
 
 const structuredData = {
   "@context": "https://schema.org",
@@ -21,7 +21,7 @@ const structuredData = {
     addressRegion: PROFILE.address.region,
     addressCountry: PROFILE.address.countryCode,
   },
-  knowsAbout: [...new Set(Object.values(SKILLS).flat())],
+  knowsAbout: [...new Set([...Object.values(SKILLS).flat(), ...EXPLORING_LANGUAGES])],
   alumniOf: {
     "@type": "EducationalOrganization",
     name: EDUCATION.institution,

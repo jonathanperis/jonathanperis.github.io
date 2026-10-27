@@ -22,9 +22,10 @@ const NORTH_EAST = unit([1, -1]);
 
 // Hand-drawn line routes in the 1440 × 692 viewBox. The Career line is the reference; .NET, Azure and
 // Architecture run parallel to it (below, above, and outermost above) once they join.
-const career: Point[] = [[96, 560], [300, 560], [420, 440], [700, 440], [820, 320], [1230, 320]];
-const dotnet = offsetPolyline(career, LINE_SPACING);
-dotnet[0] = [232, dotnet[0][1]]; // .NET starts at Conecta (2013)
+// The opening spur covers 2008–2013 and stays below the title block.
+const career: Point[] = [[96, 352], [96, 560], [300, 560], [420, 440], [700, 440], [820, 320], [1230, 320]];
+// .NET starts at Conecta (2013), on the eastbound run, and does not follow the earlier spur.
+const dotnet = offsetPolyline([[232, 560], [300, 560], [420, 440], [700, 440], [820, 320], [1230, 320]], LINE_SPACING);
 const azure: Point[] = [[600, 96], ...offsetPolyline([[600, 440], [700, 440], [820, 320], [1230, 320]], -LINE_SPACING)];
 // Architecture drops in from the top and joins the bundle at XP Inc., the first role built on its patterns.
 const architecture: Point[] = [[830, 84], [830, 320 - 2 * LINE_SPACING], [1230, 320 - 2 * LINE_SPACING]];
@@ -148,7 +149,7 @@ const originYear = stationPeriod(STATIONS[0])[0].slice(-4);
 
       <g aria-hidden="true">
         {[
-          { line: 1 as LineId, at: [70, 560] },
+          { line: 1 as LineId, at: [70, 352] },
           { line: 3 as LineId, at: [600, 80] },
           { line: 4 as LineId, at: [830, 68] },
           ...(repos.length ? [{ line: 5 as LineId, at: [1340, sideEnd + 16] }] : []),

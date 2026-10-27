@@ -17,10 +17,10 @@ The `/resume/` route renders a **print-optimized resume** from shared portfolio 
 
 | Section | Data Source |
 |---|---|
-| Header | `PROFILE.name`; red title line `PROFILE.title` + " · .NET & Azure" (presentation copy); mono contact row with `PROFILE.email`, `PROFILE.location`, `PROFILE.github`, `PROFILE.linkedin`; short red accent bar |
+| Header | `PROFILE.name`; red title line `PROFILE.headline` (the LinkedIn headline); mono contact row with `PROFILE.email`, `PROFILE.location`, `PROFILE.github`, `PROFILE.linkedin`; short red accent bar |
 | Summary | `PROFILE.summary`, with the `${YEARS_OF_EXPERIENCE} years of experience` phrase set in bold when present |
-| Technical Skills | Label/value table from `SKILLS`; labels come from `SKILL_LABELS` in the page (Programming, Backend, Architecture, Cloud & DevOps, Databases, Frontend) |
-| Experience | `EXPERIENCES[]`: "Title · Company" (company in red), mono period on the right, mono location, one red-dot bullet per sentence of `description` (split on ". " before a capital, so ".NET" never splits), and a mono "Stack:" line from `tags` |
+| Technical Skills | Label/value table from `SKILLS`, plus an Exploring row from `EXPLORING_LANGUAGES` (Rust, Go, Python). Labels come from `SKILL_LABELS` in the page (Programming, Backend, Architecture, Cloud & DevOps, Databases, Frontend) |
+| Experience | `EXPERIENCES[]`: "Title · Company" (company in red), mono period on the right, mono location and `employment`, one red-dot bullet per sentence of `description` (split on ". " before a capital, so ".NET" never splits), and a mono "Stack:" line from `tags` |
 | Education | `EDUCATION`: "Degree — Field", mono period, mono institution, description |
 
 ## Print Styling

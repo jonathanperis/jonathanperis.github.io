@@ -1,6 +1,6 @@
 ---
 import RootLayout from '../layouts/RootLayout.astro';
-import { PROFILE, SKILLS, SKILL_GROUPS, EDUCATION, EXPERIENCES, YEARS_OF_EXPERIENCE } from '../lib/data';
+import { PROFILE, SKILLS, SKILL_GROUPS, EDUCATION, EXPERIENCES, EXPLORING_LANGUAGES, YEARS_OF_EXPERIENCE } from '../lib/data';
 
 const contactLinks = [
   { label: PROFILE.email, href: `mailto:${PROFILE.email}` },
@@ -22,6 +22,11 @@ const skillRows = (Object.keys(SKILL_LABELS) as Array<keyof typeof SKILL_LABELS>
   label: SKILL_LABELS[key],
   values: SKILLS[key].join(', '),
 }));
+const programmingRow = skillRows.findIndex((row) => row.label === 'Programming');
+skillRows.splice(programmingRow + 1, 0, {
+  label: 'Exploring',
+  values: EXPLORING_LANGUAGES.join(', '),
+});
 
 // The years-of-experience phrase is emphasized in the summary, wherever data.ts puts it.
 const yearsPhrase = `${YEARS_OF_EXPERIENCE} years of experience`;
@@ -49,7 +54,7 @@ const bullets = (text: string) => text.split(/(?<=\.)\s+(?=[A-Z])/);
   <main class="sheet">
     <header>
       <h1>{PROFILE.name}</h1>
-      <p class="role">{PROFILE.title}<span class="sep">·</span>.NET &amp; Azure</p>
+      <p class="role">{PROFILE.headline}</p>
       <p class="contact">
         {contactLinks.map(({ label, href }) => (href ? <a href={href}>{label}</a> : <span>{label}</span>))}
       </p>
@@ -78,7 +83,7 @@ const bullets = (text: string) => text.split(/(?<=\.)\s+(?=[A-Z])/);
             <h3>{exp.title}<span class="org"><span class="sep">·</span>{exp.company}</span></h3>
             <span class="date">{exp.period}</span>
           </div>
-          <p class="meta">{exp.location}</p>
+          <p class="meta">{exp.location} · {exp.employment}</p>
           <ul>
             {bullets(exp.description).map((sentence) => <li>{sentence}</li>)}
           </ul>
@@ -165,8 +170,9 @@ const bullets = (text: string) => text.split(/(?<=\.)\s+(?=[A-Z])/);
     .role {
       margin-top: 4px;
       color: var(--color-line-1);
-      font-size: 14pt;
+      font-size: 12pt;
       font-weight: 600;
+      line-height: 1.3;
     }
     /* Overpass sets "·" off-centre; the mono face centres it. */
     .sep {

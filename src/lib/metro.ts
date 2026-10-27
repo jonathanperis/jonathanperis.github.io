@@ -20,7 +20,7 @@ export type Line = {
 
 /** Lines 1–5 are drawn on the map; 6–8 only appear in the Line Guide. Colors live in globals.css (--line-N). */
 export const LINES: Record<LineId, Line> = {
-  1: { id: 1, name: "Career", kind: "every tech role since 2011" },
+  1: { id: 1, name: "Career", kind: "every role since 2008" },
   2: { id: 2, name: ".NET", kind: "backend", skills: "backend" },
   3: { id: 3, name: "Azure", kind: "cloud / delivery", skills: "cloud" },
   4: { id: 4, name: "Architecture", kind: "architecture", skills: "architecture" },
@@ -35,7 +35,7 @@ export const MAP_LINES: LineId[] = [1, 2, 3, 4, 5];
 /** Lines that carry a skill group, in Line Guide order. */
 export const GUIDE_LINES = ([2, 3, 4, 6, 7, 8] as const).map((id) => LINES[id]);
 
-type Label = { x: number; y: number; anchor?: "start" | "end" };
+type Label = { x: number; y: number; anchor?: "start" | "end" | "middle" };
 
 export type Station = {
   id: string;
@@ -68,39 +68,57 @@ function role(company: string, periodStart: string): Experience {
 /** Stations from origin to terminus. Coordinates are in the map's 1440-wide viewBox. */
 export const STATIONS: Station[] = [
   {
+    id: "acessa-escola",
+    short: "Acessa Escola",
+    name: "Governo do Estado de São Paulo",
+    roles: [role("Governo do Estado de São Paulo", "Jun 2008")],
+    lines: [1],
+    caption: "2008 — 2010",
+    map: { at: [96, 400], dir: "E", span: [0, 0], label: { x: 118, y: 394 } },
+  },
+  {
+    id: "prepara",
+    short: "Prepara",
+    name: "Prepara Cursos Profissionalizantes",
+    roles: [role("Prepara Cursos Profissionalizantes", "Jan 2011")],
+    lines: [1],
+    caption: "2011 · E-learning",
+    map: { at: [96, 458], dir: "E", span: [0, 0], label: { x: 118, y: 452 } },
+  },
+  {
     id: "sabesp",
     short: "Sabesp",
     name: "Sabesp",
     roles: [role("Sabesp", "Aug 2011")],
     lines: [1],
-    caption: "2011 · Tech Support",
-    map: { at: [96, 560], dir: "E", span: [0, 0], label: { x: 80, y: 524 } },
+    caption: "2011 · Internship",
+    map: { at: [168, 560], dir: "E", span: [0, 0], label: { x: 168, y: 508, anchor: "middle" } },
   },
   {
     id: "conecta",
-    short: "Conecta Serviços",
-    name: "Conecta Serviços",
-    roles: [role("Conecta Serviços", "May 2013")],
+    short: "Conecta",
+    name: "Conecta Comercio e Serviços Ltda.",
+    roles: [role("Conecta Comercio e Serviços Ltda.", "May 2013")],
     lines: [1, 2],
     caption: "2013 · .NET line begins",
     map: { at: [232, 560], dir: "E", span: [0, 1], label: { x: 216, y: 608 } },
   },
   {
-    id: "sonda",
-    short: "Sonda IT",
-    name: "Sonda IT / Leroy Merlin",
-    roles: [role("Sonda IT / Leroy Merlin", "Oct 2015")],
+    id: "leroy-merlin",
+    short: "Leroy Merlin",
+    name: "Leroy Merlin",
+    roles: [role("Leroy Merlin", "Oct 2015")],
     lines: [1, 2],
-    caption: "2015 · Leroy Merlin",
+    caption: "2015 · via SONDA",
     map: { at: [360, 500], dir: "NE", span: [0, 1], label: { x: 338, y: 476, anchor: "end" } },
   },
   {
-    id: "amil",
-    short: "5A Attiva / Amil",
-    name: "5A Attiva / Amil",
-    roles: [role("5A Attiva / Amil (UnitedHealth Group)", "May 2017")],
+    id: "unitedhealth",
+    short: "UnitedHealth Group",
+    name: "UnitedHealth Group",
+    roles: [role("UnitedHealth Group", "May 2017")],
     lines: [1, 2],
-    caption: "2017 · UnitedHealth",
+    caption: "2017 · 5A Attiva / Amil",
     map: { at: [480, 440], dir: "E", span: [0, 1], label: { x: 500, y: 404, anchor: "end" } },
   },
   {

@@ -52,6 +52,7 @@ const rows = newestFirst.map((station, i) => {
                 {role.title}
                 {station.roles.length > 1 && <span><b class="dsep">·</b>{role.period}</span>}
                 {role.location.split(" · ").map((part) => <span><b class="dsep">·</b>{part}</span>)}
+                {role.employment && <span><b class="dsep">·</b>{role.employment}</span>}
               </p>
               <p class="desc">{role.description}</p>
             </>

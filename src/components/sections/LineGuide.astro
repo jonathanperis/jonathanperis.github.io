@@ -1,13 +1,17 @@
 ---
 import RouteBullet from "../RouteBullet.astro";
 import SectionHead from "../SectionHead.astro";
-import { SKILLS } from "../../lib/data";
+import { EXPLORING_LANGUAGES, SKILLS } from "../../lib/data";
 import { GUIDE_LINES, interchangesFor } from "../../lib/metro";
+
+const exploring = new Set<string>(EXPLORING_LANGUAGES);
 
 const guides = GUIDE_LINES.map((line) => ({
   line,
   interchanges: interchangesFor(line),
-  stops: line.skills ? SKILLS[line.skills] : [],
+  stops: line.skills
+    ? [...SKILLS[line.skills], ...(line.skills === "languages" ? EXPLORING_LANGUAGES : [])]
+    : [],
 }));
 ---
 
@@ -25,6 +29,7 @@ const guides = GUIDE_LINES.map((line) => ({
                 <span class="t">
                   {skill}
                   {change && <span class="xn">change for {change.join(", ")}</span>}
+                  {!change && exploring.has(skill) && <span class="xn">exploring</span>}
                 </span>
               </li>
             );

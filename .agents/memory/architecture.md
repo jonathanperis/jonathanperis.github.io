@@ -37,12 +37,12 @@ Maintained alongside the [architecture guide](../../wiki/architecture.md) and [d
 - `PROFILE` — name, title, email, structured `address` (locality, region, country, countryCode), derived `location`, site, and GitHub identity.
 - `AVAILABILITY` — hiring/engagement status rendered in the status strip, Customer Information, and terminal.
 - `ENGINEERING_PRINCIPLES` — rendered as Service Notes advisories.
-- `SKILLS` — categorized technology list feeding the Line Guide, map skill ticks, resume, and JSON-LD; `SKILL_GROUPS` — labels for the terminal `stack` command.
+- `SKILLS` — categorized technology list feeding the Line Guide, map skill ticks, resume, and JSON-LD; `EXPLORING_LANGUAGES` (Rust, Go, Python) is separate from core languages; `SKILL_GROUPS` — labels for the terminal `stack` command.
 - `EXPERIENCES` — professional roles and highlights; `CURRENT_ROLE` — the entry whose period ends with `Present`.
 - `EDUCATION` — BTech from UNIESP.
 - `SOCIALS` — platform links with display `handle`s (Customer Information) and icons.
 
-`src/lib/metro.ts` layers the map on top: `LINES` 1–8 (1 Career, 2 .NET, 3 Azure, 4 Architecture, 5 Side Projects; 6 Languages, 7 Data, 8 Frontend in the Line Guide only), `MAP_LINES`, `GUIDE_LINES`, and `STATIONS` with hand-placed coordinates. `role(company, periodStart)` looks roles up in `EXPERIENCES` and throws at build time when one is missing; the two 2018–2021 T-Systems roles share a station. `src/lib/metro-geometry.ts` holds the build-time path math.
+`src/lib/metro.ts` layers the map on top: `LINES` 1–8 (1 Career, 2 .NET, 3 Azure, 4 Architecture, 5 Side Projects; 6 Languages, 7 Data, 8 Frontend in the Line Guide only), `MAP_LINES`, `GUIDE_LINES`, and `STATIONS` with hand-placed coordinates. `role(company, periodStart)` looks roles up in `EXPERIENCES` and throws at build time when one is missing; the two 2018–2021 T-Systems roles share a station. The Career line runs from 2008. `src/lib/metro-geometry.ts` holds the build-time path math.
 
 The same data feeds the homepage sections, resume route, terminal command table, metadata descriptions, and `JsonLd.astro` (employer from `CURRENT_ROLE`, address from `PROFILE.address`). The SiteSign subtitle, map lede, station captions, advisory lines, Customer Information copy, and some terminal strings are presentation literals and need review when facts change. The public CV PDF is a checked-in print of `/resume/`; regenerate it when resume data or layout changes.
 
