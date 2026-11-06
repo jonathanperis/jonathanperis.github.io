@@ -29,7 +29,7 @@ Configured in `src/layouts/RootLayout.astro`:
 | Open Graph image | `/profile-image-sharing.jpeg` resolved against the configured site |
 | Open Graph image size / alt | `1024x1024` (the real file size); `og:image:alt` is `Jonathan Peris` |
 | Twitter card | `summary` (square image) with `twitter:image` set to the same share image |
-| Twitter creator | `@jperis_silva` |
+| Twitter creator | `@jonathanperis` |
 | Theme color | `#161616` (the sign black) |
 | Alternate language | `hreflang="en"` |
 | Fonts | Self-hosted via the Astro Fonts API; `<Font>` preloads the latin subset of Overpass and Overpass Mono |
