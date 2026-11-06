@@ -77,4 +77,4 @@ Publishing is handled by GitHub Actions; do not commit `out/`.
 
 ## Domain
 
-The site is served at `https://www.jonathanperis.tech` via GitHub Pages with automatic HTTPS.
+The site is served at `https://jonathanperis.dev` via GitHub Pages with automatic HTTPS.
