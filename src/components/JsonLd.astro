@@ -1,35 +1,108 @@
 ---
-import { CURRENT_ROLE, EDUCATION, EXPLORING_LANGUAGES, PROFILE, SKILLS, SOCIALS } from '../lib/data';
+import { CURRENT_ROLE, EDUCATION, PROFILE, SKILLS, SOCIALS, SPOKEN_LANGUAGES } from '../lib/data';
 
-const structuredData = {
-  "@context": "https://schema.org",
-  "@type": "Person",
+interface Props {
+  page: 'home' | 'resume';
+  /** Canonical URL of the page being rendered. */
+  url: string;
+  title: string;
+  description: string;
+  /** Absolute URL of the share image. */
+  image: string;
+}
+
+const { page, url, title, description, image } = Astro.props;
+
+const origin = new URL('/', Astro.site).href;
+const personId = `${origin}#person`;
+const websiteId = `${origin}#website`;
+const pageId = `${url}#webpage`;
+const [givenName, ...familyNames] = PROFILE.name.split(' ');
+
+const person = {
+  '@type': 'Person',
+  '@id': personId,
   name: PROFILE.name,
+  givenName,
+  familyName: familyNames.join(' '),
+  alternateName: PROFILE.github.split('/').pop(),
   jobTitle: PROFILE.title,
-  ...(CURRENT_ROLE && {
-    worksFor: {
-      "@type": "Organization",
-      name: CURRENT_ROLE.company,
-    },
-  }),
-  url: new URL("/", Astro.site).href,
-  sameAs: SOCIALS.map((s) => s.href),
+  description: PROFILE.headline,
+  image: { '@type': 'ImageObject', url: image, width: 1024, height: 1024 },
+  url: origin,
   email: PROFILE.email,
+  sameAs: SOCIALS.map((s) => s.href),
   address: {
-    "@type": "PostalAddress",
+    '@type': 'PostalAddress',
     addressLocality: PROFILE.address.locality,
     addressRegion: PROFILE.address.region,
     addressCountry: PROFILE.address.countryCode,
   },
-  knowsAbout: [...new Set([...Object.values(SKILLS).flat(), ...EXPLORING_LANGUAGES])],
+  ...(CURRENT_ROLE && {
+    worksFor: {
+      '@type': 'Organization',
+      name: CURRENT_ROLE.company,
+    },
+  }),
   alumniOf: {
-    "@type": "EducationalOrganization",
+    '@type': 'EducationalOrganization',
     name: EDUCATION.institution,
   },
+  // Core skills only: Rust, Go and Python are shown on the site as languages being explored.
+  knowsAbout: [...new Set(Object.values(SKILLS).flat())],
+  knowsLanguage: SPOKEN_LANGUAGES,
+};
+
+const website = {
+  '@type': 'WebSite',
+  '@id': websiteId,
+  url: origin,
+  name: PROFILE.name,
+  inLanguage: 'en',
+  publisher: { '@id': personId },
+};
+
+const webpage =
+  page === 'home'
+    ? {
+        '@type': 'ProfilePage',
+        '@id': pageId,
+        url,
+        name: title,
+        description,
+        inLanguage: 'en',
+        isPartOf: { '@id': websiteId },
+        mainEntity: { '@id': personId },
+        primaryImageOfPage: { '@type': 'ImageObject', url: image },
+      }
+    : {
+        '@type': 'WebPage',
+        '@id': pageId,
+        url,
+        name: title,
+        description,
+        inLanguage: 'en',
+        isPartOf: { '@id': websiteId },
+        about: { '@id': personId },
+        breadcrumb: { '@id': `${url}#breadcrumb` },
+      };
+
+const breadcrumb = {
+  '@type': 'BreadcrumbList',
+  '@id': `${url}#breadcrumb`,
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: origin },
+    { '@type': 'ListItem', position: 2, name: 'Resume', item: url },
+  ],
+};
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [website, webpage, person, ...(page === 'resume' ? [breadcrumb] : [])],
 };
 
 // Escape "<" so no data value can close the script element early.
-const json = JSON.stringify(structuredData).replace(/</g, "\\u003c");
+const json = JSON.stringify(structuredData).replace(/</g, '\\u003c');
 ---
 
 <script is:inline type="application/ld+json" set:html={json} />

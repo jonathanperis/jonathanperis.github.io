@@ -54,6 +54,8 @@ GITHUB_TOKEN=$(gh auth token) PUBLIC_GA_ID=G-35CN95481D bun run build
 Astro pages/layouts
 ├── src/pages/index.astro        # Build-time fetchRepos(), composes sign, status strip, sections, footer, terminal
 ├── src/pages/resume.astro       # Print-optimized resume route (light paper/ink theme)
+├── src/pages/404.astro          # noindex "Page not found" page (served as 404.html by GitHub Pages)
+├── src/pages/llms.txt.ts        # Plain-text site summary for LLM crawlers, generated from src/lib/data.ts
 └── src/layouts/RootLayout.astro # HTML shell, metadata, self-hosted fonts, JSON-LD, analytics
 
 Sections (src/components/sections/), in page order

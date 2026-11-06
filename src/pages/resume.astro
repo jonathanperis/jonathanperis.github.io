@@ -1,6 +1,6 @@
 ---
 import RootLayout from '../layouts/RootLayout.astro';
-import { PROFILE, SKILLS, SKILL_GROUPS, EDUCATION, EXPERIENCES, EXPLORING_LANGUAGES, YEARS_OF_EXPERIENCE } from '../lib/data';
+import { CURRENT_ROLE, PROFILE, SKILLS, SKILL_GROUPS, EDUCATION, EXPERIENCES, EXPLORING_LANGUAGES, YEARS_OF_EXPERIENCE } from '../lib/data';
 
 const contactLinks = [
   { label: PROFILE.email, href: `mailto:${PROFILE.email}` },
@@ -39,9 +39,10 @@ const bullets = (text: string) => text.split(/(?<=\.)\s+(?=[A-Z])/);
 ---
 
 <RootLayout
-  title="Resume — Jonathan Peris"
-  description={`Professional resume of Jonathan Peris — Software Engineer with ${YEARS_OF_EXPERIENCE} years of experience in .NET and Fintech.`}
+  title={`Resume — ${PROFILE.name}, ${PROFILE.title}`}
+  description={`Resume of ${PROFILE.name}, ${PROFILE.title}${CURRENT_ROLE ? ` at ${CURRENT_ROLE.company}` : ''}. ${YEARS_OF_EXPERIENCE} years in .NET, C# and Azure across fintech, automotive and edtech. PDF available.`}
   canonical="/resume/"
+  page="resume"
 >
   <!-- Screen-only toolbar -->
   <div class="toolbar">
