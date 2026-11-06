@@ -26,9 +26,11 @@ const {
 } = Astro.props;
 
 const canonicalUrl = new URL(canonical, Astro.site).href;
-// Square share image, so it is advertised with its real size and a square-friendly Twitter card.
-const ogImage = new URL('/profile-image-sharing.jpeg', Astro.site).href;
-const ogImageAlt = `Illustrated portrait of ${PROFILE.name}`;
+// Landscape share card (1200x630, rendered in the site's transit-sign style) for link previews. The square
+// illustrated portrait stays available as the Person image in the structured data.
+const ogImage = new URL('/share-card.jpg', Astro.site).href;
+const portraitImage = new URL('/profile-image-sharing.jpeg', Astro.site).href;
+const ogImageAlt = `${PROFILE.name}, ${PROFILE.title}: .NET, C# and Azure. Backend architecture, CQRS, DDD, microservices and fintech. ${PROFILE.website}`;
 
 // X handle (with the leading @) comes from the shared socials list, so a rename is a one-line change in data.ts.
 const xHandle = SOCIALS.find((social) => social.label === 'X')?.handle;
@@ -62,8 +64,8 @@ const keywords = [
     <meta property="og:site_name" content={PROFILE.name} />
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:type" content="image/jpeg" />
-    <meta property="og:image:width" content="1024" />
-    <meta property="og:image:height" content="1024" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content={ogImageAlt} />
     <meta property="og:locale" content="en_US" />
     <meta property="og:type" content="profile" />
@@ -72,7 +74,7 @@ const keywords = [
     <meta property="profile:username" content={username} />
 
     <!-- Twitter -->
-    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
@@ -100,7 +102,7 @@ const keywords = [
     {SOCIALS.map((social) => <link rel="me" href={social.href} />)}
 
     {page !== 'none' && (
-      <JsonLd page={page} url={canonicalUrl} title={title} description={description} image={ogImage} />
+      <JsonLd page={page} url={canonicalUrl} title={title} description={description} image={ogImage} portrait={portraitImage} />
     )}
   </head>
   <body>

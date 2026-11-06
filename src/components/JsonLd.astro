@@ -7,11 +7,13 @@ interface Props {
   url: string;
   title: string;
   description: string;
-  /** Absolute URL of the share image. */
+  /** Absolute URL of the landscape share card (the page's primary image). */
   image: string;
+  /** Absolute URL of the square portrait (the Person image). */
+  portrait: string;
 }
 
-const { page, url, title, description, image } = Astro.props;
+const { page, url, title, description, image, portrait } = Astro.props;
 
 const origin = new URL('/', Astro.site).href;
 const personId = `${origin}#person`;
@@ -28,7 +30,7 @@ const person = {
   alternateName: PROFILE.github.split('/').pop(),
   jobTitle: PROFILE.title,
   description: PROFILE.headline,
-  image: { '@type': 'ImageObject', url: image, width: 1024, height: 1024 },
+  image: { '@type': 'ImageObject', url: portrait, width: 1024, height: 1024 },
   url: origin,
   email: PROFILE.email,
   sameAs: SOCIALS.map((s) => s.href),
@@ -73,7 +75,7 @@ const webpage =
         inLanguage: 'en',
         isPartOf: { '@id': websiteId },
         mainEntity: { '@id': personId },
-        primaryImageOfPage: { '@type': 'ImageObject', url: image },
+        primaryImageOfPage: { '@type': 'ImageObject', url: image, width: 1200, height: 630 },
       }
     : {
         '@type': 'WebPage',
