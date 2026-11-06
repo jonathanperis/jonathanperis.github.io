@@ -39,6 +39,9 @@ export const AVAILABILITY = {
   full: "Open to remote roles and select backend architecture consulting — especially in FinTech and enterprise environments.",
 };
 
+/** Spoken languages as BCP 47 codes (Portuguese native, English for daily work with US teams). */
+export const SPOKEN_LANGUAGES = ["pt-BR", "en"];
+
 export const ENGINEERING_PRINCIPLES = [
   {
     title: "Reliability before theater",

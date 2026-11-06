@@ -4,16 +4,21 @@
 
 ## Structured Data (JSON-LD)
 
-[`src/components/JsonLd.astro`](../src/components/JsonLd.astro) generates Schema.org `Person` markup from shared data:
+[`src/components/JsonLd.astro`](../src/components/JsonLd.astro) emits one Schema.org `@graph` per page, built from shared data and linked by `@id`:
 
-- Name and job title from `PROFILE`; `worksFor` from `CURRENT_ROLE` (the `EXPERIENCES` entry whose period ends with `Present`), omitted if none exists
-- `url` from the configured `Astro.site`
-- Social links (`SOCIALS`) including GitHub, LinkedIn, X, Instagram, Bluesky, and Workana
-- Skills (`knowsAbout`) from the six `SKILLS` categories, de-duplicated
-- Education (`alumniOf`) from `EDUCATION`
-- Email from `PROFILE`; `PostalAddress` from `PROFILE.address` (locality, region, country code)
+- `WebSite` (`/#website`): name, `inLanguage`, and the person as publisher
+- `ProfilePage` on `/` (main entity: the person) or `WebPage` plus `BreadcrumbList` (Home > Resume) on `/resume/`
+- `Person` (`/#person`):
+  - name, `givenName`, `familyName`, handle as `alternateName`, `jobTitle` from `PROFILE`, and the LinkedIn headline as `description`
+  - the share image as `image`, `url` from the configured `Astro.site`, and email from `PROFILE`
+  - social links (`SOCIALS`) as `sameAs`
+  - `PostalAddress` from `PROFILE.address`
+  - `worksFor` from `CURRENT_ROLE` (the `EXPERIENCES` entry whose period ends with `Present`), omitted if none exists
+  - `alumniOf` from `EDUCATION`
+  - `knowsAbout` from the six `SKILLS` categories, de-duplicated. Rust, Go and Python are deliberately left out: the site presents them as languages being explored.
+  - `knowsLanguage` from `SPOKEN_LANGUAGES` (BCP 47 codes)
 
-The serialized JSON escapes `<` so no data value can close the script element early. The same Person markup is emitted by the shared layout on both pages.
+The serialized JSON escapes `<` so no data value can close the script element early. The 404 page passes `page="none"` and emits no JSON-LD.
 
 ## Meta Tags
 
@@ -21,20 +26,28 @@ Configured in `src/layouts/RootLayout.astro`:
 
 | Tag | Current value / source |
 |---|---|
-| Canonical, Open Graph URL, English alternate URL | `new URL(canonical, Astro.site)` using the configured site and page path |
+| Canonical, Open Graph URL, hreflang alternates | `new URL(canonical, Astro.site)`; `hreflang="en"` and `x-default` both point at the current page. Skipped when `noindex`. |
 | Default canonical path | `/` |
-| Default title | `Jonathan Peris — Software Engineer` |
-| Default description | Software Engineer specializing in .NET and Fintech, `YEARS_OF_EXPERIENCE` years, enterprise/cloud-native systems |
-| Keywords | Jonathan Peris, Software Engineer, .NET, C#, Fintech, Azure, Microservices, CQRS, DDD, Clean Architecture, Backend Developer, Cloud-Native |
-| Open Graph image | `/profile-image-sharing.jpeg` resolved against the configured site |
-| Open Graph image size / alt | `1024x1024` (the real file size); `og:image:alt` is `Jonathan Peris` |
-| Twitter card | `summary` (square image) with `twitter:image` set to the same share image |
-| Twitter creator | `@jonathanperis` |
+| Default title | `Jonathan Peris — Software Engineer \| .NET · C# · Azure`, built from `PROFILE` |
+| Default description | Built from `PROFILE.title`, `CURRENT_ROLE.company`, `YEARS_OF_EXPERIENCE` and `AVAILABILITY.short`, kept near 155 characters |
+| Resume title / description | `Resume — Jonathan Peris, Software Engineer`; description names the current employer and the fintech, automotive and edtech scope (set in `src/pages/resume.astro`) |
+| Keywords | Name, role, .NET, C#, ASP.NET Core, Azure, Azure DevOps, Fintech, Backend Architecture, Microservices, CQRS, DDD, Clean Architecture, Blazor, Remote |
+| Author / robots | `author` is the profile name; `robots` is `index, follow, max-image-preview:large`, or `noindex, follow` for the 404 page |
+| Open Graph type | `profile`, with `profile:first_name`, `profile:last_name` and `profile:username` |
+| Open Graph image | `/profile-image-sharing.jpeg` resolved against the configured site, `image/jpeg`, `1024x1024` (the real file size) |
+| Image alt | `Illustrated portrait of Jonathan Peris` on both `og:image:alt` and `twitter:image:alt` (the share image is an illustration) |
+| Twitter card | `summary` (square image); `twitter:site` and `twitter:creator` use the X handle from `SOCIALS` |
+| Identity links | One `<link rel="me">` per entry in `SOCIALS` |
 | Theme color | `#161616` (the sign black) |
-| Alternate language | `hreflang="en"` |
+| Sitemap link | `<link rel="sitemap" href="/sitemap-index.xml">` |
 | Fonts | Self-hosted via the Astro Fonts API; `<Font>` preloads the latin subset of Overpass and Overpass Mono |
 
-Pages can override `title`, `description`, and `canonical`; the share image is fixed in the layout. The `/resume/` route overrides title, description, and canonical path in `src/pages/resume.astro`. The configured trailing-slash policy, resume navigation, page-specific metadata, and generated sitemap all use `/resume/`. The English alternate link refers to the current page; it is not evidence of a translated route.
+Pages can override `title`, `description` and `canonical`, and set `page` (`home`, `resume` or `none`) and `noindex`; the share image is fixed in the layout. The `/resume/` route overrides title, description, canonical path and page kind in `src/pages/resume.astro`. The configured trailing-slash policy, resume navigation, page-specific metadata, and generated sitemap all use `/resume/`. The alternate links refer to the current page; they are not evidence of a translated route.
+
+## 404 page and llms.txt
+
+- [`src/pages/404.astro`](../src/pages/404.astro) builds `404.html`, which GitHub Pages serves for unknown paths. It is `noindex`, has no canonical or alternates, and links to the two real routes. `@astrojs/sitemap` leaves it out of the sitemap.
+- [`src/pages/llms.txt.ts`](../src/pages/llms.txt.ts) generates `/llms.txt`, a plain-text summary (headline, summary, current role, pages, experience, skills, profiles, contact) for language-model crawlers. It reads the same `src/lib/data.ts` exports as the pages and the JSON-LD, so there is nothing to keep in sync by hand.
 
 ## Sitemap
 
@@ -81,12 +94,11 @@ The former `hero_resume` and `hero_linkedin` labels were retired with the previo
 
 `public/manifest.json` includes:
 
-- App name: `Jonathan Peris — Software Engineer`
-- Short name: `JP`
-- `start_url`: `/`
-- `display`: `standalone`
-- Theme color: `#161616`
-- Background color: `#fbfaf6` (the paper color)
-- Icons: `favicon.svg` (`any`), `icon-192.png`, `icon-512.png`, and `apple-touch-icon.png` (180x180), all a red "JP" roundel on black
+- `id` and `scope`: `/`; `lang`: `en`; `dir`: `ltr`
+- App name: `Jonathan Peris — Software Engineer`; short name: `J. Peris`
+- `description`: portfolio and resume of a Software Engineer building .NET, C# and Azure backends for fintech
+- `start_url`: `/`; `display`: `standalone`
+- Theme color: `#161616`; background color: `#fbfaf6` (the paper color)
+- Icons: `favicon.svg` (`any`), `icon-192.png` and `icon-512.png` (`purpose: any`), and `apple-touch-icon.png` (180x180), all a red "JP" roundel on black. There are no maskable icons yet.
 
 The layout links this manifest and the icons. No service worker or offline implementation is present. Browser installability and offline operation have not been validated by the manifest's presence alone.

@@ -1,0 +1,19 @@
+---
+import RootLayout from '../layouts/RootLayout.astro';
+import { PROFILE } from '../lib/data';
+---
+
+<RootLayout
+  title={`Page not found — ${PROFILE.name}`}
+  description={`This page does not exist. Go back to the portfolio of ${PROFILE.name}.`}
+  page="none"
+  noindex
+>
+  <main class="mx-auto max-w-xl px-6 py-24">
+    <h1 class="text-3xl font-bold">Page not found</h1>
+    <p class="mt-4">
+      There is no page at this address. The <a href="/" class="underline">portfolio</a> and the
+      <a href="/resume/" class="underline">resume</a> are the two routes on this site.
+    </p>
+  </main>
+</RootLayout>

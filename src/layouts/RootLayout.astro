@@ -3,28 +3,41 @@ import { Font } from 'astro:assets';
 import '../styles/globals.css';
 import Analytics from '../components/Analytics.astro';
 import JsonLd from '../components/JsonLd.astro';
-import { YEARS_OF_EXPERIENCE } from '../lib/data';
+import { AVAILABILITY, CURRENT_ROLE, PROFILE, SOCIALS, YEARS_OF_EXPERIENCE } from '../lib/data';
 
 interface Props {
   title?: string;
   description?: string;
   canonical?: string;
+  /** Structured-data page kind. "none" emits no JSON-LD (used by the 404 page). */
+  page?: 'home' | 'resume' | 'none';
+  /** Keep the page out of search results; canonical and alternate links are skipped too. */
+  noindex?: boolean;
 }
 
+const company = CURRENT_ROLE?.company;
+
 const {
-  title = 'Jonathan Peris — Software Engineer',
-  description = `Software Engineer specializing in .NET, C#, and Azure for fintech. ${YEARS_OF_EXPERIENCE} years building backend systems with CQRS, DDD, and microservices.`,
+  title = `${PROFILE.name} — ${PROFILE.title} | .NET · C# · Azure`,
+  description = `${PROFILE.title}${company ? ` at ${company}` : ''}: .NET, C# and Azure backends for fintech with CQRS, DDD and microservices. ${YEARS_OF_EXPERIENCE} years. ${AVAILABILITY.short}.`,
   canonical = '/',
+  page = 'home',
+  noindex = false,
 } = Astro.props;
 
 const canonicalUrl = new URL(canonical, Astro.site).href;
 // Square share image, so it is advertised with its real size and a square-friendly Twitter card.
 const ogImage = new URL('/profile-image-sharing.jpeg', Astro.site).href;
+const ogImageAlt = `Illustrated portrait of ${PROFILE.name}`;
+
+// X handle (with the leading @) comes from the shared socials list, so a rename is a one-line change in data.ts.
+const xHandle = SOCIALS.find((social) => social.label === 'X')?.handle;
+const [firstName, ...lastNames] = PROFILE.name.split(' ');
+const username = PROFILE.github.split('/').pop();
 
 const keywords = [
-  'Jonathan Peris', 'Software Engineer', '.NET', 'C#', 'Fintech',
-  'Azure', 'Microservices', 'CQRS', 'DDD', 'Clean Architecture',
-  'Backend Developer', 'Cloud-Native',
+  PROFILE.name, PROFILE.title, '.NET', 'C#', 'ASP.NET Core', 'Azure', 'Azure DevOps', 'Fintech',
+  'Backend Architecture', 'Microservices', 'CQRS', 'DDD', 'Clean Architecture', 'Blazor', 'Remote',
 ].join(', ');
 ---
 
@@ -38,39 +51,57 @@ const keywords = [
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="keywords" content={keywords} />
-    <link rel="canonical" href={canonicalUrl} />
+    <meta name="author" content={PROFILE.name} />
+    <meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large'} />
+    {!noindex && <link rel="canonical" href={canonicalUrl} />}
 
     <!-- Open Graph -->
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalUrl} />
-    <meta property="og:site_name" content="Jonathan Peris" />
+    <meta property="og:site_name" content={PROFILE.name} />
     <meta property="og:image" content={ogImage} />
+    <meta property="og:image:type" content="image/jpeg" />
     <meta property="og:image:width" content="1024" />
     <meta property="og:image:height" content="1024" />
-    <meta property="og:image:alt" content="Jonathan Peris" />
+    <meta property="og:image:alt" content={ogImageAlt} />
     <meta property="og:locale" content="en_US" />
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content="profile" />
+    <meta property="profile:first_name" content={firstName} />
+    <meta property="profile:last_name" content={lastNames.join(' ')} />
+    <meta property="profile:username" content={username} />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
-    <meta name="twitter:creator" content="@jonathanperis" />
+    <meta name="twitter:image:alt" content={ogImageAlt} />
+    {xHandle && <meta name="twitter:site" content={xHandle} />}
+    {xHandle && <meta name="twitter:creator" content={xHandle} />}
 
-    <!-- Icons -->
+    <!-- Icons and app metadata -->
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.json" />
+    <meta name="application-name" content={PROFILE.name} />
+    <meta name="apple-mobile-web-app-title" content={PROFILE.name} />
 
     <!-- Self-hosted fonts (Astro Fonts API) -->
     <Font cssVariable="--font-overpass" preload={[{ subset: 'latin' }]} />
     <Font cssVariable="--font-overpass-mono" preload={[{ subset: 'latin' }]} />
 
-    <link rel="alternate" hreflang="en" href={canonicalUrl} />
+    {!noindex && <link rel="alternate" hreflang="en" href={canonicalUrl} />}
+    {!noindex && <link rel="alternate" hreflang="x-default" href={canonicalUrl} />}
+    <link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
 
-    <JsonLd />
+    <!-- Identity links: rel="me" lets other services verify that these profiles belong to this site. -->
+    {SOCIALS.map((social) => <link rel="me" href={social.href} />)}
+
+    {page !== 'none' && (
+      <JsonLd page={page} url={canonicalUrl} title={title} description={description} image={ogImage} />
+    )}
   </head>
   <body>
     <slot />
