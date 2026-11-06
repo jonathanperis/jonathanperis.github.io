@@ -7,10 +7,10 @@
 [`src/components/JsonLd.astro`](../src/components/JsonLd.astro) emits one Schema.org `@graph` per page, built from shared data and linked by `@id`:
 
 - `WebSite` (`/#website`): name, `inLanguage`, and the person as publisher
-- `ProfilePage` on `/` (main entity: the person) or `WebPage` plus `BreadcrumbList` (Home > Resume) on `/resume/`
+- `ProfilePage` on `/` (main entity: the person, primary image: the share card) or `WebPage` plus `BreadcrumbList` (Home > Resume) on `/resume/`
 - `Person` (`/#person`):
   - name, `givenName`, `familyName`, handle as `alternateName`, `jobTitle` from `PROFILE`, and the LinkedIn headline as `description`
-  - the share image as `image`, `url` from the configured `Astro.site`, and email from `PROFILE`
+  - the square illustrated portrait (`/profile-image-sharing.jpeg`, 1024x1024) as `image`, `url` from the configured `Astro.site`, and email from `PROFILE`
   - social links (`SOCIALS`) as `sameAs`
   - `PostalAddress` from `PROFILE.address`
   - `worksFor` from `CURRENT_ROLE` (the `EXPERIENCES` entry whose period ends with `Present`), omitted if none exists
@@ -34,9 +34,9 @@ Configured in `src/layouts/RootLayout.astro`:
 | Keywords | Name, role, .NET, C#, ASP.NET Core, Azure, Azure DevOps, Fintech, Backend Architecture, Microservices, CQRS, DDD, Clean Architecture, Blazor, Remote |
 | Author / robots | `author` is the profile name; `robots` is `index, follow, max-image-preview:large`, or `noindex, follow` for the 404 page |
 | Open Graph type | `profile`, with `profile:first_name`, `profile:last_name` and `profile:username` |
-| Open Graph image | `/profile-image-sharing.jpeg` resolved against the configured site, `image/jpeg`, `1024x1024` (the real file size) |
-| Image alt | `Illustrated portrait of Jonathan Peris` on both `og:image:alt` and `twitter:image:alt` (the share image is an illustration) |
-| Twitter card | `summary` (square image); `twitter:site` and `twitter:creator` use the X handle from `SOCIALS` |
+| Open Graph image | `/share-card.jpg` resolved against the configured site, `image/jpeg`, `1200x630` (the real file size, about 60 KB). It is a landscape card in the site's transit-sign style: station-sign black, the five line roundels, the name and role, the illustrated portrait, and the paper status strip with the domain and availability. |
+| Image alt | Describes the card's text (name, role, stack, focus, domain) on both `og:image:alt` and `twitter:image:alt` |
+| Twitter card | `summary_large_image` with the same card; `twitter:site` and `twitter:creator` use the X handle from `SOCIALS` |
 | Identity links | One `<link rel="me">` per entry in `SOCIALS` |
 | Theme color | `#161616` (the sign black) |
 | Sitemap link | `<link rel="sitemap" href="/sitemap-index.xml">` |
@@ -99,6 +99,6 @@ The former `hero_resume` and `hero_linkedin` labels were retired with the previo
 - `description`: portfolio and resume of a Software Engineer building .NET, C# and Azure backends for fintech
 - `start_url`: `/`; `display`: `standalone`
 - Theme color: `#161616`; background color: `#fbfaf6` (the paper color)
-- Icons: `favicon.svg` (`any`), `icon-192.png` and `icon-512.png` (`purpose: any`), and `apple-touch-icon.png` (180x180), all a red "JP" roundel on black. There are no maskable icons yet.
+- Icons: `favicon.svg` (`any`), `icon-192.png` and `icon-512.png` (`purpose: any`), `icon-maskable-192.png` and `icon-maskable-512.png` (`purpose: maskable`), and `apple-touch-icon.png` (180x180), all a red "JP" roundel on black. The maskable pair is the same artwork scaled to 90% of the canvas, so the roundel stays inside the 40%-radius safe zone.
 
 The layout links this manifest and the icons. No service worker or offline implementation is present. Browser installability and offline operation have not been validated by the manifest's presence alone.
